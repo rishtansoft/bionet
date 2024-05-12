@@ -44,6 +44,7 @@ const AllRoutes = (props) => {
                 ))}
                 <Route path="*" element={<Navigate to="/" replace />} />
             </Route>
+
             <Route path="/" element={<PublicRoute />}>
                 {publicRoutes.map((route) => (
                     <Route

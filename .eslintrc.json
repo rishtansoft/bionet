@@ -21,12 +21,13 @@
      "rules": {
        "react/react-in-jsx-scope": "off",
        "indent": "off",
+       "react/prop-types": "off"
        // "linebreak-style": [
        //     "error",
        //     "windows",
        //     "mac"
        // ],
-       "quotes": ["error", "single"],
+     //   "quotes": ["error", "single"]
      //   "semi": ["error", "always"]
      }
    }

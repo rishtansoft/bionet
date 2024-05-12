@@ -12,6 +12,7 @@ import {
 import useAuth from 'utils/hooks/useAuth'
 import useDirection from 'utils/hooks/useDirection'
 import useLocale from 'utils/hooks/useLocale'
+import { useLocation } from 'react-router-dom'
 
 const layouts = {
     [LAYOUT_TYPE_CLASSIC]: lazy(() => import('./ClassicLayout')),
@@ -24,7 +25,9 @@ const layouts = {
 
 const Layout = () => {
     const layoutType = useSelector((state) => state.theme.layout.type)
-
+    
+    const location = useLocation();
+    console.log(30, location.pathname);
     const { authenticated } = useAuth()
 
     useDirection()
@@ -38,6 +41,14 @@ const Layout = () => {
         return lazy(() => import('./AuthLayout'))
     }, [layoutType, authenticated])
 
+    const HomeLayout = useMemo(() => {
+        console.log("home layout");
+        if (authenticated) {
+            return layouts[layoutType]
+        }
+        return lazy(() => import('./HomeLayout'))
+    }, [layoutType, authenticated])
+
     return (
         <Suspense
             fallback={
@@ -46,7 +57,12 @@ const Layout = () => {
                 </div>
             }
         >
-            <AppLayout />
+            {
+                location.pathname == '/home' && <HomeLayout></HomeLayout>
+            }
+            {
+                location.pathname != '/home' && <AppLayout></AppLayout>
+            }
         </Suspense>
     )
 }

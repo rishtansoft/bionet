@@ -16,7 +16,6 @@ const AppRoute = ({ component: Component, routeKey, ...props }) => {
 
     const handleLayoutChange = useCallback(() => {
         dispatch(setCurrentRouteKey(routeKey))
-
         if (props.layout && props.layout !== layoutType) {
             dispatch(setPreviousLayout(layoutType))
             dispatch(setLayout(props.layout))
