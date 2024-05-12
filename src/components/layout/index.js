@@ -25,9 +25,8 @@ const layouts = {
 
 const Layout = () => {
     const layoutType = useSelector((state) => state.theme.layout.type)
-    
     const location = useLocation();
-    console.log(30, location.pathname);
+    
     const { authenticated } = useAuth()
 
     useDirection()
@@ -42,7 +41,6 @@ const Layout = () => {
     }, [layoutType, authenticated])
 
     const HomeLayout = useMemo(() => {
-        console.log("home layout");
         if (authenticated) {
             return layouts[layoutType]
         }

@@ -24,6 +24,8 @@ import {
     HiOutlineShare,
     HiOutlineVariable,
     HiOutlineCode,
+    HiLibrary,
+    HiHome
 } from 'react-icons/hi'
 
 const navigationIcon = {
@@ -54,6 +56,9 @@ const navigationIcon = {
     sharedComponentDoc: <HiOutlineShare />,
     utilsDoc: <HiOutlineVariable />,
     changeLog: <HiOutlineCode />,
+    regions: <HiLibrary />,
+    dashboard: <HiHome />
+
 }
 
 export default navigationIcon

@@ -4,7 +4,7 @@ import useAuth from 'utils/hooks/useAuth'
 
 const ProtectedRoute = () => {
     const { authenticated } = useAuth()
-    
+
     if (!authenticated) {
         return (
             <Navigate

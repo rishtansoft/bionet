@@ -10,6 +10,7 @@ import PublicRoute from 'components/route/PublicRoute'
 import AuthorityGuard from 'components/route/AuthorityGuard'
 import AppRoute from 'components/route/AppRoute'
 
+
 const { authenticatedEntryPath } = appConfig
 
 const AllRoutes = (props) => {
@@ -22,26 +23,34 @@ const AllRoutes = (props) => {
                     path="/"
                     element={<Navigate replace to={authenticatedEntryPath} />}
                 />
-                {protectedRoutes.map((route, index) => (
-                    <Route
-                        key={route.key + index}
-                        path={route.path}
-                        element={
-                            <AuthorityGuard
-                                userAuthority={userAuthority}
-                                authority={route.authority}
-                            >
-                                <PageContainer {...props} {...route.meta}>
-                                    <AppRoute
-                                        routeKey={route.key}
-                                        component={route.component}
-                                        {...route.meta}
-                                    />
-                                </PageContainer>
-                            </AuthorityGuard>
-                        }
-                    />
-                ))}
+                {protectedRoutes.map((route, index) => {
+                    return (
+                        <Route
+                            key={route.key + index}
+                            path={route.path}
+                            element={
+                                <AuthorityGuard
+                                    userAuthority={userAuthority}
+                                    authority={route.authority}
+                                >
+                                    <PageContainer {...props} {...route.meta}>
+                                        <AppRoute
+                                            routeKey={route.key}
+                                            component={route.component}
+                                            {...route.meta}
+                                        />
+                                    </PageContainer>
+                                </AuthorityGuard>
+                            }
+                        />
+                    )
+                })}
+                <Route
+                    path='regions'
+                    element={
+                        <h1>hello</h1>
+                    }
+                />
                 <Route path="*" element={<Navigate to="/" replace />} />
             </Route>
 
