@@ -1,23 +1,24 @@
 import React, { useEffect } from 'react';
-import Map from 'components/map/Map';
+import { Link } from 'react-router-dom';
 import 'assets/vendor/bootstrap/css/bootstrap.min.css';
 import 'assets/assets/css/fontawesome.css';
 import 'assets/assets/css/templatemo-edu-meeting.css';
 import 'assets/assets/css/owl.css';
 import 'assets/assets/css/lightbox.css';
 
-import 'assets/vendor/jquery/jquery.min.js';
-import 'assets/assets/js/lightbox.js';
-import 'assets/assets/js/tabs.js';
-import 'assets/assets/js/video.js';
-import 'assets/assets/js/slick-slider.js';
+// import 'assets/vendor/jquery/jquery.min.js';
+// import "https://code.jquery.com/jquery-3.7.1.min.js";
+// import 'assets/assets/js/lightbox.js';
+// import 'assets/assets/js/tabs.js';
+// import 'assets/assets/js/video.js';
+// import 'assets/assets/js/slick-slider.js';
 
-import img1 from 'assets/assets/images/service-icon-01.png';
-import onlineTeaching from 'assets/assets/images/meeting-01.jpg';
+// import onlineTeaching from 'assets/assets/images/meeting-01.jpg';
 import higher from 'assets/assets/images/meeting-03.jpg';
 import training from 'assets/assets/images/meeting-04.jpg';
 import hero from 'assets/assets/images/newBackground.jpg';
-import map from 'assets/assets/images/uz1.svg';
+// import map from 'assets/assets/images/uz1.svg';
+
 const Home = () => {
   useEffect(() => {
     // Add 'active' class to the first list item of the navigation
@@ -145,7 +146,7 @@ const Home = () => {
                   </li>
                   
                   <li className='scroll-to-section'>
-                    <a href='#contact'>Kirish</a>
+                    <a href="/sign-in">Kirish</a>
                   </li>
                 </ul>
                 <a className='menu-trigger'>
@@ -157,7 +158,7 @@ const Home = () => {
         </div>
       </header>
 
-      <section className='section main-banner' style={{height: '110vh'}} id='top' data-section='section1'>
+      <section className='section main-banner' style={{height: '105vh'}} id='top' data-section='section1'>
         {/* <video autoPlay muted loop id='bg-video'>
           <source src={video} type='video/mp4' />
         </video> */}
@@ -168,31 +169,22 @@ const Home = () => {
             <div className='row'>
               <div className='col-lg-12'>
                 <div className='caption'>
-                  <h6>Hello Students</h6>
-                  <h2>Welcome to Education</h2>
+                  <h6>Assalomu alaykum.</h6>
+                  <h2>BIONET platformasiga xush kelibsiz!</h2>
                   <p>
-                    This is an edu meeting HTML CSS template provided by{' '}
+                    Ushbu platforma yordamida O&apos;zbekistondagi {' '}
                     <a
                       rel='nofollow noreferrer'
                       href='https://templatemo.com/page/1'
                       target='_blank'
                     >
-                      TemplateMo website
+                      Barcha maktablar
                     </a>
-                    . This is a Bootstrap v5.1.3 layout. The video background is
-                    taken from Pexels website, a group of young people by{' '}
-                    <a
-                      rel='nofollow noreferrer'
-                      href='https://www.pexels.com/@pressmaster'
-                      target='_blank'
-                    >
-                      Pressmaster
-                    </a>
-                    .
+                    . o&apos;quvchilar davomatli bilan tanishib borishingiz, ularning yillik, oylik hamda kunlik hisobotlaridan xabardor bo&apos;lishingiz mumkin{' '}
                   </p>
                   <div className='main-button-red'>
                     <div className='scroll-to-section'>
-                      <a href='#contact'>Join Us Now!</a>
+                      <a href='#contact'>Statistikalarni ko&apos;rish</a>
                     </div>
                   </div>
                 </div>
@@ -213,21 +205,18 @@ const Home = () => {
             <div className='col-lg-4'>
               <div className='categories'>
                 <h4>Kategoriyalar</h4>
-                <ul>
+                <ul style={{display: "flex", flexDirection: 'column'}}>
                   <li>
-                    <a href='#'>Sed tempus enim leo</a>
+                    <a href='#'>Maktablar</a>
                   </li>
                   <li>
-                    <a href='#'>Aenean molestie quis</a>
+                    <a href='#'>Tumanlar</a>
                   </li>
                   <li>
-                    <a href='#'>Cras et metus vestibulum</a>
+                    <a href='#'>Viloyatlar</a>
                   </li>
                   <li>
-                    <a href='#'>Nam et condimentum</a>
-                  </li>
-                  <li>
-                    <a href='#'>Phasellus nec sapien</a>
+                    <a href='#'>Shaharlar</a>
                   </li>
                 </ul>
                 <div className='main-button-red'>
@@ -245,7 +234,7 @@ const Home = () => {
                       </div>
                       <a href='meeting-details.html'>
                         <img
-                          src={onlineTeaching}
+                          src={higher}
                           alt='New Lecturer Meeting'
                         />
                       </a>
@@ -275,7 +264,7 @@ const Home = () => {
                       </div>
                       <a href='meeting-details.html'>
                         <img
-                          src={onlineTeaching}
+                          src={training}
                           alt='Online Teaching'
                         />
                       </a>
@@ -517,6 +506,7 @@ const Home = () => {
             </div>
           </div>
         </div>
+
         <div className="footer">
         <p>2024-yil 
             <br />

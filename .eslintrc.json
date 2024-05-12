@@ -25,7 +25,9 @@
        "react/prop-types": "off",
        "no-unused-vars": "warn",
        "no-mixed-spaces-and-tabs": 0,
-       "no-control-regex": 0
+       "no-control-regex": 0,
+       "react/display-name": "off" 
+
        // "linebreak-style": [
        //     "error",
        //     "windows",

@@ -15,11 +15,12 @@ const CodeBox = (props) => {
 
     return (
         <Markdown
-            children={markdown}
             components={{
                 code: Highlighter,
             }}
-        />
+        >
+            {markdown}
+        </Markdown>
     )
 }
 
