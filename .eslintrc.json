@@ -4,7 +4,8 @@
        "es2021": true,
        "jest": true,
        "node": true,
-       "commonjs": true
+       "commonjs": true,
+       "amd": true
      },
      "extends": ["eslint:recommended", "plugin:react/recommended"],
      "settings": {
@@ -22,7 +23,9 @@
        "react/react-in-jsx-scope": "off",
        "indent": "off",
        "react/prop-types": "off",
-       "no-unused-vars": "warn"
+       "no-unused-vars": "warn",
+       "no-mixed-spaces-and-tabs": 0,
+       "no-control-regex": 0
        // "linebreak-style": [
        //     "error",
        //     "windows",

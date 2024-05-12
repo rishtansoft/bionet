@@ -1,0 +1,43 @@
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg width="800" height="600" viewBox="0 0 800 600">
+
+  <path id="region-1" d="M... (path coordinates for region 1)..." fill="#ccc" stroke="#000" stroke-width="1"/>
+  <path id="region-2" d="M... (path coordinates for region 2)..." fill="#ccc" stroke="#000" stroke-width="1"/>
+  <style>
+    path:hover {
+      fill: #fafafa;
+    }
+  </style>
+
+  <text id="region-name" x="400" y="300" text-anchor="middle" font-size="16" opacity="0">Fergana</text>
+
+  <script>
+    const regions = document.querySelectorAll('path[id^="region-"]');
+    const regionName = document.getElementById('region-name');
+
+    regions.forEach(region => {
+      region.addEventListener('mouseover', () => {
+        const regionId = region.id.split('-')[1];
+        regionName.textContent = getRegionName(regionId); // Replace with function to get region name based on ID
+        regionName.setAttribute('opacity', 1);
+      });
+
+      region.addEventListener('mouseout', () => {
+        regionName.setAttribute('opacity', 0);
+      });
+    });
+
+    function getRegionName(regionId) {
+      // Replace this with logic to return the actual region name based on ID
+      switch (regionId) {
+        case '1':
+          return "Fergana";
+        case '2':
+          return "Andijon";
+        // ... (similar cases for other regions)
+        default:
+          return "Unknown Region";
+      }
+    }
+  </script>
+</svg>

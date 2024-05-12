@@ -1,11 +1,11 @@
 import React from 'react'
+import Home from 'views/home/Home';
 
 const HomeLayout = () => {
-
     return (
-        <div className="app-layout-blank flex flex-auto flex-col h-[100vh]">
-            <h1>home layout</h1>
-        </div>
+        <>
+            <Home></Home>
+        </>
     )
 }
 
