@@ -156,10 +156,10 @@ const DataTable = (props) => {
         <Loading loading={loading && data.length !== 0} type="cover">
             <Table {...getTableProps()}>
                 <THead>
-                    {headerGroups.map((headerGroup) => (
-                        <Tr {...headerGroup.getHeaderGroupProps()}>
-                            {headerGroup.headers.map((column) => (
-                                <Th {...column.getHeaderProps()}>
+                    {headerGroups.map((headerGroup, index) => (
+                        <Tr {...headerGroup.getHeaderGroupProps()} key = {index}>
+                            {headerGroup.headers.map((column, i) => (
+                                <Th {...column.getHeaderProps()} key = {i}>
                                     {column.render('Header') &&
                                         (column.sortable ? (
                                             <div
@@ -197,10 +197,10 @@ const DataTable = (props) => {
                         {page.map((row, i) => {
                             prepareRow(row)
                             return (
-                                <Tr {...row.getRowProps()}>
-                                    {row.cells.map((cell) => {
+                                <Tr {...row.getRowProps()} key = {i}>
+                                    {row.cells.map((cell, i) => {
                                         return (
-                                            <Td {...cell.getCellProps()}>
+                                            <Td {...cell.getCellProps()} key = {i}>
                                                 {cell.render('Cell')}
                                             </Td>
                                         )
