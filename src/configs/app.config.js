@@ -1,5 +1,5 @@
 const appConfig = {
-    apiPrefix: '/api',
+    apiPrefix: 'http://95.46.96.110:8000',
     authenticatedEntryPath: '/app/sales/dashboard',
     unAuthenticatedEntryPath: '/sign-in',
     tourPath: '/app/account/kyc-form',

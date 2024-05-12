@@ -12,7 +12,7 @@ import useTimeOutMessage from 'utils/hooks/useTimeOutMessage'
 import { Field, Form, Formik } from 'formik'
 import * as Yup from 'yup'
 import useAuth from 'utils/hooks/useAuth'
-
+import axios from 'axios'
 const validationSchema = Yup.object().shape({
     userName: Yup.string().required('Please enter your user name'),
     password: Yup.string().required('Please enter your password'),
@@ -35,7 +35,14 @@ const SignInForm = (props) => {
         const { userName, password } = values
         setSubmitting(true)
 
-        const result = await signIn({ userName, password })
+        const result = await signIn({ username:userName, password })
+
+        // const result =await axios.post(('http://95.46.96.110:8000/api/v1/api-token-auth/', {
+        //     "username" : userName,
+        //     "password" : password
+        // }));
+
+        console.log(45, result);
 
         if (result.status === 'failed') {
             setMessage(result.message)
@@ -53,8 +60,8 @@ const SignInForm = (props) => {
             )}
             <Formik
                 initialValues={{
-                    userName: 'admin',
-                    password: '123Qwe',
+                    userName: '',
+                    password: '',
                     rememberMe: true,
                 }}
                 validationSchema={validationSchema}

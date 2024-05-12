@@ -51,33 +51,42 @@ function useAuth() {
         }
     }
 
-    const signUp = async (values) => {
+    const signUp =  (values) => {
         try {
-            const resp = await apiSignUp(values)
-            if (resp.data) {
-                const { token } = resp.data
-                dispatch(onSignInSuccess(token))
-                if (resp.data.user) {
-                    dispatch(
-                        setUser(
-                            resp.data.user || {
-                                avatar: '',
-                                userName: 'Anonymous',
-                                authority: ['USER'],
-                                email: '',
-                            }
-                        )
-                    )
-                }
-                const redirectUrl = query.get(REDIRECT_URL_KEY)
-                navigate(
-                    redirectUrl ? redirectUrl : appConfig.authenticatedEntryPath
-                )
-                return {
-                    status: 'success',
-                    message: '',
-                }
-            }
+             apiSignUp(values).then((res)=>{
+                console.log(57, res);    
+            }).catch((error)=>{
+                console.log(error);
+            })
+            
+            // if (resp.data) {
+            //     console.log(59, resp);
+            //     const { token } = resp.data
+            //     dispatch(onSignInSuccess(token))
+            //     if (resp.data.user) {
+            //         dispatch(
+            //             setUser(
+            //                 resp.data.user || {
+            //                     avatar: '',
+            //                     userName: 'Anonymous',
+            //                     authority: ['USER'],
+            //                     email: '',
+            //                 }
+            //             )
+            //         )
+            //     }
+            //     const redirectUrl = query.get(REDIRECT_URL_KEY)
+            //     console.log(73, redirectUrl);
+            //     console.log(74, appConfig.authenticatedEntryPath);
+            //     navigate(
+            //         redirectUrl ? redirectUrl : appConfig.authenticatedEntryPath
+            //     )
+                
+            //     return {
+            //         status: 'success',
+            //         message: '',
+            //     }
+            // }
         } catch (errors) {
             return {
                 status: 'failed',
