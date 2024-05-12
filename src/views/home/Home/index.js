@@ -1,23 +1,14 @@
 import React, { useEffect } from 'react';
-import { Link } from 'react-router-dom';
+
 import 'assets/vendor/bootstrap/css/bootstrap.min.css';
 import 'assets/assets/css/fontawesome.css';
 import 'assets/assets/css/templatemo-edu-meeting.css';
 import 'assets/assets/css/owl.css';
 import 'assets/assets/css/lightbox.css';
 
-// import 'assets/vendor/jquery/jquery.min.js';
-// import "https://code.jquery.com/jquery-3.7.1.min.js";
-// import 'assets/assets/js/lightbox.js';
-// import 'assets/assets/js/tabs.js';
-// import 'assets/assets/js/video.js';
-// import 'assets/assets/js/slick-slider.js';
-
-// import onlineTeaching from 'assets/assets/images/meeting-01.jpg';
 import higher from 'assets/assets/images/meeting-03.jpg';
 import training from 'assets/assets/images/meeting-04.jpg';
 import hero from 'assets/assets/images/newBackground.jpg';
-// import map from 'assets/assets/images/uz1.svg';
 
 const Home = () => {
   useEffect(() => {

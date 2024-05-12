@@ -5,7 +5,7 @@ import { ADMIN } from 'constants/roles.constant'
 const districtsRoute = [
     {
         key: 'districts.districts',
-        path: `${DISTRICTS_PREFIX_PATH}/`,
+        path: `${DISTRICTS_PREFIX_PATH}/:id`,
         component: React.lazy(() => import('views/districts')),
         authority: [ADMIN],
     }
