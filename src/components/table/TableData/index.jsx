@@ -11,6 +11,8 @@ const TableData = (props) => {
   const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
     useTable({ columns, data }, useSortBy);
 
+    console.log(14, columns, rows);
+
   return (
     <>
       <Table {...getTableProps()}>
@@ -42,7 +44,7 @@ const TableData = (props) => {
                   return (
                     <Td {...cell.getCellProps()} key={index}>
                         {
-                            index == 0 && props.redirectTo && <Link to = {`${props.redirectTo}/ ${row.id}`}>
+                            index == 0 && props.redirectTo && <Link to = {`${props.redirectTo}/ ${row.original.id}`}>
                                 {cell.render('Cell')}
                             </Link>
                         }
