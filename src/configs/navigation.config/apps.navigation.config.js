@@ -16,16 +16,16 @@ const appsNavigationConfig = [
         type: NAV_ITEM_TYPE_TITLE,
         authority: [ADMIN, USER],
         subMenu: [
-            // {
-            //     key: 'appsCrm.dashboard',
-            //     path: `${APP_PREFIX_PATH}/crm/dashboard`,
-            //     title: 'Dashboard',
-            //     translateKey: 'DASHBOARD',
-            //     icon: 'dashboard',
-            //     type: NAV_ITEM_TYPE_ITEM,
-            //     authority: [ADMIN, USER],
-            //     subMenu: [],
-            // },
+            {
+                key: 'appsCrm.dashboard',
+                path: `${APP_PREFIX_PATH}/crm/dashboard`,
+                title: 'Dashboard',
+                translateKey: 'DASHBOARD',
+                icon: 'dashboard',
+                type: NAV_ITEM_TYPE_ITEM,
+                authority: [ADMIN, USER],
+                subMenu: [],
+            },
             {
                 key: 'regions.regions',
                 path: `${REGIONS_PREFIX_PATH}`,
