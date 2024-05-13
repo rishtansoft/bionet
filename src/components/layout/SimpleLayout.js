@@ -22,7 +22,7 @@ const HeaderActionsStart = () => {
 const HeaderActionsEnd = () => {
     return (
         <>
-            <Search />
+            {/* <Search /> */}
             <LanguageSelector />
             <Notification />
             <SidePanel />

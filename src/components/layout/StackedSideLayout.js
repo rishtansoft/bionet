@@ -13,7 +13,7 @@ const HeaderActionsStart = () => {
     return (
         <>
             <MobileNav />
-            <Search />
+            {/* <Search /> */}
         </>
     )
 }

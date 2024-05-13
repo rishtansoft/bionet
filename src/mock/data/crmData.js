@@ -14,53 +14,77 @@ export const crmDashboardData = {
     statisticData: [
         {
             key: 'newLeads',
-            label: 'New Leads',
-            value: 63,
+            label: 'O\'quvchilar',
+            value: "6500000",
             growShrink: 2.6,
         },
         {
             key: 'emailResponse',
-            label: 'Email',
-            value: 25,
+            label: '1-4 sinf o\'quvchilar',
+            value: "38.5%",
             growShrink: 5.5,
         },
         {
             key: 'proposals',
-            label: 'Proposals',
-            value: 49,
-            growShrink: -0.7,
+            label: 'Davomat',
+            value: "97.2%",
+            growShrink: 32.7,
         },
         {
             key: 'appointment',
-            label: 'Appointment',
-            value: 12,
+            label: 'Maktablar',
+            value: 10522,
             growShrink: 2.6,
         },
     ],
     leadByRegionData: [
         {
-            name: 'United States of America',
+            name: 'Tashkent',
             value: 37.61,
         },
         {
-            name: 'Brazil',
+            name: 'Namangan',
             value: 16.79,
         },
         {
-            name: 'India',
+            name: 'Andjion',
             value: 12.42,
         },
         {
-            name: 'China',
+            name: 'Farg\'ona',
             value: 9.85,
         },
         {
-            name: 'Algeria',
+            name: 'Jizzah',
+            value: 9.85,
+        },
+        {
+            name: 'Surxondaryo',
+            value: 9.85,
+        },
+        {
+            name: 'Qarshi',
             value: 7.68,
         },
         {
-            name: 'Indonesia',
+            name: 'Buhoro',
             value: 5.11,
+        },
+        {
+            name: 'Naoyi',
+            value: 9.11,
+        },
+        {
+            name: 'Samarqand',
+            value: 53.11,
+        },
+        {
+            name: 'Xorazm',
+            value: 5.11,
+        },
+        {
+            name: 'Qoraqalpog\'iston',
+            value: 23.11,
         },
     ],
     recentLeadsData: [
@@ -120,7 +144,7 @@ export const crmDashboardData = {
         },
     ],
     emailSentData: {
-        precent: 73,
+        precent:97.2,
         opened: 893,
         unopen: 330,
         total: 1223,

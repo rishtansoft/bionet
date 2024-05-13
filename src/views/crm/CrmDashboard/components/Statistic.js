@@ -90,7 +90,7 @@ const StatisticCard = ({ data = {} }) => {
                     </div>
                     <p className="flex items-center gap-1">
                         <GrowShrink value={data.growShrink} />
-                        <span>this month</span>
+                        <span>so&apos;ngi oydagi</span>
                     </p>
                 </div>
             </div>

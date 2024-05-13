@@ -5,7 +5,7 @@ const ProgressInfo = ({ precent }) => {
     return (
         <div>
             <h3 className="font-bold">{precent}%</h3>
-            <p>Opened</p>
+            <p>Bugungi kelganlar soni</p>
         </div>
     )
 }
@@ -13,21 +13,21 @@ const ProgressInfo = ({ precent }) => {
 const EmailSent = ({ data = [], className }) => {
     return (
         <Card className={className}>
-            <h4>Email Sent</h4>
+            <h4>Davomat statistikasi</h4>
             <div className="mt-6">
                 <Progress
                     variant="circle"
                     percent={data.precent}
-                    width={200}
-                    className="flex justify-center"
+                    width={350}
+                    className="flex justify-center text-center h5"
                     strokeWidth={4}
                     customInfo={<ProgressInfo precent={data.precent} />}
                 />
             </div>
-            <div className="text-center mt-6">
+            {/* <div className="text-center mt-6">
                 <p className="font-semibold">Performace</p>
                 <h4 className="font-bold">Average</h4>
-            </div>
+            </div> */}
         </Card>
     )
 }
