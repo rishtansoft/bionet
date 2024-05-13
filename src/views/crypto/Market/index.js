@@ -39,7 +39,6 @@ const Market = () => {
 
     useEffect(() => {
         fetchData()
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [dispatch, selectedTab, tableData])
 
     const fetchData = () => {

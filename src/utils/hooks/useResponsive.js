@@ -48,7 +48,6 @@ const useResponsive = () => {
     useEffect(() => {
         window.addEventListener('resize', resizeHandler)
         return () => window.removeEventListener('resize', resizeHandler)
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [responsive.windowWidth])
 
     return responsive

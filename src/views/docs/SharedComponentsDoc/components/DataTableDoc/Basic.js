@@ -73,7 +73,6 @@ const Basic = () => {
             }
         }
         fetchData()
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [tableData.pageIndex, tableData.sort, tableData.pageSize])
 
     return (

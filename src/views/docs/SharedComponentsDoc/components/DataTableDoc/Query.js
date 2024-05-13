@@ -93,7 +93,6 @@ const Query = () => {
             }
         }
         fetchData()
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [
         tableData.pageIndex,
         tableData.sort,

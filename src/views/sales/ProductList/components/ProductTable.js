@@ -90,7 +90,6 @@ const ProductTable = () => {
 
     useEffect(() => {
         fetchData()
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [pageIndex, pageSize, sort])
 
     const tableData = useMemo(

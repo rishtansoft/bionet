@@ -61,7 +61,6 @@ const OthersArticle = ({ articleId }) => {
 
     useEffect(() => {
         fetchData()
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [search])
 
     const fetchData = () => {

@@ -77,7 +77,6 @@ const Editor = ({ mode }) => {
                 { label: categoryLabel, value: categoryValue },
             ])
         }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [categoryLabel, categoryValue])
 
     return (

@@ -69,7 +69,6 @@ const ProductEdit = () => {
         )
         const rquestParam = { id: path }
         fetchData(rquestParam)
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [location.pathname])
 
     return (

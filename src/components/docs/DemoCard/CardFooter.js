@@ -44,7 +44,7 @@ const CardFooter = (props) => {
                 }
             }
         }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
+        
     }, [mdPath, expand, copied])
 
     const onCodeCopy = async () => {

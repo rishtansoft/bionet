@@ -66,7 +66,6 @@ const CustomerStatistic = () => {
 
     useEffect(() => {
         dispatch(getCustomerStatistic())
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
     return (

@@ -66,14 +66,12 @@ const MailDetail = () => {
         if (mailId) {
             fetchData()
         }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [mailId])
 
     useEffect(() => {
         if (!mailId && id) {
             dispatch(updateMailId(id))
         }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
     return (
