@@ -12,7 +12,27 @@ const Side = ({ children, content, ...rest }) => {
                     backgroundImage: `url('/img/others/auth-side-bg.jpg')`,
                 }}
             >
-                <Logo mode="dark" />
+                <div style={{
+                    display:'flex',
+                    height:'100vh',
+                    flexDirection:'column',
+                    justifyContent:'center',
+                    alignItems:'center'
+                    
+                }}>
+                <a
+                            style={{
+                                fontSize:'3.5rem',
+                                color:'#fff',
+                                fontWeight:'600',
+                                textAlign:'center',
+                                
+                            }}
+                        href='#'>
+                            Bionet 
+                        </a>
+                </div>
+                {/* <Logo mode="dark" />
                 <div>
                     <div className="mb-6 flex items-center gap-4">
                         <Avatar
@@ -36,7 +56,7 @@ const Side = ({ children, content, ...rest }) => {
                 <span className="text-white">
                     Copyright &copy; {`${new Date().getFullYear()}`}{' '}
                     <span className="font-semibold">{`${APP_NAME}`}</span>{' '}
-                </span>
+                </span> */}
             </div>
             <div className="col-span-2 flex flex-col justify-center items-center bg-white dark:bg-gray-800">
                 <div className="xl:min-w-[450px] px-8">

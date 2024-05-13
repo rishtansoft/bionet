@@ -221,9 +221,8 @@ const Home = () => {
                   <div className='meeting-item'>
                     <div className='thumb'>
                       <div className='price'>
-                        <span>$22.00</span>
                       </div>
-                      <a href='meeting-details.html'>
+                      <a href='#'>
                         <img
                           src={higher}
                           alt='New Lecturer Meeting'
@@ -236,13 +235,13 @@ const Home = () => {
                           Nov <span>10</span>
                         </h6>
                       </div>
-                      <a href='meeting-details.html'>
-                        <h4>New Lecturers Meeting</h4>
+                      <a href='#'>
+                        <h4>Davomat</h4>
                       </a>
                       <p>
-                        Morbi in libero blandit lectus
+                        Barcha maktablar bo&apos;yicha davomat
                         <br />
-                        cursus ullamcorper.
+                        97,7 foizga yetdi .
                       </p>
                     </div>
                   </div>
@@ -251,9 +250,8 @@ const Home = () => {
                   <div className='meeting-item'>
                     <div className='thumb'>
                       <div className='price'>
-                        <span>$36.00</span>
                       </div>
-                      <a href='meeting-details.html'>
+                      <a href='#'>
                         <img
                           src={training}
                           alt='Online Teaching'
@@ -266,13 +264,11 @@ const Home = () => {
                           Nov <span>24</span>
                         </h6>
                       </div>
-                      <a href='meeting-details.html'>
-                        <h4>Online Teaching Techniques</h4>
+                      <a href='#'>
+                        <h4>2024-2025-O&apos;QUV YILIDAN</h4>
                       </a>
                       <p>
-                        Morbi in libero blandit lectus
-                        <br />
-                        cursus ullamcorper.
+                      “MENING MAKTABIM” LOYIHASI DOIRASIDA MAKTABLARGA BAZAVIY HISOBLASH MIQDORINING 150 BAROBARIDA MABLAG&apos; AJRATILADI.
                       </p>
                     </div>
                   </div>
@@ -281,9 +277,8 @@ const Home = () => {
                   <div className='meeting-item'>
                     <div className='thumb'>
                       <div className='price'>
-                        <span>$14.00</span>
                       </div>
-                      <a href='meeting-details.html'>
+                      <a href='#'>
                         <img
                           src={higher}
                           alt='Higher Education'
@@ -296,13 +291,12 @@ const Home = () => {
                           Nov <span>26</span>
                         </h6>
                       </div>
-                      <a href='meeting-details.html'>
-                        <h4>Higher Education Conference</h4>
+                      <a href='#'>
+                        <h4>2024-yilda</h4>
                       </a>
                       <p>
-                        Morbi in libero blandit lectus
-                        <br />
-                        cursus ullamcorper.
+                        Maktablarda 250 mingta o&apos;quvchi o&apos;rni tashkil
+                        etilishi rejalashtirilmoqda.
                       </p>
                     </div>
                   </div>
@@ -311,9 +305,8 @@ const Home = () => {
                   <div className='meeting-item'>
                     <div className='thumb'>
                       <div className='price'>
-                        <span>$48.00</span>
                       </div>
-                      <a href='meeting-details.html'>
+                      <a href='#'>
                         <img
                           src={training}
                           alt='Student Training'
@@ -326,13 +319,11 @@ const Home = () => {
                           Nov <span>30</span>
                         </h6>
                       </div>
-                      <a href='meeting-details.html'>
-                        <h4>Student Training Meetup</h4>
+                      <a href='#'>
+                      <h4>2024-yilda</h4> 
                       </a>
                       <p>
-                        Morbi in libero blandit lectus
-                        <br />
-                        cursus ullamcorper.
+                      Prezident va ixtisoslashtirilgan maktablarning bilimlarni baholash tizimi qo&apos;shimcha 1 000 ta umumiy o&apos;rta ta&apos;lim muassasalarida joriy qilinib, fanlardagi amaliy mashg&apos;ulotlar ulushi 60 foizgacha oshiriladi;
                       </p>
                     </div>
                   </div>
@@ -349,20 +340,20 @@ const Home = () => {
             <div className='col-lg-6'>
               <div className='row'>
                 <div className='col-lg-12'>
-                  <h2>A Few Facts About Our University</h2>
+                  <h2>Barcha maktablar bo&apos;yicha statistika</h2>
                 </div>
                 <div className='col-lg-6'>
                   <div className='row'>
                     <div className='col-12'>
                       <div className='count-area-content percentage'>
-                        <div className='count-digit'>94</div>
-                        <div className='count-title'>Succesed Students</div>
+                        <div className='count-digit'>38,5</div>
+                        <div className='count-title'>1-4 sinf o&apos;quvchilar</div>
                       </div>
                     </div>
                     <div className='col-12'>
                       <div className='count-area-content'>
-                        <div className='count-digit'>126</div>
-                        <div className='count-title'>Current Teachers</div>
+                        <div className='count-digit'>282424</div>
+                        <div className='count-title'>O&apos;qtuvchilar</div>
                       </div>
                     </div>
                   </div>
@@ -371,14 +362,14 @@ const Home = () => {
                   <div className='row'>
                     <div className='col-12'>
                       <div className='count-area-content new-students'>
-                        <div className='count-digit'>2345</div>
-                        <div className='count-title'>New Students</div>
+                        <div className='count-digit'>6.5 milon</div>
+                        <div className='count-title'>O&apos;quvchilar</div>
                       </div>
                     </div>
                     <div className='col-12'>
                       <div className='count-area-content'>
-                        <div className='count-digit'>32</div>
-                        <div className='count-title'>Awards</div>
+                        <div className='count-digit'>10522</div>
+                        <div className='count-title'>Maktablar</div>
                       </div>
                     </div>
                   </div>
@@ -409,7 +400,7 @@ const Home = () => {
                   <form id='contact' action='' method='post'>
                     <div className='row'>
                       <div className='col-lg-12'>
-                        <h2>Let&lsquo;s get in touch</h2>
+                        <h2>Murojatlar uchun</h2>
                       </div>
                       <div className='col-lg-4'>
                         <fieldset>
@@ -417,7 +408,7 @@ const Home = () => {
                             name='name'
                             type='text'
                             id='name'
-                            placeholder='YOURNAME...*'
+                            placeholder='ISMINGIZ...'
                             required=''
                           />
                         </fieldset>
@@ -429,7 +420,7 @@ const Home = () => {
                             type='text'
                             id='email'
                             pattern='[^ @]*@[^ @]*'
-                            placeholder='YOUR EMAIL...'
+                            placeholder='ELEKTRON POCHTA MANZILINGIZ...'
                             required=''
                           />
                         </fieldset>
@@ -440,7 +431,7 @@ const Home = () => {
                             name='subject'
                             type='text'
                             id='subject'
-                            placeholder='SUBJECT...*'
+                            placeholder='MAVZU...'
                             required=''
                           />
                         </fieldset>
@@ -452,7 +443,7 @@ const Home = () => {
                             type='text'
                             className='form-control'
                             id='message'
-                            placeholder='YOUR MESSAGE...'
+                            placeholder='XABARINGIZ...'
                             required=''
                           ></textarea>
                         </fieldset>
@@ -464,7 +455,7 @@ const Home = () => {
                             id='form-submit'
                             className='button'
                           >
-                            SEND MESSAGE NOW
+                            Xabarni yuborish
                           </button>
                         </fieldset>
                       </div>
@@ -477,19 +468,19 @@ const Home = () => {
               <div className='right-info'>
                 <ul>
                   <li>
-                    <h6>Phone Number</h6>
-                    <span>010-020-0340</span>
+                    <h6>Telefon raqam</h6>
+                    <span>+998901234567</span>
                   </li>
                   <li>
-                    <h6>Email Address</h6>
+                    <h6>Elektron pochta</h6>
                     <span>info@meeting.edu</span>
                   </li>
                   <li>
-                    <h6>Street Address</h6>
+                    <h6>Manzil</h6>
                     <span>Rio de Janeiro - RJ, 22795-008, Brazil</span>
                   </li>
                   <li>
-                    <h6>Website URL</h6>
+                    <h6>Sayt manzil</h6>
                     <span>www.meeting.edu</span>
                   </li>
                 </ul>
@@ -499,12 +490,12 @@ const Home = () => {
         </div>
 
         <div className="footer">
-        <p>2024-yil 
+        {/* <p>2024-yil 
             <br />
             Design: <a href="https://templatemo.com" target="_parent" title="free css templates">TemplateMo</a>
             <br />
             BIONET: <a href="#" target="_blank" title="Build Better UI, Faster">ThemeWagon</a>
-            </p>
+            </p> */}
         </div>
       </section>
     </>

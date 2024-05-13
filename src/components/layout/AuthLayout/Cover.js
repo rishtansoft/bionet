@@ -11,8 +11,28 @@ const Cover = ({ children, content, ...rest }) => {
                     backgroundImage: `url('/img/others/auth-cover-bg.jpg')`,
                 }}
             >
-                <Logo mode="dark" />
-                <div>
+                <div style={{
+                    display:'flex',
+                    height:'100vh',
+                    flexDirection:'column',
+                    justifyContent:'center',
+                    alignItems:'center'
+                    
+                }}>
+                <a
+                            style={{
+                                fontSize:'3.5rem',
+                                color:'#fff',
+                                fontWeight:'600',
+                                textAlign:'center',
+                                
+                            }}
+                        href='#'>
+                            Bionet 
+                        </a>
+                </div>
+                {/* <Logo mode="dark" /> */}
+                {/* <div>
                     <h3 className="text-white mb-4">
                         Jump start your project with Elstar
                     </h3>
@@ -25,7 +45,7 @@ const Cover = ({ children, content, ...rest }) => {
                 <span className="text-white">
                     Copyright &copy; {`${new Date().getFullYear()}`}{' '}
                     <span className="font-semibold">{`${APP_NAME}`}</span>{' '}
-                </span>
+                </span> */}
             </div>
             <div className="flex flex-col justify-center items-center bg-white dark:bg-gray-800">
                 <div className="xl:min-w-[450px] px-8">
