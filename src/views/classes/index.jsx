@@ -4,7 +4,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { DatePicker } from 'components/ui';
 
-function Schools() {
+function Classes() {
   const [currentDate, setCurrentDate] = useState(null);
   const [columns] = useState([
     {
@@ -64,15 +64,14 @@ function Schools() {
 
   useEffect(() => {
     if (token && params.id) {
-      console.log('params', params);
       const testToken = 'eb577759f4ca0dde05b02ea699892ee560920594';
       const sendData = {
-        // tuman_id: params.id,
+        // maktab_id: params.id,
         // sana: currentDate
-        tuman_id: 78,
-        sana: "2024-05-08"
+        maktab_id: 2,
+        sane: "2024-05-08"
       }
-      fetch(`${process.env.REACT_APP_API_URL}api/v1/davomattuman/`, {
+      fetch(`${process.env.REACT_APP_API_URL}api/v1/davomatmaktab/`, {
         method: "POST",
         headers: {
           Authorization: `Token ${testToken}`,
@@ -104,13 +103,13 @@ function Schools() {
       let res = [];
       apiData.forEach((el) => {
         const reg = {
-          name: el[0].maktabnomi,
+          name: el[0].sinfnomi,
           studentsCount: el[0].bolasoni,
           arrivalsCount: el[0].kelganlar,
           arrivalsCountPercent: el[0].foizi,
           absenteesCount: el[0].kelmaganlar,
           absenteesCountPercent: 100 - el[0].foizi,
-          id: el[0].maktab_id,
+          id: el[0].sinf_id,
         };
 
         res.push(reg);
@@ -123,7 +122,7 @@ function Schools() {
   
   return (
     <div>
-      <h2 className='mb-3'>Maktablar bo'yicha</h2>
+      <h2 className='mb-3'>Sinflar bo'yicha</h2>
       <div className='date-filter text-right mb-4 flex justify-end'>
         <DatePicker
           value={currentDate}
@@ -132,9 +131,9 @@ function Schools() {
           className='w-1/4'
         />
       </div>
-      <TableData redirectTo='/classes' columns={columns} data={data}></TableData>
+      <TableData redirectTo='/students' columns={columns} data={data}></TableData>
     </div>
   )
 }
 
-export default Schools
+export default Classes

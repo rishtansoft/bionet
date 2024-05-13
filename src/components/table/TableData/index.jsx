@@ -42,7 +42,7 @@ const TableData = (props) => {
                   return (
                     <Td {...cell.getCellProps()} key={index}>
                         {
-                            index == 0 && props.redirectTo && <Link to = {`${props.redirectTo}/ ${row.original.id}`}>
+                            index == 0 && props.redirectTo && <Link to = {`${props.redirectTo}/${row.original.id}`}>
                                 {cell.render('Cell')}
                             </Link>
                         }

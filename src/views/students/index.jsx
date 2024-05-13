@@ -4,33 +4,18 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { DatePicker } from 'components/ui';
 
-function Schools() {
+function Students() {
   const [currentDate, setCurrentDate] = useState(null);
   const [columns] = useState([
     {
-      Header: 'Tuman nomi',
+      Header: 'O`quvchi',
       accessor: 'name',
     },
     {
-      Header: 'O`quvchilar soni',
+      Header: 'Kelgan vaqti',
       accessor: 'studentsCount',
     },
-    {
-      Header: 'Davomat',
-      accessor: 'arrivalsCount',
-    },
-    {
-      Header: 'Davomat (%)',
-      accessor: 'arrivalsCountPercent',
-    },
-    {
-      Header: 'Kelmaganlar soni',
-      accessor: 'absenteesCount',
-    },
-    {
-      Header: 'Kelmaganlar soni (%)',
-      accessor: 'absenteesCountPercent',
-    },
+    
   ]);
 
   function getTodaysDate() {
@@ -64,15 +49,14 @@ function Schools() {
 
   useEffect(() => {
     if (token && params.id) {
-      console.log('params', params);
       const testToken = 'eb577759f4ca0dde05b02ea699892ee560920594';
       const sendData = {
-        // tuman_id: params.id,
+        // sinf_id: params.id,
         // sana: currentDate
-        tuman_id: 78,
-        sana: "2024-05-08"
+        sinf_id: 6,
+        sana: "2024-05-10"
       }
-      fetch(`${process.env.REACT_APP_API_URL}api/v1/davomattuman/`, {
+      fetch(`${process.env.REACT_APP_API_URL}api/v1/davomatsinf/`, {
         method: "POST",
         headers: {
           Authorization: `Token ${testToken}`,
@@ -104,13 +88,8 @@ function Schools() {
       let res = [];
       apiData.forEach((el) => {
         const reg = {
-          name: el[0].maktabnomi,
-          studentsCount: el[0].bolasoni,
-          arrivalsCount: el[0].kelganlar,
-          arrivalsCountPercent: el[0].foizi,
-          absenteesCount: el[0].kelmaganlar,
-          absenteesCountPercent: 100 - el[0].foizi,
-          id: el[0].maktab_id,
+          name: el[0].pupilname,
+          time: el[0].kelganvaqti
         };
 
         res.push(reg);
@@ -123,7 +102,7 @@ function Schools() {
   
   return (
     <div>
-      <h2 className='mb-3'>Maktablar bo'yicha</h2>
+      <h2 className='mb-3'>O'quvchilar bo'yicha</h2>
       <div className='date-filter text-right mb-4 flex justify-end'>
         <DatePicker
           value={currentDate}
@@ -132,9 +111,9 @@ function Schools() {
           className='w-1/4'
         />
       </div>
-      <TableData redirectTo='/classes' columns={columns} data={data}></TableData>
+      <TableData columns={columns} data={data}></TableData>
     </div>
   )
 }
 
-export default Schools
+export default Students

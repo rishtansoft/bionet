@@ -8,6 +8,8 @@ import docsRoute from './docsRoute'
 import regionsRoute from './regionsRoute'
 import districtsRoute from './districtsRoute'
 import schoolsRoute from './schoolsRoute'
+import classesRoute from './classesRoute'
+import studentsRoute from './studentsRoute'
 
 export const publicRoutes = [...authRoute, ...homeRoute]
 
@@ -19,5 +21,7 @@ export const protectedRoutes = [
     ...docsRoute,
     ...regionsRoute,
     ...districtsRoute,
-    ...schoolsRoute
+    ...schoolsRoute,
+    ...classesRoute,
+    ...studentsRoute,
 ]
