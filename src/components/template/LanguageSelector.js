@@ -65,8 +65,10 @@ export const LanguageSelector = ({ className }) => {
     }
 
     return (
-        <Dropdown renderTitle={selectedLanguage} placement="bottom-end">
-            {languageList.map((lang) => (
+        
+        <>
+         {/* <Dropdown renderTitle={selectedLanguage} placement="bottom-end">
+             {languageList.map((lang) => (
                 <Dropdown.Item
                     className="mb-1 justify-between"
                     eventKey={lang.label}
@@ -85,8 +87,10 @@ export const LanguageSelector = ({ className }) => {
                         <HiCheck className="text-emerald-500 text-lg" />
                     )}
                 </Dropdown.Item>
-            ))}
-        </Dropdown>
+            ))} 
+         </Dropdown> */}
+         
+        </>
     )
 }
 

@@ -88,8 +88,11 @@ const SideNav = () => {
                         !sideNavCollapse && 'side-nav-expand'
                     )}
                 >
-                    <div className="side-nav-header">
-                        <Logo
+                    <div className="side-nav-header" style={{
+                        marginLeft:'1.5rem',
+                        marginTop:'1rem'
+                    }}>
+                        {/* <Logo
                             mode={logoMode()}
                             type={sideNavCollapse ? 'streamline' : 'full'}
                             gutter={
@@ -97,7 +100,17 @@ const SideNav = () => {
                                     ? SIDE_NAV_CONTENT_GUTTER
                                     : LOGO_X_GUTTER
                             }
-                        />
+                        /> */}
+                        <a
+                            style={{
+                                fontSize:'1.5rem',
+                                color:'#000',
+                                fontWeight:'600',
+                                textAlign:'center'
+                            }}
+                        href='#'>
+                            Bionet 
+                        </a>
                     </div>
                     {sideNavCollapse ? (
                         menuContent

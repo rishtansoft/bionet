@@ -41,58 +41,58 @@ const GeneratedAvatar = ({ target }) => {
     )
 }
 
-const notificationTypeAvatar = (data) => {
-    const { type, target, image, status } = data
-    switch (type) {
-        case 0:
-            if (image) {
-                return <Avatar shape="circle" src={`${imagePath}${image}`} />
-            } else {
-                return <GeneratedAvatar target={target} />
-            }
-        case 1:
-            return (
-                <Avatar
-                    shape="circle"
-                    className="bg-blue-100 text-blue-600 dark:bg-blue-500/20 dark:text-blue-100"
-                    icon={<HiOutlineCalendar />}
-                />
-            )
-        case 2:
-            const statusSucceed = status === 'succeed'
-            const statusColor = statusSucceed
-                ? 'bg-emerald-100 text-emerald-600 dark:bg-emerald-500/20 dark:text-emerald-100'
-                : 'bg-red-100 text-red-600 dark:bg-red-500/20 dark:text-red-100'
-            const statusIcon = statusSucceed ? (
-                <HiOutlineClipboardCheck />
-            ) : (
-                <HiOutlineBan />
-            )
-            return (
-                <Avatar
-                    shape="circle"
-                    className={statusColor}
-                    icon={statusIcon}
-                />
-            )
-        default:
-            return <Avatar />
-    }
-}
+// const notificationTypeAvatar = (data) => {
+//     const { type, target, image, status } = data
+//     switch (type) {
+//         case 0:
+//             if (image) {
+//                 return <Avatar shape="circle" src={`${imagePath}${image}`} />
+//             } else {
+//                 return <GeneratedAvatar target={target} />
+//             }
+//         case 1:
+//             return (
+//                 <Avatar
+//                     shape="circle"
+//                     className="bg-blue-100 text-blue-600 dark:bg-blue-500/20 dark:text-blue-100"
+//                     icon={<HiOutlineCalendar />}
+//                 />
+//             )
+//         case 2:
+//             const statusSucceed = status === 'succeed'
+//             const statusColor = statusSucceed
+//                 ? 'bg-emerald-100 text-emerald-600 dark:bg-emerald-500/20 dark:text-emerald-100'
+//                 : 'bg-red-100 text-red-600 dark:bg-red-500/20 dark:text-red-100'
+//             const statusIcon = statusSucceed ? (
+//                 <HiOutlineClipboardCheck />
+//             ) : (
+//                 <HiOutlineBan />
+//             )
+//             return (
+//                 <Avatar
+//                     shape="circle"
+//                     className={statusColor}
+//                     icon={statusIcon}
+//                 />
+//             )
+//         default:
+//             return <Avatar />
+//     }
+// }
 
-const NotificationToggle = ({ className, dot }) => {
-    return (
-        <div className={classNames('text-2xl', className)}>
-            {dot ? (
-                <Badge badgeStyle={{ top: '3px', right: '6px' }}>
-                    <HiOutlineBell />
-                </Badge>
-            ) : (
-                <HiOutlineBell />
-            )}
-        </div>
-    )
-}
+// const NotificationToggle = ({ className, dot }) => {
+//     return (
+//         <div className={classNames('text-2xl', className)}>
+//             {dot ? (
+//                 <Badge badgeStyle={{ top: '3px', right: '6px' }}>
+//                     <HiOutlineBell />
+//                 </Badge>
+//             ) : (
+//                 <HiOutlineBell />
+//             )}
+//         </div>
+//     )
+// }
 
 export const Notification = ({ className }) => {
     const [notificationList, setNotificationList] = useState([])
@@ -159,6 +159,8 @@ export const Notification = ({ className }) => {
     )
 
     return (
+        <>
+        {/* 
         <Dropdown
             renderTitle={
                 <NotificationToggle
@@ -260,6 +262,9 @@ export const Notification = ({ className }) => {
                 </div>
             </Dropdown.Item>
         </Dropdown>
+        
+        */}
+        </>
     )
 }
 

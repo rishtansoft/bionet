@@ -20,7 +20,7 @@ const Header = (props) => {
                 </div>
                 {headerMiddle && (
                     <div className="header-action header-action-middle">
-                        {headerMiddle}
+                        {/* {headerMiddle} */}
                     </div>
                 )}
                 <div className="header-action header-action-end">
