@@ -1,17 +1,20 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import reducer from './store'
 import { injectReducer } from 'store/index'
-import { getCrmDashboardData } from './store/dataSlice'
+import SalesDashboardHeader from './components/SalesDashboardHeader'
+import SalesDashboardBody from './components/SalesDashboardBody'
 import { Loading } from 'components/shared'
-import Statistic from './components/Statistic'
-import LeadByCountries from './components/LeadByCountries'
-import EmailSent from './components/EmailSent'
-import Leads from './components/Leads'
 import { useDispatch, useSelector } from 'react-redux'
 
-injectReducer('crmDashboard', reducer)
+injectReducer('salesDashboard', reducer)
 
 const SalesDashboard = () => {
+    // return (
+    //     <div className="flex flex-col gap-4 h-full">
+    //         <SalesDashboardHeader />
+    //         <SalesDashboardBody />
+    //     </div>
+    // )
     const dispatch = useDispatch()
 
     const { statisticData, leadByRegionData, recentLeadsData, emailSentData } =
@@ -25,7 +28,6 @@ const SalesDashboard = () => {
     const fetchData = () => {
         dispatch(getCrmDashboardData())
     }
-
     return (
         <div className="flex flex-col gap-4 h-full">
             <Loading loading={loading}>
@@ -40,7 +42,7 @@ const SalesDashboard = () => {
                 {/* <Leads data={recentLeadsData} /> */}
             </Loading>
         </div>
-    )
+    );
 }
 
 export default SalesDashboard

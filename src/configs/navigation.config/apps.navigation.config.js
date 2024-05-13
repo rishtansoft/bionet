@@ -11,7 +11,7 @@ const appsNavigationConfig = [
         key: 'apps',
         path: '',
         title: 'DASHBOARD',
-        translateKey: 'MAIN',
+        translateKey: 'ASOSIY',
         icon: 'apps',
         type: NAV_ITEM_TYPE_TITLE,
         authority: [ADMIN, USER],

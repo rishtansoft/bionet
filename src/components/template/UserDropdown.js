@@ -15,7 +15,7 @@ const dropdownItemList = [
         icon: <HiOutlineUser />,
     },
     {
-        label: 'Akanunt sozlamalari',
+        label: 'Akkaunt sozlamalari',
         path: '/app/account/settings/profile',
         icon: <HiOutlineCog />,
     },

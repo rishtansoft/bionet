@@ -1,10 +1,10 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
-import { apiGetCrmDashboardData } from 'services/CrmService'
+import { apiGetSalesDashboardData } from 'services/SalesService'
 
-export const getCrmDashboardData = createAsyncThunk(
-    'crmDashboard/data/getCrmDashboardData',
-    async () => {
-        const response = await apiGetCrmDashboardData()
+export const getSalesDashboardData = createAsyncThunk(
+    'salesDashboard/data/getSalesDashboardData',
+    async (data) => {
+        const response = await apiGetSalesDashboardData(data)
         return response.data
     }
 )
@@ -14,18 +14,18 @@ export const initialFilterData = {
 }
 
 const dataSlice = createSlice({
-    name: 'crmDashboard/data',
+    name: 'salesDashboard/data',
     initialState: {
         loading: true,
         dashboardData: {},
     },
     reducers: {},
     extraReducers: {
-        [getCrmDashboardData.fulfilled]: (state, action) => {
+        [getSalesDashboardData.fulfilled]: (state, action) => {
             state.dashboardData = action.payload
             state.loading = false
         },
-        [getCrmDashboardData.pending]: (state) => {
+        [getSalesDashboardData.pending]: (state) => {
             state.loading = true
         },
     },
