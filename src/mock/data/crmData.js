@@ -51,7 +51,7 @@ export const crmDashboardData = {
             value: 12.42,
         },
         {
-            name: 'Ferghana',
+            name: 'Farg\'ona',
             value: 9.85,
         },
         {
