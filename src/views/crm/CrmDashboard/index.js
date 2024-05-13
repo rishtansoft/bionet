@@ -37,7 +37,7 @@ const CrmDashboard = () => {
                     />
                     <EmailSent className="xl:col-span-2" data={emailSentData} />
                 </div>
-                <Leads data={recentLeadsData} />
+                {/* <Leads data={recentLeadsData} /> */}
             </Loading>
         </div>
     )

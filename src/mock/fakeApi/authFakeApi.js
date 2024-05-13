@@ -2,6 +2,7 @@ import { Response } from 'miragejs'
 import uniqueId from 'lodash/uniqueId'
 import isEmpty from 'lodash/isEmpty'
 
+
 export default function authFakeApi(server, apiPrefix) {
     server.post(`${apiPrefix}/sign-in`, (schema, { requestBody }) => {
         const { userName, password } = JSON.parse(requestBody)

@@ -106,7 +106,7 @@ const Leads = ({ data = [], className }) => {
 
     return (
         <Card className={className}>
-            <div className="flex items-center justify-between mb-4">
+            {/* <div className="flex items-center justify-between mb-4">
                 <h4>Leads</h4>
                 <Button onClick={onNavigate} size="sm">
                     View All Leads
@@ -140,7 +140,7 @@ const Leads = ({ data = [], className }) => {
                         )
                     })}
                 </TBody>
-            </Table>
+            </Table> */}
         </Card>
     )
 }

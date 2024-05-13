@@ -10,8 +10,12 @@ const mapColors = [
     twColor.blue['500'],
     twColor.green['500'],
     twColor.yellow['500'],
+    twColor.yellow['500'],
+    twColor.pink['500'],
     twColor.pink['500'],
     twColor.purple['500'],
+    twColor.purple['500'],
+    twColor.blue['500'],
 ]
 
 const dotColor = [
@@ -19,8 +23,11 @@ const dotColor = [
     'bg-blue-500',
     'bg-green-500',
     'bg-yellow-500',
+    'bg-yellow-500',
+    'bg-pink-500',
     'bg-pink-500',
     'bg-purple-500',
+    'bg-blue-500',
 ]
 
 const getMapColors = (data = []) => {
@@ -33,10 +40,10 @@ const getMapColors = (data = []) => {
 const LeadByCountries = ({ data = [], className }) => {
     return (
         <Card className={className}>
-            <h4>Lead By Countries</h4>
+            <h4>Statistika</h4>
             <div className="grid lg:grid-cols-3 gap-4">
                 <div className="lg:col-span-2 px-4">
-                    <RegionMap data={getMapColors(data)} valueSuffix="%" />
+                    <RegionMap  data={getMapColors(data)} valueSuffix="%" />
                 </div>
                 <div className="flex flex-col justify-center px-4">
                     {data.map((item, index) => (

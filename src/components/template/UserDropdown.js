@@ -15,7 +15,7 @@ const dropdownItemList = [
         icon: <HiOutlineUser />,
     },
     {
-        label: 'Account Setting',
+        label: 'Akanunt sozlamalari',
         path: '/app/account/settings/profile',
         icon: <HiOutlineCog />,
     },
@@ -90,7 +90,7 @@ export const UserDropdown = ({ className }) => {
                     <span className="text-xl opacity-50">
                         <HiOutlineLogout />
                     </span>
-                    <span>Sign Out</span>
+                    <span>Chiqish</span>
                 </Dropdown.Item>
             </Dropdown>
         </div>
