@@ -33,7 +33,6 @@ const DetailForm = () => {
 
     useEffect(() => {
         dispatch(getForm())
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
     const handleNextChange = (values, name) => {

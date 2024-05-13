@@ -69,7 +69,6 @@ const Pagination = (props) => {
         if (currentPage !== internalCurrentPage) {
             setInternalCurrentPage(currentPage)
         }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [total, pageSize, currentPage])
 
     const onPaginationChange = (val) => {

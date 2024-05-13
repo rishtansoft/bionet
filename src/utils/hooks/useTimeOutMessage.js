@@ -10,7 +10,6 @@ function useTimeOutMessage(interval = 3000) {
                 clearTimeout(timeout)
             }
         }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [message])
 
     return [message, setMessage]

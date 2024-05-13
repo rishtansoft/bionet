@@ -29,7 +29,6 @@ const Log = () => {
 
     useEffect(() => {
         dispatch(filterLogs({ filter: selectedType, activityIndex }))
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
     const onLoadMore = () => {

@@ -16,7 +16,6 @@ const Calendar = () => {
 
     useEffect(() => {
         dispatch(getEvents())
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
     const onCellSelect = (event) => {

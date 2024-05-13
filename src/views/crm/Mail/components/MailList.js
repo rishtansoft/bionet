@@ -92,7 +92,6 @@ const MailList = () => {
         }
 
         fetchData(category)
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [location.pathname])
 
     const parseHtml = (content) => {

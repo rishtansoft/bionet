@@ -58,7 +58,6 @@ const MailSideBarContent = () => {
         )
         const selected = getCategory(path)
         dispatch(updateSelectedCategory(selected))
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
     const getCategory = (value) => {

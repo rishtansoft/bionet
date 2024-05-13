@@ -17,6 +17,5 @@ export default function useDidUpdate(callback, dependencies) {
 
         mounted.current = true
         return undefined
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, dependencies)
 }

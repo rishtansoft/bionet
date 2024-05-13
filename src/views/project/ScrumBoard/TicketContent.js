@@ -113,7 +113,6 @@ const TicketContent = ({ onTicketClose }) => {
         } else {
             onUpdateColumn()
         }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [ticketData, ticketData])
 
     const submitComment = () => {

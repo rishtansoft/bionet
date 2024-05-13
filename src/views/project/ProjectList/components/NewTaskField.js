@@ -31,7 +31,6 @@ const NewTaskField = ({ onAddNewTask }) => {
 
     useEffect(() => {
         onAddNewTask(taskCount)
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [taskList])
 
     const onNewTaskEdit = () => {

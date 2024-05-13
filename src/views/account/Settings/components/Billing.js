@@ -111,7 +111,6 @@ const Billing = () => {
         if (isEmpty(data)) {
             fetchData()
         }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
     return (

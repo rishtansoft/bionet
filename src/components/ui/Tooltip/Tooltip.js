@@ -12,7 +12,6 @@ const PopperElement = (props) => {
         if (open) {
             forceUpdate()
         }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [open])
     return <span>{title}</span>
 }

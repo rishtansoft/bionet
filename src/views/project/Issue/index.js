@@ -141,7 +141,6 @@ const Issue = () => {
 
     useEffect(() => {
         fetchData()
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
     const fetchData = useCallback(async () => {
