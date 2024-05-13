@@ -2,8 +2,10 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import TableData from 'components/table/TableData';
 import { useSelector } from 'react-redux';
+import { DatePicker } from 'components/ui';
 
 function Districts() {
+  const [currentDate, setCurrentDate] = useState(null);
   const [columns] = useState([
     {
       Header: 'Tuman nomi',
@@ -43,18 +45,34 @@ function Districts() {
     }
   }, []);
 
+  function getTodaysDate() {
+    const today = new Date();
+    const year = today.getFullYear();
+    const month = String(today.getMonth() + 1).padStart(2, '0');
+    const day = String(today.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
+  }
+
+  function formatDate(inputDate) {
+    const date = new Date(inputDate);
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
+  }
+
   const [data, setData] = useState([]);
   const [apiData, setApiData] = useState([]);
 
   const token = useSelector((state) => state?.auth?.session?.token);
 
   useEffect(() => {
-    if (token && params.id) {
+    if (token && params.id && currentDate) {
       console.log('params', params);
       const testToken = 'eb577759f4ca0dde05b02ea699892ee560920594';
       const sendData = {
         viloyat_id: params.id,
-        sana: "2024-05-08"
+        sana: currentDate
       }
       fetch(`${process.env.REACT_APP_API_URL}api/v1/davomatviloyat/`, {
         method: "POST",
@@ -66,14 +84,22 @@ function Districts() {
       })
         .then((res) => res.json())
         .then((d) => {
-          console.log(67, d);
           setApiData(d);
         })
         .catch(err => {
           console.log(err);
         });
     }
+  }, [currentDate]);
+
+  useEffect(() => {
+    let today = getTodaysDate();
+    setCurrentDate(today);
   }, []);
+
+  function handleChangeDate(e) {
+    setCurrentDate(formatDate(e));
+  }
 
   useEffect(() => {
     if (apiData.length > 0) {
@@ -99,7 +125,15 @@ function Districts() {
   }, [apiData]);
   return (
     <div>
-      <h2 className='mb-3'>Tumanlar</h2>
+      <h2 className='mb-3'>Tumanlar bo'yicha</h2>
+      <div className='date-filter text-right mb-4 flex justify-end'>
+        <DatePicker
+          value={currentDate}
+          onChange={handleChangeDate}
+          placeholder={currentDate}
+          className='w-1/4'
+        />
+      </div>
       <TableData
         redirectTo='/schools'
         columns={columns}

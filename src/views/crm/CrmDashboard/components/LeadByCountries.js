@@ -2,6 +2,7 @@ import React from 'react'
 import { Card, Badge } from 'components/ui'
 import { RegionMap } from 'components/shared'
 import { theme } from 'twin.macro'
+import map from 'assets/assets/images/uz.svg'
 
 const twColor = theme`colors`
 
@@ -43,7 +44,8 @@ const LeadByCountries = ({ data = [], className }) => {
             <h4>Statistika</h4>
             <div className="grid lg:grid-cols-3 gap-4">
                 <div className="lg:col-span-2 px-4">
-                    <RegionMap  data={getMapColors(data)} valueSuffix="%" />
+                    {/* <Region`Map  data={getMapColors(data)} valueSuffix="%" /> */}
+                    <img src={map} alt="" />
                 </div>
                 <div className="flex flex-col justify-center px-4">
                     {data.map((item, index) => (

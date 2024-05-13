@@ -39,7 +39,7 @@ export const crmDashboardData = {
     ],
     leadByRegionData: [
         {
-            name: 'Tashkent',
+            name: 'Toshkent',
             value: 37.61,
         },
         {
@@ -55,7 +55,7 @@ export const crmDashboardData = {
             value: 9.85,
         },
         {
-            name: 'Jizzah',
+            name: 'Jizzax',
             value: 9.85,
         },
         {
@@ -67,11 +67,11 @@ export const crmDashboardData = {
             value: 7.68,
         },
         {
-            name: 'Buhoro',
+            name: 'Buxoro',
             value: 5.11,
         },
         {
-            name: 'Naoyi',
+            name: 'Navoiy',
             value: 9.11,
         },
         {

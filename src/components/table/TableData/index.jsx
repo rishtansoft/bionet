@@ -11,8 +11,6 @@ const TableData = (props) => {
   const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
     useTable({ columns, data }, useSortBy);
 
-    console.log(14, columns, rows);
-
   return (
     <>
       <Table {...getTableProps()}>
