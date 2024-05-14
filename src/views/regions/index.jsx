@@ -107,7 +107,6 @@ function Regions() {
 
         res.push(reg);
       });
-
       setData(res);
     }
   }, [apiData]);
@@ -129,6 +128,7 @@ function Regions() {
         redirectTo='/districts'
         columns={columns}
         data={data}
+        is_location={4}
       ></TableData>
     </div>
   );
