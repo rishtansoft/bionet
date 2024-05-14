@@ -8,6 +8,10 @@ function Districts() {
   const [currentDate, setCurrentDate] = useState(null);
   const [columns] = useState([
     {
+      Header: 'N#',
+      accessor: 'number',
+    },
+    {
       Header: 'Tuman nomi',
       accessor: 'name',
     },
@@ -104,8 +108,9 @@ function Districts() {
   useEffect(() => {
     if (apiData.length > 0) {
       let res = [];
-      apiData.forEach((el) => {
+      apiData.forEach((el, index) => {
         const reg = {
+          number: index + 1,
           name: el[0].tuman,
           schoolCount: el[0].maktabsoni,
           studentsCount: el[0].bolasoni,
@@ -138,7 +143,7 @@ function Districts() {
         redirectTo='/schools'
         columns={columns}
         data={data}
-        is_location={4}
+        is_location={5}
         
       ></TableData>
     </div>

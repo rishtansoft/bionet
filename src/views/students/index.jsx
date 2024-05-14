@@ -8,6 +8,10 @@ function Students() {
   const [currentDate, setCurrentDate] = useState(null);
   const [columns] = useState([
     {
+      Header: 'N#',
+      accessor: 'number',
+    },
+    {
       Header: 'O`quvchi',
       accessor: 'name',
     },
@@ -86,8 +90,9 @@ function Students() {
   useEffect(() => {
     if (apiData.length > 0) {
       let res = [];
-      apiData.forEach((el) => {
+      apiData.forEach((el, index) => {
         const reg = {
+          number: index + 1,
           name: el[0].pupilname,
           time: el[0].kelganvaqti
         };
