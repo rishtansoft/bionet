@@ -7,6 +7,10 @@ function Regions() {
   const [currentDate, setCurrentDate] = useState(null);
   const [columns] = useState([
     {
+      Header: 'N#',
+      accessor: 'number',
+    },
+    {
       Header: 'Viloyat nomi',
       accessor: 'name',
     },
@@ -52,7 +56,7 @@ function Regions() {
     return `${year}-${month}-${day}`;
   }
 
-  
+
   const [data, setData] = useState([]);
   const [apiData, setApiData] = useState([]);
 
@@ -92,8 +96,9 @@ function Regions() {
   useEffect(() => {
     if (apiData.length > 0) {
       let res = [];
-      apiData.forEach((el) => {
+      apiData.forEach((el, index) => {
         const reg = {
+          number: index + 1,
           name: el[0].viloyat,
           districtCount: 19,
           schoolCount: el[0].maktabsoni,
@@ -128,7 +133,7 @@ function Regions() {
         redirectTo='/districts'
         columns={columns}
         data={data}
-        is_location={4}
+        is_location={5}
       ></TableData>
     </div>
   );

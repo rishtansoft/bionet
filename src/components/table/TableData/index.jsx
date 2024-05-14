@@ -53,7 +53,7 @@ const TableData = (props) => {
 
                       {
 
-                        index == 0 && props.redirectTo && <Link to={`${props.redirectTo}/${row.original.id}`}>
+                        index == 1 && props.redirectTo && <Link to={`${props.redirectTo}/${row.original.id}`}>
                           {cell.render('Cell')}
                         </Link>
                       }
@@ -72,7 +72,7 @@ const TableData = (props) => {
                       }
 
                       {
-                        ((index != 0 && index != location) || !props.redirectTo) && cell.render('Cell')
+                        ((index != 1 && index != location) || !props.redirectTo) && cell.render('Cell')
                       }
 
 

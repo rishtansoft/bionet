@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import TableData from 'components/table/TableData';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
@@ -7,6 +7,10 @@ import { DatePicker } from 'components/ui';
 function Classes() {
   const [currentDate, setCurrentDate] = useState(null);
   const [columns] = useState([
+    {
+      Header: 'N#',
+      accessor: 'number',
+    },
     {
       Header: 'Tuman nomi',
       accessor: 'name',
@@ -101,8 +105,9 @@ function Classes() {
   useEffect(() => {
     if (apiData.length > 0) {
       let res = [];
-      apiData.forEach((el) => {
+      apiData.forEach((el, index) => {
         const reg = {
+          number: index + 1,
           name: el[0].sinfnomi,
           studentsCount: el[0].bolasoni,
           arrivalsCount: el[0].kelganlar,
@@ -119,7 +124,7 @@ function Classes() {
       setData(res);
     }
   }, [apiData]);
-  
+
   return (
     <div>
       <h2 className='mb-3'>Sinflar bo'yicha</h2>
