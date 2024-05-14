@@ -138,6 +138,8 @@ function Districts() {
         redirectTo='/schools'
         columns={columns}
         data={data}
+        is_location={4}
+        
       ></TableData>
     </div>
   );

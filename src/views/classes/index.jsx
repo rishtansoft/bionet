@@ -131,7 +131,7 @@ function Classes() {
           className='w-1/4'
         />
       </div>
-      <TableData redirectTo='/students' columns={columns} data={data}></TableData>
+      <TableData redirectTo='/students' is_location={9999} columns={columns} data={data}></TableData>
     </div>
   )
 }
