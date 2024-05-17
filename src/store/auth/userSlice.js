@@ -5,6 +5,11 @@ export const initialState = {
     userName: '',
     email: '',
     authority: [],
+    viloyat_id: '',
+    user_type: '',
+    user_id: '',
+    tumanshahar: '',
+    school: ''
 }
 
 export const userSlice = createSlice({

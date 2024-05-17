@@ -39,6 +39,9 @@ const IndeterminateCheckbox = forwardRef((props, ref) => {
     )
 })
 
+// "username" : "user@API",
+// "password" : "APIUser@API"
+
 const DataTable = (props) => {
     const {
         skeletonAvatarColumns,

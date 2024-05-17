@@ -53,8 +53,8 @@ const SignInForm = (props) => {
             )}
             <Formik
                 initialValues={{
-                    userName: 'admin',
-                    password: '123Qwe',
+                    userName: 'namangan38namangan',
+                    password: 'Namangan38',
                     rememberMe: true,
                 }}
                 validationSchema={validationSchema}
@@ -94,17 +94,7 @@ const SignInForm = (props) => {
                                     component={PasswordInput}
                                 />
                             </FormItem>
-                            {/* <div className="flex justify-between mb-6">
-                                <Field
-                                    className="mb-0"
-                                    name="rememberMe"
-                                    component={Checkbox}
-                                    // children='Remember Me'
-                                />
-                                <ActionLink to={forgotPasswordUrl}>
-                                    Forgot Password?
-                                </ActionLink>
-                            </div> */}
+                            
                             <Button
                                 block
                                 loading={isSubmitting}
@@ -113,10 +103,6 @@ const SignInForm = (props) => {
                             >
                                 {isSubmitting ? 'Kirish...' : 'Kirish'}
                             </Button>
-                            {/* <div className="mt-4 text-center">
-                                <span>Don&apos;t have an account yet? </span>
-                                <ActionLink to={signUpUrl}>Sign up</ActionLink>
-                            </div> */}
                         </FormContainer>
                     </Form>
                 )}
