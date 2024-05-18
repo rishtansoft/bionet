@@ -9,6 +9,7 @@
     "@fullcalendar/timegrid": "^5.10.1",
     "@popperjs/core": "^2.9.2",
     "@react-icons/all-files": "^4.1.0",
+    "@react-input/mask": "^1.2.4",
     "@reduxjs/toolkit": "^1.8.5",
     "@tailwindcss/forms": "^0.3.2",
     "@tailwindcss/typography": "^0.5.2",

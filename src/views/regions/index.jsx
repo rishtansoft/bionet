@@ -119,7 +119,6 @@ function Regions() {
   return (
     <div>
       <h2 className='mb-3'>Viloyatlar bo'yicha</h2>
-
       <div className='date-filter text-right mb-4 flex justify-end'>
         <DatePicker
           value={currentDate}

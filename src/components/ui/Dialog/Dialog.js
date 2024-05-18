@@ -73,7 +73,7 @@ const Dialog = (props) => {
             }}
             overlayClassName={{
                 base: classNames('dialog-overlay', overlayClassName),
-                afterOpen: 'dialog-overlay-after-open',
+                afterOpen: 'dialog-overlay-after-open flex justify-center items-center',
                 beforeClose: 'dialog-overlay-before-close',
             }}
             portalClassName={classNames('dialog-portal', portalClassName)}

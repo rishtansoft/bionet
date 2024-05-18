@@ -1,43 +1,43 @@
-import React, { useEffect, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
-import TableData from 'components/table/TableData';
-import { useSelector } from 'react-redux';
-import { DatePicker } from 'components/ui';
+import React, { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import TableData from "components/table/TableData";
+import { useSelector } from "react-redux";
+import { DatePicker } from "components/ui";
 
 function Districts() {
   const [currentDate, setCurrentDate] = useState(null);
   const [columns] = useState([
     {
-      Header: 'N#',
-      accessor: 'number',
+      Header: "N#",
+      accessor: "number",
     },
     {
-      Header: 'Tuman nomi',
-      accessor: 'name',
+      Header: "Tuman nomi",
+      accessor: "name",
     },
     {
-      Header: 'Maktablar soni',
-      accessor: 'schoolCount',
+      Header: "Maktablar soni",
+      accessor: "schoolCount",
     },
     {
-      Header: 'O`quvchilar soni',
-      accessor: 'studentsCount',
+      Header: "O`quvchilar soni",
+      accessor: "studentsCount",
     },
     {
-      Header: 'Kelganlar soni',
-      accessor: 'arrivalsCount',
+      Header: "Kelganlar soni",
+      accessor: "arrivalsCount",
     },
     {
-      Header: 'Kelganlar soni (%)',
-      accessor: 'arrivalsCountPercent',
+      Header: "Kelganlar soni (%)",
+      accessor: "arrivalsCountPercent",
     },
     {
-      Header: 'Kelmaganlar soni',
-      accessor: 'absenteesCount',
+      Header: "Kelmaganlar soni",
+      accessor: "absenteesCount",
     },
     {
-      Header: 'Kelmaganlar soni (%)',
-      accessor: 'absenteesCountPercent',
+      Header: "Kelmaganlar soni (%)",
+      accessor: "absenteesCountPercent",
     },
   ]);
 
@@ -45,23 +45,22 @@ function Districts() {
   const navigate = useNavigate();
   useEffect(() => {
     if (!params.id) {
-      navigate('/regions');
+      navigate("/regions");
     }
   }, []);
-
   function getTodaysDate() {
     const today = new Date();
     const year = today.getFullYear();
-    const month = String(today.getMonth() + 1).padStart(2, '0');
-    const day = String(today.getDate()).padStart(2, '0');
+    const month = String(today.getMonth() + 1).padStart(2, "0");
+    const day = String(today.getDate()).padStart(2, "0");
     return `${year}-${month}-${day}`;
   }
 
   function formatDate(inputDate) {
     const date = new Date(inputDate);
     const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, '0');
-    const day = String(date.getDate()).padStart(2, '0');
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const day = String(date.getDate()).padStart(2, "0");
     return `${year}-${month}-${day}`;
   }
 
@@ -72,25 +71,27 @@ function Districts() {
 
   useEffect(() => {
     if (token && params.id && currentDate) {
-      console.log('params', params);
-      const testToken = 'eb577759f4ca0dde05b02ea699892ee560920594';
+      console.log("params", params);
+      const testToken = "eb577759f4ca0dde05b02ea699892ee560920594";
       const sendData = {
+        // viloyat_id: params.id,
+        // sana: currentDate
         viloyat_id: params.id,
-        sana: currentDate
-      }
+        sana: currentDate,
+      };
       fetch(`${process.env.REACT_APP_API_URL}api/v1/davomatviloyat/`, {
         method: "POST",
         headers: {
           Authorization: `Token ${testToken}`,
-          'Content-type': 'application/json',
+          "Content-type": "application/json",
         },
-        body: JSON.stringify(sendData)
+        body: JSON.stringify(sendData),
       })
         .then((res) => res.json())
         .then((d) => {
           setApiData(d);
         })
-        .catch(err => {
+        .catch((err) => {
           console.log(err);
         });
     }
@@ -122,7 +123,6 @@ function Districts() {
         };
 
         res.push(reg);
-
       });
 
       setData(res);
@@ -130,21 +130,20 @@ function Districts() {
   }, [apiData]);
   return (
     <div>
-      <h2 className='mb-3'>Tumanlar bo'yicha</h2>
-      <div className='date-filter text-right mb-4 flex justify-end'>
+      <h2 className="mb-3">Tumanlar bo'yicha</h2>
+      <div className="date-filter text-right mb-4 flex justify-end">
         <DatePicker
           value={currentDate}
           onChange={handleChangeDate}
           placeholder={currentDate}
-          className='w-1/4'
+          className="w-1/4"
         />
       </div>
       <TableData
-        redirectTo='/schools'
+        redirectTo="/schools"
         columns={columns}
         data={data}
         is_location={5}
-        
       ></TableData>
     </div>
   );

@@ -2,17 +2,18 @@ import React, {useState, useEffect} from 'react';
 import TableData from 'components/table/TableData';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-import { DatePicker } from 'components/ui';
+import { Button, DatePicker } from 'components/ui';
 
 function Schools() {
   const [currentDate, setCurrentDate] = useState(null);
+  const [addModal, setAddModal] = useState(false);
   const [columns] = useState([
     {
       Header: 'N#',
       accessor: 'number',
     },
     {
-      Header: 'Tuman nomi',
+      Header: 'Maktab nomi',
       accessor: 'name',
     },
     {
@@ -65,16 +66,14 @@ function Schools() {
   const [apiData, setApiData] = useState([]);
 
   const token = useSelector((state) => state?.auth?.session?.token);
-
   useEffect(() => {
     if (token && params.id) {
-      console.log('params', params);
       const testToken = 'eb577759f4ca0dde05b02ea699892ee560920594';
       const sendData = {
-        // tuman_id: params.id,
-        // sana: currentDate
-        tuman_id: 78,
-        sana: "2024-05-08"
+        tuman_id: params.id,
+        sana: currentDate
+        // tuman_id: 78,
+        // sana: "2024-05-08"
       }
       fetch(`${process.env.REACT_APP_API_URL}api/v1/davomattuman/`, {
         method: "POST",
@@ -129,6 +128,9 @@ function Schools() {
   return (
     <div>
       <h2 className='mb-3'>Maktablar bo'yicha</h2>
+      <div className='flex justify-end mb-4'>
+        <Button size='sm'>Qo&apos;shish</Button>
+      </div>
       <div className='date-filter text-right mb-4 flex justify-end'>
         <DatePicker
           value={currentDate}
@@ -137,6 +139,7 @@ function Schools() {
           className='w-1/4'
         />
       </div>
+
       <TableData redirectTo='/classes' columns={columns} data={data} is_location={4}></TableData>
     </div>
   )
