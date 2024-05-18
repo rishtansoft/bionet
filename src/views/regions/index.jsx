@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import TableData from 'components/table/TableData';
 import { useSelector } from 'react-redux';
 import { DatePicker } from 'components/ui';
+import ChartComponent from '../studentChart/StudentChart'
 
 function Regions() {
   const [currentDate, setCurrentDate] = useState(null);
@@ -55,6 +56,13 @@ function Regions() {
     const day = String(date.getDate()).padStart(2, '0');
     return `${year}-${month}-${day}`;
   }
+
+  const dataChart = {
+    "weekly": [10, 15, 20, 18, 25, 22, 30],
+    "monthly": [150, 180, 200, 220, 250, 280, 300],
+    "annual": [1800, 2000, 2200, 2400, 2600, 2800, 3000]
+  }
+
 
 
   const [data, setData] = useState([]);
@@ -119,6 +127,7 @@ function Regions() {
   return (
     <div>
       <h2 className='mb-3'>Viloyatlar bo'yicha</h2>
+      <ChartComponent weeklyData={dataChart.weekly} />
 
       <div className='date-filter text-right mb-4 flex justify-end'>
         <DatePicker
