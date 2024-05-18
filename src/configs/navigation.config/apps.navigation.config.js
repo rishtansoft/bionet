@@ -1,4 +1,4 @@
-import { APP_PREFIX_PATH, REGIONS_PREFIX_PATH } from 'constants/route.constant'
+import { APP_PREFIX_PATH, REGIONS_PREFIX_PATH , In_Classes_Cross} from 'constants/route.constant'
 import {
     NAV_ITEM_TYPE_TITLE,
     // NAV_ITEM_TYPE_COLLAPSE,
@@ -31,6 +31,16 @@ const appsNavigationConfig = [
                 path: `${REGIONS_PREFIX_PATH}`,
                 title: 'Viloyatlar',
                 translateKey: 'Regions',
+                icon: 'regions',
+                type: NAV_ITEM_TYPE_ITEM,
+                authority: [ADMIN, USER],
+                subMenu: [],
+            },
+            {
+                key: 'classes_cross.classes_cross',
+                path: `${In_Classes_Cross}`,
+                title: 'Sinflar kesimida',
+                translateKey: 'Sinflar',
                 icon: 'regions',
                 type: NAV_ITEM_TYPE_ITEM,
                 authority: [ADMIN, USER],
