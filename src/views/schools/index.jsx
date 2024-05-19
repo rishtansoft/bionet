@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import TableData from 'components/table/TableData';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
@@ -58,7 +58,6 @@ function Schools() {
   const params = useParams();
   const navigate = useNavigate();
   useEffect(() => {
-    
     if (user.user_type == 'TUMAN') {
       params.district_id = user.tumanshahar;
       params.region_id = user.viloyat_id;
@@ -67,27 +66,31 @@ function Schools() {
     if (user.user_type == 'MAKTAB') {
       params.district_id = user.tumanshahar;
       params.region_id = user.viloyat_id;
-      params.school_id = user.school
+      params.school_id = user.school;
     }
 
     if (!params.district_id) {
       navigate('/');
     }
 
-    if(user.user_type == 'RESPUBLIKA') {
-      setRedirectTo('/republic-regions/' + params.region_id + "/" + params.district_id)
+    if (user.user_type == 'RESPUBLIKA') {
+      setRedirectTo(
+        '/republic-regions/' + params.region_id + '/' + params.district_id
+      );
     }
 
-    if(user.user_type == 'VILOYAT') {
-      setRedirectTo('/regions-regions/' + params.region_id + "/" + params.district_id)
+    if (user.user_type == 'VILOYAT') {
+      setRedirectTo(
+        '/regions-regions/' + params.region_id + '/' + params.district_id
+      );
     }
 
-    if(user.user_type == 'TUMAN') {
-      setRedirectTo('/district-district/' + params.district_id)
+    if (user.user_type == 'TUMAN') {
+      setRedirectTo('/district-district/' + params.district_id);
     }
 
-    if(user.user_type == 'MAKTAB') {
-      setRedirectTo('/school-school/' + params.school_id)
+    if (user.user_type == 'MAKTAB') {
+      setRedirectTo('/school-school/' + params.school_id);
     }
   }, []);
 
@@ -99,24 +102,22 @@ function Schools() {
   useEffect(() => {
     if (token && params.district_id) {
       const sendData = {
-        // tuman_id: params.id,
-        // sana: currentDate
+        sana: currentDate,
         tuman_id: params.district_id,
-        sana: "2024-05-08"
-      }
+      };
       fetch(`${process.env.REACT_APP_API_URL}api/v1/davomattuman/`, {
-        method: "POST",
+        method: 'POST',
         headers: {
           Authorization: `Token ${token}`,
           'Content-type': 'application/json',
         },
-        body: JSON.stringify(sendData)
+        body: JSON.stringify(sendData),
       })
         .then((res) => res.json())
         .then((d) => {
           setApiData(d);
         })
-        .catch(err => {
+        .catch((err) => {
           console.log(err);
         });
     }
@@ -147,13 +148,12 @@ function Schools() {
         };
 
         res.push(reg);
-
       });
 
       setData(res);
     }
   }, [apiData]);
-  
+
   return (
     <div>
       <h2 className='mb-3'>Maktablar bo'yicha</h2>
@@ -165,9 +165,14 @@ function Schools() {
           className='w-1/4'
         />
       </div>
-      <TableData redirectTo={redirectTo} columns={columns} data={data} is_location={4}></TableData>
+      <TableData
+        redirectTo={redirectTo}
+        columns={columns}
+        data={data}
+        is_location={4}
+      ></TableData>
     </div>
-  )
+  );
 }
 
-export default Schools
+export default Schools;

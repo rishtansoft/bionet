@@ -56,11 +56,11 @@ function Classes() {
 
   const user = useSelector((state) => state.auth.user);
   const params = useParams();
+
   const navigate = useNavigate();
   useEffect(() => {
     if (user.user_type == 'VILOYAT') {
-      // params.region_id = user.viloyat_id;
-      params.region_id = 6;
+      params.region_id = user.viloyat_id;
     }
 
     if (!params.school_id) {
@@ -68,7 +68,7 @@ function Classes() {
     }
 
     if(user.user_type == 'RESPUBLIKA') {
-      setRedirectTo('/republic-regions/' + params.region_id)
+      setRedirectTo('/republic-regions/' + params.region_id + '/' + params.district_id + '/' + params.school_id)
     }
 
     if(user.user_type == 'VILOYAT') {
@@ -81,8 +81,6 @@ function Classes() {
   }, []);
 
 
-
-
   const [data, setData] = useState([]);
   const [apiData, setApiData] = useState([]);
 
@@ -91,10 +89,8 @@ function Classes() {
   useEffect(() => {
     if (token && params.school_id) {
       const sendData = {
-        // maktab_id: params.id,
-        // sana: currentDate
-        maktab_id: 2,
-        sane: "2024-05-08"
+        maktab_id: params.school_id,
+        sana: currentDate
       }
       fetch(`${process.env.REACT_APP_API_URL}api/v1/davomatmaktab/`, {
         method: "POST",

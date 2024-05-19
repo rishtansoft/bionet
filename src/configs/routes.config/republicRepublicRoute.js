@@ -32,7 +32,7 @@ const republicRepublicRoute = [
     path: `${REPUBLIC_REPUBLIC_PATH}/:region_id/:district_id/:school_id/:student_id`,
     component: React.lazy(() => import('views/students')),
     authority: [ADMIN],
-  },
+  }
 ];
 
 export default republicRepublicRoute;

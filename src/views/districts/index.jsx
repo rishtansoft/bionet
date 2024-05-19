@@ -48,8 +48,7 @@ function Districts() {
   
   useEffect(() => {
     if (user.user_type == 'VILOYAT') {
-      // params.region_id = user.viloyat_id;
-      params.region_id = 6;
+      params.region_id = user.viloyat_id;
     }
 
     if (!params.region_id) {
@@ -91,7 +90,6 @@ function Districts() {
   const token = useSelector((state) => state?.auth?.session?.token);
 
   useEffect(() => {
-    console.log(93, params);
     if (token && params.region_id && currentDate) {
       const sendData = {
         viloyat_id: params.region_id,
@@ -107,7 +105,6 @@ function Districts() {
       })
         .then((res) => res.json())
         .then((d) => {
-
           setApiData(d);
         })
         .catch(err => {

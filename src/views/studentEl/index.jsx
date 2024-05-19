@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, {useState, useEffect} from 'react';
 import TableData from 'components/table/TableData';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { DatePicker } from 'components/ui';
 
-function Classes() {
+function Students() {
   const [currentDate, setCurrentDate] = useState(null);
   const [columns] = useState([
     {
@@ -12,31 +12,17 @@ function Classes() {
       accessor: 'number',
     },
     {
-      Header: 'Tuman nomi',
+      Header: 'O`quvchi',
       accessor: 'name',
     },
     {
-      Header: 'O`quvchilar soni',
+      Header: 'Kelgan vaqti',
       accessor: 'studentsCount',
     },
-    {
-      Header: 'Davomat',
-      accessor: 'arrivalsCount',
-    },
-    {
-      Header: 'Davomat (%)',
-      accessor: 'arrivalsCountPercent',
-    },
-    {
-      Header: 'Kelmaganlar soni',
-      accessor: 'absenteesCount',
-    },
-    {
-      Header: 'Kelmaganlar soni (%)',
-      accessor: 'absenteesCountPercent',
-    },
+    
   ]);
 
+  const user = useSelector((state) => state.auth.user);
   function getTodaysDate() {
     const today = new Date();
     const year = today.getFullYear();
@@ -67,18 +53,15 @@ function Classes() {
   const token = useSelector((state) => state?.auth?.session?.token);
 
   useEffect(() => {
-    if (token && params.id) {
-      const testToken = 'eb577759f4ca0dde05b02ea699892ee560920594';
+    if (token && params.student_id) {
       const sendData = {
-        // maktab_id: params.id,
-        // sana: currentDate
-        maktab_id: 2,
-        sane: "2024-05-08"
+        sinf_id: params.student_id,
+        sana: currentDate
       }
-      fetch(`${process.env.REACT_APP_API_URL}api/v1/davomatmaktab/`, {
+      fetch(`${process.env.REACT_APP_API_URL}api/v1/davomatsinf/`, {
         method: "POST",
         headers: {
-          Authorization: `Token ${testToken}`,
+          Authorization: `Token ${token}`,
           'Content-type': 'application/json',
         },
         body: JSON.stringify(sendData)
@@ -108,13 +91,8 @@ function Classes() {
       apiData.forEach((el, index) => {
         const reg = {
           number: index + 1,
-          name: el[0].sinfnomi,
-          studentsCount: el[0].bolasoni,
-          arrivalsCount: el[0].kelganlar,
-          arrivalsCountPercent: el[0].foizi,
-          absenteesCount: el[0].kelmaganlar,
-          absenteesCountPercent: 100 - el[0].foizi,
-          id: el[0].sinf_id,
+          name: el[0].pupilname,
+          time: el[0].kelganvaqti
         };
 
         res.push(reg);
@@ -124,21 +102,13 @@ function Classes() {
       setData(res);
     }
   }, [apiData]);
-
+  
   return (
     <div>
-      <h2 className='mb-3'>Sinflar bo'yicha</h2>
-      <div className='date-filter text-right mb-4 flex justify-end'>
-        <DatePicker
-          value={currentDate}
-          onChange={handleChangeDate}
-          placeholder={currentDate}
-          className='w-1/4'
-        />
-      </div>
-      <TableData redirectTo='/students' is_location={9999} columns={columns} data={data}></TableData>
+      <h2 className='mb-3'>O'quvchi ma'lumotlari</h2>
+      
     </div>
   )
 }
 
-export default Classes
+export default Students

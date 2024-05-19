@@ -68,11 +68,10 @@ function Regions() {
         sana: currentDate,
       };
 
-      const testToken = 'eb577759f4ca0dde05b02ea699892ee560920594';
       fetch(`${process.env.REACT_APP_API_URL}api/v1/davomatresp/`, {
         method: 'POST',
         headers: {
-          Authorization: `Token ${testToken}`,
+          Authorization: `Token ${token}`,
           'Content-type': 'application/json',
         },
         body: JSON.stringify(req),
