@@ -9,6 +9,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import DashboardChart from 'components/dashboardChart';
 import DashboardChartLate from 'components/DashboardChartLate';
 import { Select } from 'components/ui'
+import MapUzb from 'components/map'
 
 const CrmDashboard = () => {
     const dispatch = useDispatch()
@@ -99,63 +100,6 @@ const CrmDashboard = () => {
         },
     ]
 
-    const recentLeadsData = [
-        {
-            id: 1,
-            name: 'Eileen Horton',
-            avatar: '/img/avatars/thumb-1.jpg',
-            status: 0,
-            createdTime: 1623430400,
-            email: 'eileen_h@hotmail.com',
-            assignee: 'Carrie Harris',
-        },
-        {
-            id: 2,
-            name: 'Terrance Moreno',
-            avatar: '/img/avatars/thumb-2.jpg',
-            status: 1,
-            createdTime: 1632393600,
-            email: 'terrance_moreno@infotech.io',
-            assignee: 'Toni Lane',
-        },
-        {
-            id: 3,
-            name: 'Ron Vargas',
-            avatar: '/img/avatars/thumb-3.jpg',
-            status: 1,
-            createdTime: 1632393600,
-            email: 'ronnie_vergas@infotech.io',
-            assignee: 'Joanne Mendoza',
-        },
-        {
-            id: 4,
-            name: 'Luke Cook',
-            avatar: '/img/avatars/thumb-4.jpg',
-            status: 2,
-            createdTime: 1632761600,
-            email: 'cookie_lukie@hotmail.com',
-            assignee: 'Lorraine Carr',
-        },
-        {
-            id: 5,
-            name: 'Joyce Freeman',
-            avatar: '/img/avatars/thumb-5.jpg',
-            status: 3,
-            createdTime: 1632416000,
-            email: 'joyce991@infotech.io',
-            assignee: 'Myrtle Mason',
-        },
-        {
-            id: 6,
-            name: 'Samantha Phillips',
-            avatar: '/img/avatars/thumb-6.jpg',
-            status: 0,
-            createdTime: 1633107200,
-            email: 'samanthaphil@infotech.io',
-            assignee: 'Perry Ward',
-        },
-    ]
-
     const emailSentData=  {
         precent:97.2,
         opened: 893,
@@ -175,17 +119,18 @@ const CrmDashboard = () => {
             <Loading loading={false}>
                 <Statistic data={statisticData} />
                 <div className="grid grid-cols-1 xl:grid-cols-7 gap-4">
-                    <LeadByCountries
+                    {/* <LeadByCountries
                         className="xl:col-span-5"
                         data={leadByRegionData}
-                    />
+                    /> */}
+                    <MapUzb className = "xl:col-span-5" ></MapUzb>
                     <EmailSent className="xl:col-span-2" data={emailSentData} />
                 </div>
 
                 <div className='flex gap-6'>
                     <div className="chart-block w-1/2 border p-5 rounded-lg">
                         <div className="head flex justify-between items-center mb-5 pl-3">
-                            <h3>Davomat bo'yicha</h3>
+                            <h3 className='text-xl'>Davomat bo'yicha</h3>
 
                             <Select
                                 placeholder="Please Select"
@@ -198,7 +143,7 @@ const CrmDashboard = () => {
 
                     <div className="chart-block w-1/2 border p-5 rounded-lg">
                         <div className="head flex justify-between items-center mb-5 pl-3">
-                            <h3>Kech qolishlar bo'yicha (minutlarda)</h3>
+                            <h3 className='text-xl'>Kech qolishlar bo'yicha (minutlarda)</h3>
 
                             <Select
                                 placeholder="Please Select"
