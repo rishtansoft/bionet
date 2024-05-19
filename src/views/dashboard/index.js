@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import reducer from './store'
 import { getCrmDashboardData } from './store/dataSlice'
 import { Loading } from 'components/shared'
@@ -12,7 +12,14 @@ import { Select } from 'components/ui'
 import MapUzb from 'components/map'
 
 const CrmDashboard = () => {
-    const dispatch = useDispatch()
+    const dataRange = [
+        {value: "haftalik", label: "Haftalik"},
+        {value: "oylik", label: "Oylik"},
+        {value: "choraklik", label: "Choraklik"},
+        {value: "yillik", label: "Yillik"},
+    ];
+    const dispatch = useDispatch();
+    const [chartDataSelect1, setChartDataSelect1] = useState(dataRange[0]);
 
     useEffect(() => {
         fetchData()
@@ -107,12 +114,11 @@ const CrmDashboard = () => {
         total: 1223,
     }
 
-    const dataRange = [
-        {value: "haftalik", label: "Haftalik"},
-        {value: "oylik", label: "Oylik"},
-        {value: "choraklik", label: "Choraklik"},
-        {value: "yillik", label: "Yillik"},
-    ];
+    
+
+    const davSelectFun=(event)=>{
+        setChartDataSelect1(event)
+    }
 
     return (
         <div className="flex flex-col gap-4 h-full">
@@ -135,10 +141,11 @@ const CrmDashboard = () => {
                             <Select
                                 placeholder="Please Select"
                                 options={dataRange}
-                                value = {dataRange[0]}
+                                value = {chartDataSelect1}
+                                onChange={davSelectFun}
                             ></Select>
                         </div>
-                        <DashboardChart></DashboardChart>
+                        <DashboardChart select_value={chartDataSelect1} ></DashboardChart>
                     </div>
 
                     <div className="chart-block w-1/2 border p-5 rounded-lg">
