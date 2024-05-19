@@ -11,6 +11,7 @@ import {
     DASHBOARD_SCHOOL_PATH,
     SCHOOL_SCHOOL_PATH,
     ACROSS_CLASS_SCHOOL_PATH,
+    TEACHER_SCHOOL_PATH
 } from 'constants/route.constant';
 import {
     NAV_ITEM_TYPE_TITLE,
@@ -40,6 +41,7 @@ const menuItems = {
         { key: 'appsCrm.dashboard', path: DASHBOARD_SCHOOL_PATH, title: 'Dashboard', icon: 'dashboard' },
         { key: 'regions.regions', path: SCHOOL_SCHOOL_PATH, title: 'Sinflar', icon: 'regions' },
         { key: 'regions.regions', path: ACROSS_CLASS_SCHOOL_PATH, title: 'Sinflar kesimida', icon: 'acrossClass' },
+        { key: 'regions.regions', path: TEACHER_SCHOOL_PATH, title: 'Ustozlar', icon: 'teacher' },
     ],
 };
 

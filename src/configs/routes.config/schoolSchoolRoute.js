@@ -11,13 +11,13 @@ const schoolSchoolRoute = [
     },
     {
         key: 'republicRepublic.republicRepublic',
-        path: `${SCHOOL_SCHOOL_PATH}/:class_id`,
+        path: `${SCHOOL_SCHOOL_PATH}/:school_id`,
         component: React.lazy(() => import('views/classes')),
         authority: [ADMIN],
     },
     {
         key: 'republicRepublic.republicRepublic',
-        path: `${SCHOOL_SCHOOL_PATH}/:class_id/:student_id`,
+        path: `${SCHOOL_SCHOOL_PATH}/:school_id/:student_id`,
         component: React.lazy(() => import('views/students')),
         authority: [ADMIN],
     }
