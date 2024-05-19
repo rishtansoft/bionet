@@ -1,126 +1,368 @@
 import React, { useEffect, useState } from 'react';
 import TableData from 'components/table/TableData';
 import { useSelector } from 'react-redux';
-import { DatePicker } from 'components/ui';
+import { DatePicker, Select, Button } from 'components/ui';
 
-function Regions() {
-  const [currentDate, setCurrentDate] = useState(null);
-  const [columns] = useState([
-    {
-      Header: 'N#',
-      accessor: 'number',
-    },
-    {
-      Header: 'Viloyat nomi',
-      accessor: 'name',
-    },
-    {
-      Header: 'Maktablar soni',
-      accessor: 'schoolCount',
-    },
-    {
-      Header: 'O`quvchilar soni',
-      accessor: 'studentsCount',
-    },
-    {
-      Header: 'Davomat',
-      accessor: 'arrivalsCount',
-    },
-    {
-      Header: 'Davomat (%)',
-      accessor: 'arrivalsCountPercent',
-    },
-    {
-      Header: 'Kelmaganlar soni',
-      accessor: 'absenteesCount',
-    },
-    {
-      Header: 'Kelmaganlar soni (%)',
-      accessor: 'absenteesCountPercent',
-    },
-  ]);
+const class_list = [
+	{
+		value: '1',
+		label: '1-Sinf'
+	},
+	{
+		value: '2',
+		label: '2-Sinf'
+	},
+	{
+		value: '3',
+		label: '3-Sinf'
+	},
+	{
+		value: '4',
+		label: '4-Sinf'
+	},
+	{
+		value: '5',
+		label: '5-Sinf'
+	},
+	{
+		value: '6',
+		label: '6-Sinf'
+	},
+	{
+		value: '7',
+		label: '7-Sinf'
+	},
+	{
+		value: '8',
+		label: '8-Sinf'
+	},
+	{
+		value: '9',
+		label: '9-Sinf'
+	},
+	{
+		value: '10',
+		label: '10-Sinf'
+	},
+	{
+		value: '11',
+		label: '11-Sinf'
+	},
+]
 
-  function getTodaysDate() {
-    const today = new Date();
-    const year = today.getFullYear();
-    const month = String(today.getMonth() + 1).padStart(2, '0');
-    const day = String(today.getDate()).padStart(2, '0');
-    return `${year}-${month}-${day}`;
-  }
+function ClassesCross() {
+	const [currentDate, setCurrentDate] = useState(null);
+	const [regionDataList, setRegionDataList] = useState([]);
+	const [districtsDataList, setDistrictsDataList] = useState([]);
+	const [schoolDataList, setSchoolDataList] = useState([]);
+	const [regionDataValue, setRegionDataValue] = useState(null);
+	const [districtsDataValue, setDistrictsDataValue] = useState(null);
+	const [schoolDataValue, setSchoolDataValue] = useState(null);
+	const [classDataValue, setClassDataValue] = useState(class_list[0]);
 
-  function formatDate(inputDate) {
-    const date = new Date(inputDate);
-    const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, '0');
-    const day = String(date.getDate()).padStart(2, '0');
-    return `${year}-${month}-${day}`;
-  }
+	const [columns, setColumns] = useState(
+		[
+			{
+				Header: 'N#',
+				accessor: 'number',
+			},
+			{
+				Header: 'Maktab nomi',
+				accessor: 'name',
+			},
+			{
+				Header: 'O`quvchilar soni',
+				accessor: 'studentsCount',
+			},
+			{
+				Header: 'Kelganlar soni',
+				accessor: 'arrivalsCount',
+			},
+			{
+				Header: 'Davomat (%)',
+				accessor: 'arrivalsCountPercent',
+			},
+			{
+				Header: 'Kelmaganlar soni',
+				accessor: 'absenteesCount',
+			},
+
+		]
+
+	);
+
+	const region_id = useSelector((state) => state.auth.user.viloyat_id);
+	const district_id = useSelector((state) => state.auth.user.tumanshahar);
 
 
-  const [data, setData] = useState([]);
-  const [apiData, setApiData] = useState([]);
+	function getTodaysDate() {
+		const today = new Date();
+		const year = today.getFullYear();
+		const month = String(today.getMonth() + 1).padStart(2, '0');
+		const day = String(today.getDate()).padStart(2, '0');
+		return `${year}-${month}-${day}`;
+	}
 
-  const token = useSelector((state) => state?.auth?.session?.token);
+	function formatDate(inputDate) {
+		const date = new Date(inputDate);
+		const year = date.getFullYear();
+		const month = String(date.getMonth() + 1).padStart(2, '0');
+		const day = String(date.getDate()).padStart(2, '0');
+		return `${year}-${month}-${day}`;
+	}
 
-  useEffect(() => {
-    if (token && currentDate) {
-      const req = {
-        sana: currentDate,
-      };
+	const selectRegionFun = (event) => {
+		setDistrictsDataValue(null);
+		setSchoolDataValue(null);
+		setRegionDataValue(event);
+	}
 
-      const testToken = 'eb577759f4ca0dde05b02ea699892ee560920594';
-      fetch(`${process.env.REACT_APP_API_URL}api/v1/davomatresp/`, {
-        method: 'POST',
-        headers: {
-          Authorization: `Token ${testToken}`,
-          'Content-type': 'application/json',
-        },
-        body: JSON.stringify(req),
-      })
-        .then((res) => res.json())
-        .then((d) => {
-          setApiData(d);
-        });
-    }
-  }, [currentDate]);
+	const selectDistrictsFun = (event) => {
+		setSchoolDataValue(null);
+		setDistrictsDataValue(event);
+	}
+	const selectClassFun = (event) => {
+		setClassDataValue(event)
+	}
 
-  useEffect(() => {
-    let today = getTodaysDate();
-    setCurrentDate(today);
-  }, []);
+	const selectSchoolFun = (event) => {
+		setSchoolDataValue(event)
+	}
 
-  function handleChangeDate(e) {
-    setCurrentDate(formatDate(e));
-  }
 
-  useEffect(() => {
-    if (apiData.length > 0) {
-      let res = [];
-      apiData.forEach((el, index) => {
-        const reg = {
-          number: index + 1,
-          name: el[0].viloyat,
-          districtCount: 19,
-          schoolCount: el[0].maktabsoni,
-          studentsCount: el[0].bolasoni,
-          arrivalsCount: el[0].kelganlar,
-          arrivalsCountPercent: el[0].foizi,
-          absenteesCount: el[0].kelmaganlar,
-          absenteesCountPercent: 100 - el[0].foizi,
-          id: el[0].viloyat_id,
-        };
+	const [data, setData] = useState([]);
+	const [apiData, setApiData] = useState([]);
 
-        res.push(reg);
-      });
-      setData(res);
-    }
-  }, [apiData]);
+	const token = useSelector((state) => state?.auth?.session?.token);
 
-  return (
-    <div>
-      <h1>Across class district</h1>
-    </div>
-  );
+	useEffect(() => {
+		if (token) {
+			const testToken = 'ad7fac83fac077b1c817bfeee50d1303ded94d56';
+			const sendData = {
+				tuman_id: district_id,
+				sana: currentDate
+
+			}
+			fetch(`${process.env.REACT_APP_API_URL}api/v1/davomattuman/`, {
+				method: "POST",
+				headers: {
+					Authorization: `Token ${testToken}`,
+					'Content-type': 'application/json',
+				},
+				body: JSON.stringify(sendData)
+			})
+				.then((res) => res.json())
+				.then((d) => {
+					const data = d.map((el) => {
+						return {
+							label: el[0].maktabnomi,
+							value: el[0].maktab_id
+						}
+					}).filter((el) => el && el)
+					setSchoolDataList(data);
+				})
+				.catch(err => {
+					console.log(err);
+				});
+		}
+	}, [currentDate]);
+
+
+
+	useEffect(() => {
+		let today = getTodaysDate();
+		setCurrentDate(today);
+	}, []);
+
+	function handleChangeDate(e) {
+		setCurrentDate(formatDate(e));
+	}
+
+	const filterFun = () => {
+		const sendData = {
+			viloyat_id: region_id,
+			tuman_id: district_id,
+			maktab_id: schoolDataValue ? schoolDataValue.value : null,
+			sinf: classDataValue ? Number(classDataValue.value) : 1,
+			sana: currentDate
+		}
+		const testToken = 'ad7fac83fac077b1c817bfeee50d1303ded94d56';
+		fetch(`${process.env.REACT_APP_API_URL}api/v1/davomatrespsinf/`, {
+			method: "POST",
+			headers: {
+				Authorization: `Token ${testToken}`,
+				'Content-type': 'application/json',
+			},
+			body: JSON.stringify(sendData)
+		})
+			.then((res) => res.json())
+			.then((d) => {
+				if (!schoolDataValue) {
+					setColumns([
+						{
+							Header: 'N#',
+							accessor: 'number',
+						},
+						{
+							Header: 'Maktab nomi',
+							accessor: 'name',
+						},
+						{
+							Header: 'O`quvchilar soni',
+							accessor: 'studentsCount',
+						},
+						{
+							Header: 'Kelganlar soni',
+							accessor: 'arrivalsCount',
+						},
+						{
+							Header: 'Davomat (%)',
+							accessor: 'arrivalsCountPercent',
+						},
+						{
+							Header: 'Kelmaganlar soni',
+							accessor: 'absenteesCount',
+						},
+
+					]);
+					const resData = d.map((el, index) => {
+						return {
+							number: index + 1,
+							name: el[0].maktabnomi,
+							studentsCount: el[0].bolasoni,
+							arrivalsCount: el[0].kelganlar,
+							arrivalsCountPercent: el[0].foizi,
+							absenteesCount: el[0].kelmaganlar,
+							id: el[0].viloyat_id,
+						}
+					}).filter((el) => el && el);
+					setData(resData)
+				} else if (schoolDataValue) {
+					setColumns([
+						{
+							Header: 'N#',
+							accessor: 'number',
+						},
+						{
+							Header: 'Sinf nomi',
+							accessor: 'name',
+						},
+						{
+							Header: 'O`quvchilar soni',
+							accessor: 'studentsCount',
+						},
+						{
+							Header: 'Kelganlar soni',
+							accessor: 'arrivalsCount',
+						},
+						{
+							Header: 'Davomat (%)',
+							accessor: 'arrivalsCountPercent',
+						},
+						{
+							Header: 'Kelmaganlar soni',
+							accessor: 'absenteesCount',
+						},
+
+					]);
+					const resData = d.map((el, index) => {
+						return {
+							number: index + 1,
+							name: el[0].sinfnomi,
+							studentsCount: el[0].bolasoni,
+							arrivalsCount: el[0].kelganlar,
+							arrivalsCountPercent: el[0].foizi,
+							absenteesCount: el[0].kelmaganlar,
+							id: el[0].viloyat_id,
+						}
+					}).filter((el) => el && el);
+					setData(resData)
+				}
+			})
+			.catch(err => {
+				console.log(err);
+			});
+	}
+
+	useEffect(() => {
+		filterFun();
+	}, [apiData]);
+
+	return (
+		<div>
+			<h2 className='mb-3'>Sinflar kesimida</h2>
+
+			<div>
+				<div style={{
+					display: 'flex',
+					alignItems: 'center',
+					gap: '1rem 1rem',
+					marginBottom: '1rem',
+					flexDirection: 'row',
+					width: '100%',
+					flexWrap: 'wrap'
+				}}>
+					<div style={{
+						width: '22%'
+					}}>
+						<Select
+							options={class_list}
+							placeholder='Sinf'
+							value={classDataValue}
+							onChange={selectClassFun}
+						>
+
+						</Select>
+					</div>
+
+
+					<div style={{
+						width: '22%'
+					}}>
+						<Select
+							options={schoolDataList}
+							placeholder='Maktab'
+							value={schoolDataValue}
+							onChange={selectSchoolFun}
+						// isDisabled={!districtsDataValue ? true : false}
+						>
+
+						</Select>
+					</div>
+					<div>
+
+						<button
+							style={{
+								border: '1px solid #a5a5a5',
+								padding: '0.7rem  1rem',
+								borderRadius: '8px'
+							}}
+							onClick={filterFun}>
+							Filter
+						</button>
+					</div>
+				</div>
+
+			</div>
+
+			<div className='date-filter text-right mb-4 flex justify-end'>
+				<DatePicker
+					value={currentDate}
+					onChange={handleChangeDate}
+					placeholder={currentDate}
+					className='w-1/4'
+				/>
+			</div>
+
+			<TableData
+				redirectTo='/districts'
+				columns={columns}
+				data={data}
+				is_location={5}
+				in_link={true}
+			></TableData>
+		</div>
+	);
 }
 
-export default Regions;
+export default ClassesCross;

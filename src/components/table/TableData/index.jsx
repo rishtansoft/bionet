@@ -163,7 +163,6 @@ const TableData = (props) => {
                             : row?.original?.arrivalsCountPercent}
                         </p>
                       )}
-
                       {((index != 1 && index != location) ||
                         !props.redirectTo) &&
                         cell.render("Cell")}

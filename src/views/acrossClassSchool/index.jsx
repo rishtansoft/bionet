@@ -1,126 +1,236 @@
 import React, { useEffect, useState } from 'react';
 import TableData from 'components/table/TableData';
 import { useSelector } from 'react-redux';
-import { DatePicker } from 'components/ui';
+import { DatePicker, Select, Button } from 'components/ui';
 
-function Regions() {
-  const [currentDate, setCurrentDate] = useState(null);
-  const [columns] = useState([
+const class_list = [
     {
-      Header: 'N#',
-      accessor: 'number',
+        value: '1',
+        label: '1-Sinf'
     },
     {
-      Header: 'Viloyat nomi',
-      accessor: 'name',
+        value: '2',
+        label: '2-Sinf'
     },
     {
-      Header: 'Maktablar soni',
-      accessor: 'schoolCount',
+        value: '3',
+        label: '3-Sinf'
     },
     {
-      Header: 'O`quvchilar soni',
-      accessor: 'studentsCount',
+        value: '4',
+        label: '4-Sinf'
     },
     {
-      Header: 'Davomat',
-      accessor: 'arrivalsCount',
+        value: '5',
+        label: '5-Sinf'
     },
     {
-      Header: 'Davomat (%)',
-      accessor: 'arrivalsCountPercent',
+        value: '6',
+        label: '6-Sinf'
     },
     {
-      Header: 'Kelmaganlar soni',
-      accessor: 'absenteesCount',
+        value: '7',
+        label: '7-Sinf'
     },
     {
-      Header: 'Kelmaganlar soni (%)',
-      accessor: 'absenteesCountPercent',
+        value: '8',
+        label: '8-Sinf'
     },
-  ]);
+    {
+        value: '9',
+        label: '9-Sinf'
+    },
+    {
+        value: '10',
+        label: '10-Sinf'
+    },
+    {
+        value: '11',
+        label: '11-Sinf'
+    },
+]
 
-  function getTodaysDate() {
-    const today = new Date();
-    const year = today.getFullYear();
-    const month = String(today.getMonth() + 1).padStart(2, '0');
-    const day = String(today.getDate()).padStart(2, '0');
-    return `${year}-${month}-${day}`;
-  }
+function ClassesCross() {
+    const [currentDate, setCurrentDate] = useState(null);
+   
+    const [classDataValue, setClassDataValue] = useState(class_list[0]);
 
-  function formatDate(inputDate) {
-    const date = new Date(inputDate);
-    const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, '0');
-    const day = String(date.getDate()).padStart(2, '0');
-    return `${year}-${month}-${day}`;
-  }
+    const [columns, setColumns] = useState(
+        [
+            {
+                Header: 'N#',
+                accessor: 'number',
+            },
+            {
+                Header: 'Sinf nomi',
+                accessor: 'name',
+            },
+            {
+                Header: 'O`quvchilar soni',
+                accessor: 'studentsCount',
+            },
+            {
+                Header: 'Kelganlar soni',
+                accessor: 'arrivalsCount',
+            },
+            {
+                Header: 'Davomat (%)',
+                accessor: 'arrivalsCountPercent',
+            },
+            {
+                Header: 'Kelmaganlar soni',
+                accessor: 'absenteesCount',
+            },
+
+        ]
+    );
+
+    const region_id = useSelector((state) => state.auth.user.viloyat_id);
+    const district_id = useSelector((state) => state.auth.user.tumanshahar);
+    const school_id = useSelector((state) => state.auth.user.school);
 
 
-  const [data, setData] = useState([]);
-  const [apiData, setApiData] = useState([]);
-
-  const token = useSelector((state) => state?.auth?.session?.token);
-
-  useEffect(() => {
-    if (token && currentDate) {
-      const req = {
-        sana: currentDate,
-      };
-
-      const testToken = 'eb577759f4ca0dde05b02ea699892ee560920594';
-      fetch(`${process.env.REACT_APP_API_URL}api/v1/davomatresp/`, {
-        method: 'POST',
-        headers: {
-          Authorization: `Token ${testToken}`,
-          'Content-type': 'application/json',
-        },
-        body: JSON.stringify(req),
-      })
-        .then((res) => res.json())
-        .then((d) => {
-          setApiData(d);
-        });
+    function getTodaysDate() {
+        const today = new Date();
+        const year = today.getFullYear();
+        const month = String(today.getMonth() + 1).padStart(2, '0');
+        const day = String(today.getDate()).padStart(2, '0');
+        return `${year}-${month}-${day}`;
     }
-  }, [currentDate]);
 
-  useEffect(() => {
-    let today = getTodaysDate();
-    setCurrentDate(today);
-  }, []);
-
-  function handleChangeDate(e) {
-    setCurrentDate(formatDate(e));
-  }
-
-  useEffect(() => {
-    if (apiData.length > 0) {
-      let res = [];
-      apiData.forEach((el, index) => {
-        const reg = {
-          number: index + 1,
-          name: el[0].viloyat,
-          districtCount: 19,
-          schoolCount: el[0].maktabsoni,
-          studentsCount: el[0].bolasoni,
-          arrivalsCount: el[0].kelganlar,
-          arrivalsCountPercent: el[0].foizi,
-          absenteesCount: el[0].kelmaganlar,
-          absenteesCountPercent: 100 - el[0].foizi,
-          id: el[0].viloyat_id,
-        };
-
-        res.push(reg);
-      });
-      setData(res);
+    function formatDate(inputDate) {
+        const date = new Date(inputDate);
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, '0');
+        const day = String(date.getDate()).padStart(2, '0');
+        return `${year}-${month}-${day}`;
     }
-  }, [apiData]);
 
-  return (
-    <div>
-      <h1>Across class school</h1>
-    </div>
-  );
+    const selectClassFun = (event) => {
+        setClassDataValue(event)
+    }
+
+   
+
+
+    const [data, setData] = useState([]);
+    const [apiData, setApiData] = useState([]);
+
+    const token = useSelector((state) => state?.auth?.session?.token);
+
+
+    useEffect(() => {
+        let today = getTodaysDate();
+        setCurrentDate(today);
+    }, []);
+
+    function handleChangeDate(e) {
+        setCurrentDate(formatDate(e));
+    }
+
+    const filterFun = () => {
+        const sendData = {
+            viloyat_id: region_id,
+            tuman_id: district_id,
+            maktab_id: school_id,
+            sinf: classDataValue ? Number(classDataValue.value) : 1,
+            sana: currentDate
+        }
+        const testToken = 'ad7fac83fac077b1c817bfeee50d1303ded94d56';
+        fetch(`${process.env.REACT_APP_API_URL}api/v1/davomatrespsinf/`, {
+            method: "POST",
+            headers: {
+                Authorization: `Token ${testToken}`,
+                'Content-type': 'application/json',
+            },
+            body: JSON.stringify(sendData)
+        })
+            .then((res) => res.json())
+            .then((d) => {
+                const resData = d.map((el, index) => {
+                    return {
+                        number: index + 1,
+                        name: el[0].sinfnomi,
+                        studentsCount: el[0].bolasoni,
+                        arrivalsCount: el[0].kelganlar,
+                        arrivalsCountPercent: el[0].foizi,
+                        absenteesCount: el[0].kelmaganlar,
+                        id: el[0].viloyat_id,
+                    }
+                }).filter((el) => el && el);
+                setData(resData)
+            })
+            .catch(err => {
+                console.log(err);
+            });
+    }
+
+    useEffect(() => {
+        filterFun();
+    }, [apiData]);
+
+    return (
+        <div>
+            <h2 className='mb-3'>Sinflar kesimida</h2>
+
+            <div>
+                <div style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '1rem 1rem',
+                    marginBottom: '1rem',
+                    flexDirection: 'row',
+                    width: '100%',
+                    flexWrap: 'wrap'
+                }}>
+                    <div style={{
+                        width: '22%'
+                    }}>
+                        <Select
+                            options={class_list}
+                            placeholder='Sinf'
+                            value={classDataValue}
+                            onChange={selectClassFun}
+                        >
+
+                        </Select>
+                    </div>
+
+
+                    <div>
+
+                        <button
+                            style={{
+                                border: '1px solid #a5a5a5',
+                                padding: '0.7rem  1rem',
+                                borderRadius: '8px'
+                            }}
+                            onClick={filterFun}>
+                            Filter
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+
+            <div className='date-filter text-right mb-4 flex justify-end'>
+                <DatePicker
+                    value={currentDate}
+                    onChange={handleChangeDate}
+                    placeholder={currentDate}
+                    className='w-1/4'
+                />
+            </div>
+
+            <TableData
+                redirectTo='/districts'
+                columns={columns}
+                data={data}
+                is_location={4}
+                in_link={true}
+            ></TableData>
+        </div>
+    );
 }
 
-export default Regions;
+export default ClassesCross;
