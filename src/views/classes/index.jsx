@@ -153,8 +153,8 @@ function Classes() {
       });
 
       setData(res);
-      setLoading(false);
     }
+    setLoading(false);
   }, [apiData]);
 
   const addModalFun = (e) => {
@@ -166,6 +166,10 @@ function Classes() {
     setDataUpdate(true);
     setLoading(true);
   };
+
+  const closeAddModal = () => {
+    setOpenAddModal(false)
+  }
 
   return (
     <div className="h-full">
@@ -184,7 +188,7 @@ function Classes() {
               isOpen={openAddModal}
               onClose={() => setOpenAddModal(false)}
             >
-              <AddClassModal />
+              <AddClassModal updateFun={updateData} closeFun={closeAddModal}/>
             </Dialog>
           </div>
           <div className="date-filter text-right mb-4 flex justify-end">

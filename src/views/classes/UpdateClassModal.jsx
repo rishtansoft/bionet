@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Input,
   TimeInput,
@@ -14,7 +14,8 @@ import dayjs from "dayjs";
 
 const UpdateClassModal = ({ item, closeFun, updateFun }) => {
   const params = useParams();
-  const [name, setName] = useState(item?.name ? item?.name : "");
+  const [teachersData, setTeachersData] = useState([]);
+  const [name, setName] = useState();
   const [errorName, setErrorName] = useState(false);
   const [startTime, setStartTime] = useState(null);
   const [startTimeFilter, setStartTimeFilter] = useState("");
@@ -22,6 +23,61 @@ const UpdateClassModal = ({ item, closeFun, updateFun }) => {
   const [teacher, setTeacher] = useState("");
   const [errorTeacher, setErrorTeacher] = useState(false);
   const [disabledButton, setDisabledButton] = useState(false);
+  useEffect(() => {
+    const testToken = "eb577759f4ca0dde05b02ea699892ee560920594";
+    fetch(`${process.env.REACT_APP_API_URL}api/v1/getteachers/${params.id}`, {
+      method: "GET",
+      headers: {
+        Authorization: `Token ${testToken}`,
+        "Content-type": "application/json",
+      },
+    })
+      .then((res) => res.json())
+      .then((fill) => {
+        if (fill && fill.length > 0) {
+          const filterData = fill.map((arg) => ({
+            value: arg.id,
+            label: arg.name,
+          }));
+          setTeachersData(filterData);
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+    fetch(`${process.env.REACT_APP_API_URL}api/v1/getsinf/${item.id}`, {
+      method: "GET",
+      headers: {
+        Authorization: `Token ${testToken}`,
+        "Content-type": "application/json",
+      },
+    })
+      .then((res) => res.json())
+      .then((fill) => {
+        if (fill && fill.length > 0) {
+          const filterData = fill.find((arg) => arg.id == item.id);
+          setName(filterData?.name ? filterData?.name : '');
+          if(filterData?.startoflesson && filterData?.startoflesson !== null){
+            const currentDate = dayjs();
+            const apiTime = dayjs(`1970-01-01T${filterData?.startoflesson}`);
+    
+            // Set the current date's time to the time received from the API
+            const parsedTime = currentDate
+              .hour(apiTime.hour())
+              .minute(apiTime.minute())
+              .second(apiTime.second());
+              const startTimeFromApi = dayjs(parsedTime, 'hh:mm:ss').toDate();
+              setStartTime(startTimeFromApi);
+              setStartTimeFilter(dayjs(startTimeFromApi).format('hh:mm:ss'))
+          }
+          setTeacher(filterData?.rahbar && filterData?.rahbar !== null  ? filterData?.rahbar : '');
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
+
   const changeName = (e) => {
     setName(e.target.value);
     setErrorName(false);
@@ -32,26 +88,21 @@ const UpdateClassModal = ({ item, closeFun, updateFun }) => {
     setErrorStartTime(false);
   };
   const changeTeacher = (e) => {
-    setTeacher(e.target.value);
+    setTeacher(e);
     setErrorTeacher(false);
   };
 
   const updateClassFun = (e) => {
     e.preventDefault();
-    if (
-      name &&
-      !/^\s*$/.test(name) &&
-      startTimeFilter &&
-      teacher
-    ) {
+    if (name && !/^\s*$/.test(name) && startTimeFilter && teacher) {
       setDisabledButton(true);
       const testToken = "eb577759f4ca0dde05b02ea699892ee560920594";
       const sendData = {
         id: item.id,
         name: name,
         startoflesson: startTimeFilter,
-        school: params?.id,
-        rahbar: teacher,
+        school: String(params?.id),
+        rahbar: String(teacher.value),
       };
       fetch(`${process.env.REACT_APP_API_URL}api/v1/editsinf/`, {
         method: "PUT",
@@ -63,7 +114,7 @@ const UpdateClassModal = ({ item, closeFun, updateFun }) => {
       })
         .then((res) => {
           console.log(65, res);
-          if(res.status == 200){
+          if (res.status == 200 || 201) {
             toast.push(
               <Notification
                 title={"Muvaffaqiyatli"}
@@ -80,7 +131,7 @@ const UpdateClassModal = ({ item, closeFun, updateFun }) => {
             setDisabledButton(false);
             updateFun();
             closeFun();
-          }else{
+          } else {
             toast.push(
               <Notification
                 title={"Xatolik"}
@@ -99,6 +150,19 @@ const UpdateClassModal = ({ item, closeFun, updateFun }) => {
         })
         .catch((err) => {
           console.log(err);
+          toast.push(
+            <Notification
+              title={"Xatolik"}
+              type="error"
+              duration={5000}
+              transitionType="fade"
+            >
+              Xatolik yuz berdi
+            </Notification>,
+            {
+              placement: "top-center",
+            }
+          );
           setDisabledButton(false);
         });
     } else {
@@ -149,7 +213,7 @@ const UpdateClassModal = ({ item, closeFun, updateFun }) => {
               disabled={true}
               value={teacher}
               onChange={changeTeacher}
-              options={[]}
+              options={teachersData}
             />
           </FormItem>
           <Button

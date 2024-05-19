@@ -22,7 +22,7 @@ const TableData = (props) => {
     setlocation(is_location);
   }, [is_location]);
   useEffect(() => {
-    let getId = localStorage.getItem('regionId')
+    let getId = localStorage.getItem("regionId");
     setRegionId(getId);
   }, []);
 
@@ -32,11 +32,8 @@ const TableData = (props) => {
   const isRegion = headerGroups[0].headers.find(
     (e) => e.Header == "Viloyat nomi"
   );
-
+  const isClass = headerGroups[0].headers.find((e) => e.Header == "Sinf nomi");
   const openUpdateModal = (arg) => {
-    const isClass = headerGroups[0].headers.find(
-      (e) => e.Header == "Sinf nomi"
-    );
     if (isClass) {
       setActionName("class");
       setSelectedItem(arg);
@@ -82,7 +79,7 @@ const TableData = (props) => {
                   )}
                 </Th>
               ))}
-              <Th>Amallar</Th>
+              {isClass && (<Th>Amallar</Th>)}
             </Tr>
           ))}
         </THead>
@@ -148,26 +145,28 @@ const TableData = (props) => {
                     </Td>
                   );
                 })}
-                <Td className="text-end">
-                  <div className="flex justify-end items-center gap-4">
-                    <Tooltip title={"Tahrirlash"}>
-                      <FaPen
-                        className="cursor-pointer"
-                        onClick={() => {
-                          openUpdateModal(row.original);
-                        }}
-                      />
-                    </Tooltip>
-                    <Tooltip title={"O'chirish"}>
-                      <FaTrash
-                        className="cursor-pointer"
-                        onClick={() => {
-                          openDeleteModal(row.original);
-                        }}
-                      />
-                    </Tooltip>
-                  </div>
-                </Td>
+                {isClass && (
+                  <Td className="text-end">
+                    <div className="flex justify-end items-center gap-4">
+                      <Tooltip title={"Tahrirlash"}>
+                        <FaPen
+                          className="cursor-pointer"
+                          onClick={() => {
+                            openUpdateModal(row.original);
+                          }}
+                        />
+                      </Tooltip>
+                      <Tooltip title={"O'chirish"}>
+                        <FaTrash
+                          className="cursor-pointer"
+                          onClick={() => {
+                            openDeleteModal(row.original);
+                          }}
+                        />
+                      </Tooltip>
+                    </div>
+                  </Td>
+                )}
               </Tr>
             );
           })}

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Input,
   TimeInput,
@@ -14,7 +14,8 @@ import dayjs from "dayjs";
 
 const AddClassModal = ({ closeFun, updateFun }) => {
   const params = useParams();
-  const [name, setName] = useState('');
+  const [teachersData, setTeachersData] = useState([]);
+  const [name, setName] = useState("");
   const [errorName, setErrorName] = useState(false);
   const [startTime, setStartTime] = useState(null);
   const [startTimeFilter, setStartTimeFilter] = useState("");
@@ -22,6 +23,31 @@ const AddClassModal = ({ closeFun, updateFun }) => {
   const [teacher, setTeacher] = useState("");
   const [errorTeacher, setErrorTeacher] = useState(false);
   const [disabledButton, setDisabledButton] = useState(false);
+
+  useEffect(() => {
+    const testToken = "eb577759f4ca0dde05b02ea699892ee560920594";
+    fetch(`${process.env.REACT_APP_API_URL}api/v1/getteachers/${params.id}`, {
+      method: "GET",
+      headers: {
+        Authorization: `Token ${testToken}`,
+        "Content-type": "application/json",
+      },
+    })
+      .then((res) => res.json())
+      .then((fill) => {
+        if (fill && fill.length > 0) {
+          const filterData = fill.map((arg) => ({
+            value: arg.id,
+            label: arg.name,
+          }));
+          setTeachersData(filterData);
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
+
   const changeName = (e) => {
     setName(e.target.value);
     setErrorName(false);
@@ -32,28 +58,22 @@ const AddClassModal = ({ closeFun, updateFun }) => {
     setErrorStartTime(false);
   };
   const changeTeacher = (e) => {
-    setTeacher(e.target.value);
+    setTeacher(e);
     setErrorTeacher(false);
   };
 
   const updateClassFun = (e) => {
     e.preventDefault();
-    if (
-      name &&
-      !/^\s*$/.test(name) &&
-      startTimeFilter &&
-      teacher
-    ) {
+    if (name && !/^\s*$/.test(name) && startTimeFilter && teacher) {
       setDisabledButton(true);
       const testToken = "eb577759f4ca0dde05b02ea699892ee560920594";
       const sendData = {
-        id: item.id,
         name: name,
         startoflesson: startTimeFilter,
-        school: params?.id,
-        rahbar: teacher,
+        school: String(params?.id),
+        rahbar: String(teacher.value),
       };
-      fetch(`${process.env.REACT_APP_API_URL}api/v1/addsinf/`, {
+      fetch(`${process.env.REACT_APP_API_URL}api/v1/addsinf/${params?.id}`, {
         method: "POST",
         headers: {
           Authorization: `Token ${testToken}`,
@@ -62,8 +82,7 @@ const AddClassModal = ({ closeFun, updateFun }) => {
         body: JSON.stringify(sendData),
       })
         .then((res) => {
-          console.log(65, res);
-          if(res.status == 200){
+          if (res.status == 200 || 201) {
             toast.push(
               <Notification
                 title={"Muvaffaqiyatli"}
@@ -80,7 +99,7 @@ const AddClassModal = ({ closeFun, updateFun }) => {
             setDisabledButton(false);
             updateFun();
             closeFun();
-          }else{
+          } else {
             toast.push(
               <Notification
                 title={"Xatolik"}
@@ -148,7 +167,7 @@ const AddClassModal = ({ closeFun, updateFun }) => {
               placeholder="Rahbar"
               value={teacher}
               onChange={changeTeacher}
-              options={[]}
+              options={teachersData}
             />
           </FormItem>
           <Button
