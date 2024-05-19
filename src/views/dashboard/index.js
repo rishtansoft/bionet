@@ -12,6 +12,15 @@ import { Select } from 'components/ui';
 
 
 const CrmDashboard = () => {
+    const dataRange = [
+        {value: "haftalik", label: "Haftalik"},
+        {value: "oylik", label: "Oylik"},
+        {value: "choraklik", label: "Choraklik"},
+        {value: "yillik", label: "Yillik"},
+    ];
+    const dispatch = useDispatch();
+    const [chartDataSelect1, setChartDataSelect1] = useState(dataRange[0]);
+
   const dispatch = useDispatch();
   const [dataMap, setDataMap] = useState([]);
   const [currentDate, setCurrentDate] = useState(null);
@@ -124,47 +133,54 @@ const CrmDashboard = () => {
     { value: 'yillik', label: 'Yillik' },
   ];
 
-  return (
-    <div className='flex flex-col gap-4 h-full'>
-      <Loading loading={false}>
-        <Statistic data={statisticData} />
-        <div className='grid grid-cols-1 xl:grid-cols-7 gap-4'>
-          {/* <div> */}
-            <div className='xl:col-span-5'>
-              
-              <LeadByCountries currentDate = {currentDate} change = {handleChangeDate} data={dataMap} />
-            </div>
-          {/* </div> */}
+    const davSelectFun=(event)=>{
+        setChartDataSelect1(event)
+    }
 
-          <EmailSent className='xl:col-span-2' data={emailSentData} />
-        </div>
+    return (
+        <div className="flex flex-col gap-4 h-full">
+            <Loading loading={false}>
+                <Statistic data={statisticData} />
+                <div className="grid grid-cols-1 xl:grid-cols-7 gap-4">
+                    {/* <LeadByCountries
+                        className="xl:col-span-5"
+                        data={leadByRegionData}
+                    /> */}
+                    <MapUzb className = "xl:col-span-5" ></MapUzb>
+                    <EmailSent className="xl:col-span-2" data={emailSentData} />
+                </div>
 
-        <div className='flex gap-6'>
-          <div className='chart-block w-1/2 border p-5 rounded-lg'>
-            <div className='head flex justify-between items-center mb-5 pl-3'>
-              <h3 className='text-xl'>Davomat bo'yicha</h3>
+                <div className='flex gap-6'>
+                    <div className="chart-block w-1/2 border p-5 rounded-lg">
+                        <div className="head flex justify-between items-center mb-5 pl-3">
+                            <h3 className='text-xl'>Davomat bo'yicha</h3>
 
-              <Select
-                placeholder='Please Select'
-                options={dataRange}
-                value={dataRange[0]}
-              ></Select>
-            </div>
-            <DashboardChart></DashboardChart>
-          </div>
+                            <Select
+                                placeholder="Please Select"
+                                options={dataRange}
+                                value = {chartDataSelect1}
+                                onChange={davSelectFun}
+                            ></Select>
+                        </div>
+                        <DashboardChart select_value={chartDataSelect1} ></DashboardChart>
+                    </div>
 
-          <div className='chart-block w-1/2 border p-5 rounded-lg'>
-            <div className='head flex justify-between items-center mb-5 pl-3'>
-              <h3 className='text-xl'>Kech qolishlar bo'yicha (minutlarda)</h3>
+                    <div className="chart-block w-1/2 border p-5 rounded-lg">
+                        <div className="head flex justify-between items-center mb-5 pl-3">
+                            <h3 className='text-xl'>Kech qolishlar bo'yicha (minutlarda)</h3>
 
-              <Select
-                placeholder='Please Select'
-                options={dataRange}
-                value={dataRange[0]}
-              ></Select>
-            </div>
-            <DashboardChartLate></DashboardChartLate>
-          </div>
+                            <Select
+                                placeholder="Please Select"
+                                options={dataRange}
+                                value = {dataRange[0]}
+                            ></Select>
+                        </div>
+                        <DashboardChartLate></DashboardChartLate>
+                    </div>
+                    
+                </div>
+                {/* <Leads data={recentLeadsData} /> */}
+            </Loading>
         </div>
         {/* <Leads data={recentLeadsData} /> */}
       </Loading>
