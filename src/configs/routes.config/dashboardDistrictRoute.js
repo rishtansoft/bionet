@@ -6,7 +6,7 @@ const dashboardDistrictRoute = [
     {
         key: 'dashboardDistrict.dashboardDistrict',
         path: `${DASHBOARD_DISTRICT_PATH}/`,
-        component: React.lazy(() => import('views/dashboardDistrict')),
+        component: React.lazy(() => import('views/dashboard')),
         authority: [ADMIN],
     }
 ]

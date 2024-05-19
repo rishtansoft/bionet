@@ -6,7 +6,7 @@ const dashboardSchoolRoute = [
     {
         key: 'dashboardRepublic.dashboardRepublic',
         path: `${DASHBOARD_SCHOOL_PATH}/`,
-        component: React.lazy(() => import('views/dashboardSchool')),
+        component: React.lazy(() => import('views/dashboard')),
         authority: [ADMIN],
     }
 ]

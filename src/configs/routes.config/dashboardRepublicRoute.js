@@ -6,7 +6,7 @@ const dashboardRepublicRoute = [
     {
         key: 'dashboardRepublic.dashboardRepublic',
         path: `${DASHBOARD_REPUBLIC_PATH}/`,
-        component: React.lazy(() => import('views/dashboardRepublic')),
+        component: React.lazy(() => import('views/dashboard')),
         authority: [ADMIN],
     }
 ]
