@@ -2,13 +2,10 @@ import React, { useState, useEffect } from "react";
 import TableData from "components/table/TableData";
 import { useParams, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
-import { Button, DatePicker, Dialog } from "components/ui";
-import { Loading } from "components/shared";
+import { DatePicker } from "components/ui";
 
 function Schools() {
   const [currentDate, setCurrentDate] = useState(null);
-  const [dataUpdate, setDataUpdate] = useState(false);
-  const [loading, setLoading] = useState(true);
   const [columns] = useState([
     {
       Header: "N#",
@@ -39,6 +36,7 @@ function Schools() {
       accessor: "absenteesCountPercent",
     },
   ]);
+  const [redirectTo, setRedirectTo] = useState('');
 
   function getTodaysDate() {
     const today = new Date();
@@ -56,11 +54,43 @@ function Schools() {
     return `${year}-${month}-${day}`;
   }
 
+  const user = useSelector((state) => state.auth.user);
   const params = useParams();
   const navigate = useNavigate();
   useEffect(() => {
-    if (!params.id) {
-      navigate("/regions");
+    if (user.user_type == 'TUMAN') {
+      params.district_id = user.tumanshahar;
+      params.region_id = user.viloyat_id;
+    }
+
+    if (user.user_type == 'MAKTAB') {
+      params.district_id = user.tumanshahar;
+      params.region_id = user.viloyat_id;
+      params.school_id = user.school;
+    }
+
+    if (!params.district_id) {
+      navigate('/');
+    }
+
+    if (user.user_type == 'RESPUBLIKA') {
+      setRedirectTo(
+        '/republic-regions/' + params.region_id + '/' + params.district_id
+      );
+    }
+
+    if (user.user_type == 'VILOYAT') {
+      setRedirectTo(
+        '/region-regions/' + params.district_id
+      );
+    }
+
+    if (user.user_type == 'TUMAN') {
+      setRedirectTo('/district-district/' + params.district_id);
+    }
+
+    if (user.user_type == 'MAKTAB') {
+      setRedirectTo('/school-school');
     }
   }, []);
 
@@ -69,17 +99,16 @@ function Schools() {
 
   const token = useSelector((state) => state?.auth?.session?.token);
   useEffect(() => {
-    if (token && params.id) {
-      const testToken = "eb577759f4ca0dde05b02ea699892ee560920594";
+    if (token && params.district_id) {
       const sendData = {
-        tuman_id: params.id,
         sana: currentDate,
+        tuman_id: params.district_id,
       };
       fetch(`${process.env.REACT_APP_API_URL}api/v1/davomattuman/`, {
-        method: "POST",
+        method: 'POST',
         headers: {
-          Authorization: `Token ${testToken}`,
-          "Content-type": "application/json",
+          Authorization: `Token ${token}`,
+          'Content-type': 'application/json',
         },
         body: JSON.stringify(sendData),
       })
@@ -92,31 +121,6 @@ function Schools() {
         });
     }
   }, [currentDate]);
-  useEffect(() => {
-    if (token && params.id) {
-      const testToken = "eb577759f4ca0dde05b02ea699892ee560920594";
-      const sendData = {
-        tuman_id: params.id,
-        sana: currentDate,
-      };
-      fetch(`${process.env.REACT_APP_API_URL}api/v1/davomattuman/`, {
-        method: "POST",
-        headers: {
-          Authorization: `Token ${testToken}`,
-          "Content-type": "application/json",
-        },
-        body: JSON.stringify(sendData),
-      })
-        .then((res) => res.json())
-        .then((d) => {
-          setApiData(d);
-          setDataUpdate(false);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    }
-  }, [dataUpdate]);
 
   useEffect(() => {
     let today = getTodaysDate();
@@ -147,43 +151,25 @@ function Schools() {
 
       setData(res);
     }
-    setLoading(false);
   }, [apiData]);
 
-  const closeAddModal = () => {
-    setAddModal(false);
-  };
-
-  const updateData = () => {
-    setDataUpdate(true);
-    setLoading(true);
-  };
-
   return (
-    <div className="h-full">
-      {loading ? (
-        <div className="flex flex-auto flex-col justify-center items-center h-full">
-          <Loading loading={loading} />
-        </div>
-      ) : (
-        <div>
-          <h2 className="mb-3">Maktablar bo'yicha</h2>
-          <div className="date-filter text-right mb-4 flex justify-end">
-            <DatePicker
-              value={currentDate}
-              onChange={handleChangeDate}
-              placeholder={currentDate}
-              className="w-1/4"
-            />
-          </div>
-          <TableData
-            redirectTo="/classes"
-            columns={columns}
-            data={data}
-            is_location={4}
-          ></TableData>
-        </div>
-      )}
+    <div>
+      <h2 className='mb-3'>Maktablar bo'yicha</h2>
+      <div className='date-filter text-right mb-4 flex justify-end'>
+        <DatePicker
+          value={currentDate}
+          onChange={handleChangeDate}
+          placeholder={currentDate}
+          className='w-1/4'
+        />
+      </div>
+      <TableData
+        redirectTo={redirectTo}
+        columns={columns}
+        data={data}
+        is_location={4}
+      ></TableData>
     </div>
   );
 }

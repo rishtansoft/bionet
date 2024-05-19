@@ -40,13 +40,31 @@ function Districts() {
       accessor: "absenteesCountPercent",
     },
   ]);
+  const [redirectTo, setRedirectTo] = useState('');
 
+  const user = useSelector((state) => state.auth.user);
   const params = useParams();
   const navigate = useNavigate();
-  useEffect(() => {
-    if (!params.id) {
-      navigate("/regions");
-    }
+  
+  useEffect(() => { if (user.user_type == 'VILOYAT') {
+    params.region_id = user.viloyat_id;
+  }
+
+  if (!params.region_id) {
+    navigate('/');
+  }
+
+  if(user.user_type == 'RESPUBLIKA') {
+    setRedirectTo('/republic-regions/' + params.region_id)
+  }
+
+  if(user.user_type == 'VILOYAT') {
+    setRedirectTo('/region-regions')
+  }
+
+  if(user.user_type == 'TUMAN') {
+    setRedirectTo('/district-district/' + params.region_id)
+  }
   }, []);
   function getTodaysDate() {
     const today = new Date();
@@ -70,28 +88,25 @@ function Districts() {
   const token = useSelector((state) => state?.auth?.session?.token);
 
   useEffect(() => {
-    if (token && params.id && currentDate) {
-      console.log("params", params);
-      const testToken = "eb577759f4ca0dde05b02ea699892ee560920594";
+    if (token && params.region_id && currentDate) {
       const sendData = {
-        // viloyat_id: params.id,
-        // sana: currentDate
-        viloyat_id: params.id,
-        sana: currentDate,
-      };
+        viloyat_id: params.region_id,
+        sana: currentDate
+      }
       fetch(`${process.env.REACT_APP_API_URL}api/v1/davomatviloyat/`, {
         method: "POST",
         headers: {
-          Authorization: `Token ${testToken}`,
-          "Content-type": "application/json",
+          Authorization: `Token ${token}`,
+          'Content-type': 'application/json',
         },
-        body: JSON.stringify(sendData),
+        body: JSON.stringify(sendData)
       })
         .then((res) => res.json())
         .then((d) => {
+          console.log(108, d);
           setApiData(d);
         })
-        .catch((err) => {
+        .catch(err => {
           console.log(err);
         });
     }
@@ -140,7 +155,7 @@ function Districts() {
         />
       </div>
       <TableData
-        redirectTo="/schools"
+        redirectTo={redirectTo}
         columns={columns}
         data={data}
         is_location={5}

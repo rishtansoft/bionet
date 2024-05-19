@@ -41,6 +41,7 @@ function Classes() {
       accessor: "absenteesCountPercent",
     },
   ]);
+  const [redirectTo, setRedirectTo] = useState('');
 
   function getTodaysDate() {
     const today = new Date();
@@ -58,13 +59,32 @@ function Classes() {
     return `${year}-${month}-${day}`;
   }
 
+  const user = useSelector((state) => state.auth.user);
   const params = useParams();
+
   const navigate = useNavigate();
   useEffect(() => {
-    if (!params.id) {
-      navigate("/regions");
+    if (user.user_type == 'VILOYAT') {
+      params.region_id = user.viloyat_id;
+    }
+
+    if (!params.school_id) {
+      navigate('/');
+    }
+
+    if(user.user_type == 'RESPUBLIKA') {
+      setRedirectTo('/republic-regions/' + params.region_id + '/' + params.district_id + '/' + params.school_id)
+    }
+
+    if(user.user_type == 'VILOYAT') {
+      setRedirectTo('/region-regions/' + params.district_id + '/' + params.school_id)
+    }
+
+    if(user.user_type == 'TUMAN') {
+      setRedirectTo('/district-district/' + params.district_id + '/' + params.school_id)
     }
   }, []);
+
 
   const [data, setData] = useState([]);
   const [apiData, setApiData] = useState([]);
@@ -72,29 +92,24 @@ function Classes() {
   const token = useSelector((state) => state?.auth?.session?.token);
 
   useEffect(() => {
-    if (token && params.id) {
-      const testToken = "eb577759f4ca0dde05b02ea699892ee560920594";
-      const sendData = {
-        // maktab_id: params.id,
-        // sana: currentDate
-        maktab_id: 2,
-        sane: "2024-05-08",
-      };
-      fetch(`${process.env.REACT_APP_API_URL}api/v1/davomatmaktab/`, {
-        method: "POST",
-        headers: {
-          Authorization: `Token ${testToken}`,
-          "Content-type": "application/json",
-        },
-        body: JSON.stringify(sendData),
-      })
-        .then((res) => res.json())
-        .then((d) => {
-          setApiData(d);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
+    if (user.user_type == 'VILOYAT') {
+      params.region_id = user.viloyat_id;
+    }
+
+    if (!params.school_id) {
+      navigate('/');
+    }
+
+    if(user.user_type == 'RESPUBLIKA') {
+      setRedirectTo('/republic-regions/' + params.region_id + '/' + params.district_id + '/' + params.school_id)
+    }
+
+    if(user.user_type == 'VILOYAT') {
+      setRedirectTo('/region-regions/' + params.district_id + '/' + params.school_id)
+    }
+
+    if(user.user_type == 'TUMAN') {
+      setRedirectTo('/district-district/' + params.district_id + '/' + params.school_id)
     }
   }, [currentDate]);
   useEffect(() => {
@@ -200,7 +215,7 @@ function Classes() {
             />
           </div>
           <TableData
-            redirectTo="/students"
+            redirectTo={redirectTo}
             is_location={9999}
             columns={columns}
             data={data}
