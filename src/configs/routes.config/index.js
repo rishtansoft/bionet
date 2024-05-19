@@ -10,6 +10,7 @@ import districtsRoute from './districtsRoute'
 import schoolsRoute from './schoolsRoute'
 import classesRoute from './classesRoute'
 import studentsRoute from './studentsRoute'
+import classesCrossRouter from './classesCross'
 
 import dashboardRepublicRoute from './dashboardRepublicRoute'
 import republicRepublicRoute from './republicRepublicRoute'
@@ -32,6 +33,7 @@ export const publicRoutes = [...authRoute, ...homeRoute]
 
 export const protectedRoutes = [
     ...appsRoute,
+
     // ...uiComponentsRoute,
     // ...pagesRoute,
     // ...authDemoRoute,
