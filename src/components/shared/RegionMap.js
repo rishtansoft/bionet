@@ -43,6 +43,22 @@ const UzbekistanMap = () => {
           coordinates: [41.29948441089361, 69.19361227607567],
         },
       },
+      {
+        type: 'Feature',
+        properties: { name: 'Jizzax' },
+        geometry: {
+          type: 'Polygon',
+          coordinates: [40.13001499869086, 67.86948297386847],
+        },
+      },
+      {
+        type: 'Feature',
+        properties: { name: 'Samarqanda' },
+        geometry: {
+          type: 'Polygon',
+          coordinates: [39.641279692034445, 66.95193629364705],
+        },
+      },
       // Add more provinces similarly
     ],
   };
