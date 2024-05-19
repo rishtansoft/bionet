@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom';
 const { Tr, Th, Td, THead, TBody, Sorter } = Table;
 
 const TableData = (props) => {
-  const { columns, data, is_location } = props;
+  const { columns, data, is_location, in_link = false } = props;
   const [location, setlocation] = useState(4);
 
   useEffect(() => {
@@ -51,7 +51,7 @@ const TableData = (props) => {
                     }}>
 
                       {
-                        index == 1 && props.redirectTo && <Link to={`${props.redirectTo}/${row.original.id}`}>
+                        !in_link && index == 1 && props.redirectTo && <Link to={`${props.redirectTo}/${row.original.id}`}>
                           {cell.render('Cell')}
                         </Link>
                       }
@@ -70,7 +70,7 @@ const TableData = (props) => {
                       }
 
                       {
-                        ((index != 1 && index != location) || !props.redirectTo) && cell.render('Cell')
+                        (((!in_link ? index != 1 : true) && index != location) || !props.redirectTo) && cell.render('Cell')
                       }
 
 
