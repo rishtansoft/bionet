@@ -190,6 +190,35 @@ function ClassesCross() {
         setCurrentDate(formatDate(e));
     }
 
+    const filter=()=>{
+        const sendData={
+            viloyat_id:'',
+            tuman_id:''
+        }
+        fetch(`${process.env.REACT_APP_API_URL}api/v1/davomatrespisinf/`, {
+            method: "POST",
+            headers: {
+                Authorization: `Token ${testToken}`,
+                'Content-type': 'application/json',
+            },
+            body: JSON.stringify(sendData)
+        })
+            .then((res) => res.json())
+            .then((d) => {
+                const data = d.map((el) => {
+                    return {
+                        label: el[0].tuman,
+                        value: el[0].tuman_id
+                    }
+                }).filter((el) => el && el)
+                setDistrictsDataList(data)
+            })
+            .catch(err => {
+                console.log(err);
+            });
+    
+    }
+
     useEffect(() => {
         if (apiData.length > 0) {
             let res = [];
