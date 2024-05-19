@@ -1,10 +1,20 @@
-import React, { useState } from "react";
-import { Input, Button, Select, FormItem, FormContainer, DatePicker } from "components/ui";
+import React, { useState, useEffect } from "react";
+import {
+  Input,
+  Button,
+  Select,
+  FormItem,
+  FormContainer,
+  DatePicker,
+  toast,
+  Notification,
+} from "components/ui";
 import { useMask } from "@react-input/mask";
 import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
+import dayjs from "dayjs";
 
-const UpdateStudentModal = ({updateFun, closeFun}) => {
+const UpdateStudentModal = ({ updateFun, closeFun, item }) => {
   const user = useSelector((state) => state.auth.user);
   const token = useSelector((state) => state?.auth?.session?.token);
   const params = useParams();
@@ -24,6 +34,80 @@ const UpdateStudentModal = ({updateFun, closeFun}) => {
   const [relativePhoneNumber, setRelativePhoneNumber] = useState("");
   const [errorRelativeNumber, setErrorRelativeNumber] = useState(false);
   const [disabledButton, setDisabledButton] = useState(false);
+
+  const handlePutPhoneNumber = (event) => {
+    const formattedText = event
+      .replace(/(\d{2})(\d{3})(\d{2})(\d{2})/, "+998 $1 $2 $3 $4")
+      .trim();
+    return formattedText;
+  };
+
+  useEffect(() => {
+    fetch(
+      `${process.env.REACT_APP_API_URL}api/v1/getpupil/${params.student_id}`,
+      {
+        method: "GET",
+        headers: {
+          Authorization: `Token ${token}`,
+          "Content-type": "application/json",
+        },
+      }
+    )
+      .then((res) => res.json())
+      .then((arg) => {
+        if (arg && arg.length > 0) {
+          const findStudent = arg.find((e) => e.id == item.id);
+          if (findStudent) {
+            setFullName(findStudent.name ? findStudent.name : "");
+            setGender(
+              findStudent.jinsi == "ERKAK"
+                ? { value: "ERKAK", label: "Erkak" }
+                : { value: "AYOL", label: "Ayol" }
+            );
+            setBirthday(
+              findStudent.tug_sana && findStudent.tug_sana !== null
+                ? dayjs(findStudent.tug_sana, "YYYY-MM-DD").toDate()
+                : null
+            );
+            setBirthdayFilter(
+              findStudent.tug_sana && findStudent.tug_sana !== null
+                ? findStudent.tug_sana
+                : ""
+            );
+            setAddress(
+              findStudent.address && findStudent.address !== null
+                ? findStudent.address
+                : ""
+            );
+            setRelative(
+              findStudent.qarindoshi && findStudent.qarindoshi !== null
+                ? findStudent.qarindoshi
+                : ""
+            );
+            setRelativePhoneNumber(
+              findStudent?.qarindoshi_phone !== null &&
+                findStudent?.qarindoshi_phone?.startsWith("+998")
+                ? handlePutPhoneNumber(findStudent?.qarindoshi_phone?.slice(4))
+                : ""
+            );
+            setPhoneNumber(
+              findStudent?.phone !== null &&
+                findStudent?.phone?.startsWith("+998")
+                ? handlePutPhoneNumber(findStudent?.phone?.slice(4))
+                : ""
+            );
+          }
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
+
+  function removeSpaces(inputString) {
+    return inputString.replace(/\s/g, "");
+  }
+
   const inputRef = useMask({
     mask: "+998 __ ___ __ __",
     replacement: { _: /\d/ },
@@ -60,7 +144,7 @@ const UpdateStudentModal = ({updateFun, closeFun}) => {
 
   const changeBirthday = (e) => {
     setBirthday(e);
-    setBirthdayFilter(dayjs(e).format('YYYY-MM-DD'))
+    setBirthdayFilter(dayjs(e).format("YYYY-MM-DD"));
     setErrorBirthday(false);
   };
 
@@ -121,33 +205,35 @@ const UpdateStudentModal = ({updateFun, closeFun}) => {
       relative &&
       !/^\s*$/.test(relative) &&
       relativePhoneNumber &&
-      relativePhoneNumber.length === 17 && birthday
+      relativePhoneNumber.length === 17 &&
+      birthday
     ) {
       const sendData = {
+        id: item.id,
         name: fullName,
         jinsi: gender.value,
         tug_sana: birthdayFilter,
         address: address,
-        phone: phoneNumber,
+        phone: removeSpaces(phoneNumber),
         image: null,
         person_id: null,
         qarindoshi: relative,
-        qarindoshi_phone: relativePhoneNumber,
-        sinf: params.student_id
-    }
-    fetch(
-      `${process.env.REACT_APP_API_URL}api/v1/addpupil/`, // params.student_id is not student ID, this is class ID
-      {
-        method: "POST",
-        headers: {
-          Authorization: `Token ${token}`,
-          "Content-type": "application/json",
-        },
-        body: JSON.stringify(sendData)
-      }
-    )
-      .then((res) => {
-        if (res.status == 200 || 201) {
+        qarindoshi_phone: removeSpaces(relativePhoneNumber),
+        sinf: params.student_id,
+      };
+      fetch(
+        `${process.env.REACT_APP_API_URL}api/v1/editpupil/`, // params.student_id is not student ID, this is class ID
+        {
+          method: "PUT",
+          headers: {
+            Authorization: `Token ${token}`,
+            "Content-type": "application/json",
+          },
+          body: JSON.stringify(sendData),
+        }
+      )
+        .then((res) => {
+          if (res.status == 200 || 201) {
             toast.push(
               <Notification
                 title={"Muvaffaqiyatli"}
@@ -180,10 +266,10 @@ const UpdateStudentModal = ({updateFun, closeFun}) => {
             );
             setDisabledButton(false);
           }
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     } else {
       if (!fullName || /^\s*$/.test(fullName)) {
         setErrorFullName(true);
@@ -226,26 +312,26 @@ const UpdateStudentModal = ({updateFun, closeFun}) => {
   return (
     <div className="flex flex-col gap-4">
       <h3 className="text-center">O'quvchi ma'lumotlarini tahrirlash</h3>
-        <FormContainer className="mt-4 grid grid-cols-3 gap-2">
-          <FormItem
-            label={"Ism Familiyasi"}
-            invalid={errorFullName}
-            errorMessage="Maydonni to'ldiring"
-          >
-            <Input
-              placeholder="Ism Familiyasi"
-              value={fullName}
-              onChange={changeFullName}
-            />
-          </FormItem>
-          <FormItem
-            invalid={errorGender}
-            label={"Jinsi"}
-            errorMessage="Maydonni to'ldiring"
-          >
-            <Select options={genders} value={gender} onChange={changeGender} />
-          </FormItem>
-          <FormItem
+      <FormContainer className="mt-4 grid grid-cols-3 gap-2">
+        <FormItem
+          label={"Ism Familiyasi"}
+          invalid={errorFullName}
+          errorMessage="Maydonni to'ldiring"
+        >
+          <Input
+            placeholder="Ism Familiyasi"
+            value={fullName}
+            onChange={changeFullName}
+          />
+        </FormItem>
+        <FormItem
+          invalid={errorGender}
+          label={"Jinsi"}
+          errorMessage="Maydonni to'ldiring"
+        >
+          <Select options={genders} value={gender} onChange={changeGender} />
+        </FormItem>
+        <FormItem
           label={"Tug'ilgan sana"}
           invalid={errorBirthday}
           errorMessage="Maydonni to'ldiring"
@@ -257,59 +343,64 @@ const UpdateStudentModal = ({updateFun, closeFun}) => {
             onChange={changeBirthday}
           />
         </FormItem>
-          <FormItem
-            label={"Manzil"}
-            invalid={errorAddress}
-            errorMessage="Maydonni to'ldiring"
-          >
-            <Input
-              placeholder="Manzil"
-              value={address}
-              onChange={changeAddress}
-            />
-          </FormItem>
-          <FormItem
-            label={"Telefon raqami"}
-            invalid={errorPhoneNumber}
-            errorMessage="Maydonni to'ldiring"
-          >
-            <Input
-              ref={inputPhoneRef}
-              type="text"
-              placeholder="Telefon raqami"
-              value={phoneNumber}
-              onChange={changePhoneNumber}
-              onPaste={handlePastePhone}
-            />
-          </FormItem>
-          <FormItem
-            label={"Qarindoshi"}
-            invalid={errorRelative}
-            errorMessage="Maydonni to'ldiring"
-          >
-            <Input
-              placeholder="Qarindoshi"
-              value={relative}
-              onChange={changeRelative}
-            />
-          </FormItem>
-          <FormItem
-            label={"Qarindoshi telefon raqami"}
-            invalid={errorRelativeNumber}
-            errorMessage="Maydonni to'ldiring"
-          >
-            <Input
-              ref={inputRef}
-              placeholder="Qarindoshi telefon raqami"
-              value={relativePhoneNumber}
-              onChange={changeRelativeNumber}
-              onPaste={handlePasteRelativePhone}
-            />
-          </FormItem>
-        </FormContainer>
-        <Button color="indigo-500" variant="solid" onClick={addStudentFun} loading={disabledButton}>
-          Qo'shish
-        </Button>
+        <FormItem
+          label={"Manzil"}
+          invalid={errorAddress}
+          errorMessage="Maydonni to'ldiring"
+        >
+          <Input
+            placeholder="Manzil"
+            value={address}
+            onChange={changeAddress}
+          />
+        </FormItem>
+        <FormItem
+          label={"Telefon raqami"}
+          invalid={errorPhoneNumber}
+          errorMessage="Maydonni to'ldiring"
+        >
+          <Input
+            ref={inputPhoneRef}
+            type="text"
+            placeholder="Telefon raqami"
+            value={phoneNumber}
+            onChange={changePhoneNumber}
+            onPaste={handlePastePhone}
+          />
+        </FormItem>
+        <FormItem
+          label={"Qarindoshi"}
+          invalid={errorRelative}
+          errorMessage="Maydonni to'ldiring"
+        >
+          <Input
+            placeholder="Qarindoshi"
+            value={relative}
+            onChange={changeRelative}
+          />
+        </FormItem>
+        <FormItem
+          label={"Qarindoshi telefon raqami"}
+          invalid={errorRelativeNumber}
+          errorMessage="Maydonni to'ldiring"
+        >
+          <Input
+            ref={inputRef}
+            placeholder="Qarindoshi telefon raqami"
+            value={relativePhoneNumber}
+            onChange={changeRelativeNumber}
+            onPaste={handlePasteRelativePhone}
+          />
+        </FormItem>
+      </FormContainer>
+      <Button
+        color="indigo-500"
+        variant="solid"
+        onClick={addStudentFun}
+        loading={disabledButton}
+      >
+        Saqlash
+      </Button>
     </div>
   );
 };

@@ -9,6 +9,7 @@ import DeleteModal from "views/classes/DeleteModal";
 import UpdateTeacherModal from "views/teachers/UpdateTeacher";
 import UpdateStudentModal from "views/students/UpdateStudentModal";
 import DeleteTeacherModal from "views/teachers/DeleteTeacher";
+import DeleteStudentModal from "views/students/DeleteStudent";
 import { useSelector } from "react-redux";
 
 const { Tr, Th, Td, THead, TBody, Sorter } = Table;
@@ -69,6 +70,10 @@ const TableData = (props) => {
     }
     if (isTeacher) {
       setActionName("teacher");
+      setSelectedItem(arg);
+    }
+    if (isStudent) {
+      setActionName("student");
       setSelectedItem(arg);
     }
     setDeleteModal(true);
@@ -279,6 +284,15 @@ const TableData = (props) => {
         {actionName == "teacher" && (
           <Dialog isOpen={deleteModal} onClose={closeDeleteModal}>
             <DeleteTeacherModal
+              item={selectedItem}
+              updateFun={updateData}
+              closeFun={closeDeleteModal}
+            />
+          </Dialog>
+        )}
+        {actionName == "student" && (
+          <Dialog isOpen={deleteModal} onClose={closeDeleteModal}>
+            <DeleteStudentModal
               item={selectedItem}
               updateFun={updateData}
               closeFun={closeDeleteModal}

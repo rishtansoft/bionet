@@ -30,7 +30,6 @@ const UpdateTeacherModal = ({ updateFun, closeFun, item }) => {
   const [birthdayFilter, setBirthdayFilter] = useState("");
   const [errorBirthday, setErrorBirthday] = useState(false);
   const [disabledButton, setDisabledButton] = useState(false);
-  console.log(32, item);
   const handlePutPhoneNumber = (event) => {
     const formattedText = event
       .replace(/(\d{2})(\d{3})(\d{2})(\d{2})/, "+998 $1 $2 $3 $4")

@@ -1,8 +1,9 @@
 import React, { useState } from "react";
-import { Input, Button, Select, FormItem, FormContainer, DatePicker } from "components/ui";
+import { Input, Button, Select, FormItem, FormContainer, DatePicker, toast, Notification } from "components/ui";
 import { useMask } from "@react-input/mask";
 import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
+import dayjs from "dayjs";
 
 const AddStudentModal = ({updateFun, closeFun}) => {
   const user = useSelector((state) => state.auth.user);
@@ -24,6 +25,11 @@ const AddStudentModal = ({updateFun, closeFun}) => {
   const [relativePhoneNumber, setRelativePhoneNumber] = useState("");
   const [errorRelativeNumber, setErrorRelativeNumber] = useState(false);
   const [disabledButton, setDisabledButton] = useState(false);
+
+  function removeSpaces(inputString) {
+    return inputString.replace(/\s/g, '');
+  }
+
   const inputRef = useMask({
     mask: "+998 __ ___ __ __",
     replacement: { _: /\d/ },
@@ -60,7 +66,7 @@ const AddStudentModal = ({updateFun, closeFun}) => {
 
   const changeBirthday = (e) => {
     setBirthday(e);
-    setBirthdayFilter(dayjs(e).format('YYYY-MM-DD'))
+    setBirthdayFilter(dayjs(e).format("YYYY-MM-DD"));
     setErrorBirthday(false);
   };
 
@@ -107,7 +113,6 @@ const AddStudentModal = ({updateFun, closeFun}) => {
     }
     event.preventDefault(); // Prevent the default paste behavior
   }
-
   const addStudentFun = (e) => {
     e.preventDefault();
     if (
@@ -128,11 +133,11 @@ const AddStudentModal = ({updateFun, closeFun}) => {
         jinsi: gender.value,
         tug_sana: birthdayFilter,
         address: address,
-        phone: phoneNumber,
+        phone: removeSpaces(phoneNumber),
         image: null,
         person_id: null,
         qarindoshi: relative,
-        qarindoshi_phone: relativePhoneNumber,
+        qarindoshi_phone: removeSpaces(relativePhoneNumber),
         sinf: params.student_id
     }
     fetch(

@@ -23,7 +23,7 @@ function Students() {
       accessor: "studentsCount",
     },
   ]);
-  const [redirectTo, setRedirectTo] = useState('');
+  const [redirectTo, setRedirectTo] = useState("");
 
   const user = useSelector((state) => state.auth.user);
   function getTodaysDate() {
@@ -45,9 +45,16 @@ function Students() {
   const params = useParams();
   const navigate = useNavigate();
   useEffect(() => {
-    if (user.user_type == 'RESPUBLIKA') {
+    if (user.user_type == "RESPUBLIKA") {
       setRedirectTo(
-        '/republic-regions/' + params.region_id + '/' + params.district_id + '/' + params.school_id + '/' + params.student_id
+        "/republic-regions/" +
+          params.region_id +
+          "/" +
+          params.district_id +
+          "/" +
+          params.school_id +
+          "/" +
+          params.student_id
       );
     }
   }, []);
@@ -61,21 +68,21 @@ function Students() {
     if (token && params.student_id) {
       const sendData = {
         sinf_id: params.student_id,
-        sana: currentDate
-      }
+        sana: currentDate,
+      };
       fetch(`${process.env.REACT_APP_API_URL}api/v1/davomatsinf/`, {
         method: "POST",
         headers: {
           Authorization: `Token ${token}`,
-          'Content-type': 'application/json',
+          "Content-type": "application/json",
         },
-        body: JSON.stringify(sendData)
+        body: JSON.stringify(sendData),
       })
         .then((res) => res.json())
         .then((d) => {
           setApiData(d);
         })
-        .catch(err => {
+        .catch((err) => {
           console.log(err);
         });
     }
@@ -84,22 +91,22 @@ function Students() {
     if (token && params.student_id && dataUpdate) {
       const sendData = {
         sinf_id: params.student_id,
-        sana: currentDate
-      }
+        sana: currentDate,
+      };
       fetch(`${process.env.REACT_APP_API_URL}api/v1/davomatsinf/`, {
         method: "POST",
         headers: {
           Authorization: `Token ${token}`,
-          'Content-type': 'application/json',
+          "Content-type": "application/json",
         },
-        body: JSON.stringify(sendData)
+        body: JSON.stringify(sendData),
       })
         .then((res) => res.json())
         .then((d) => {
           setApiData(d);
           setDataUpdate(false);
         })
-        .catch(err => {
+        .catch((err) => {
           console.log(err);
         });
     }
@@ -122,6 +129,7 @@ function Students() {
           number: index + 1,
           name: el[0].pupilname,
           time: el[0].kelganvaqti,
+          id: el[0].pupil_id,
         };
 
         res.push(reg);
@@ -133,28 +141,30 @@ function Students() {
 
   const addModalFun = (e) => {
     e.preventDefault();
-    setOpenAddModal(true)
-  }
+    setOpenAddModal(true);
+  };
 
   const updateData = () => {
     setDataUpdate(true);
-  }
+  };
 
   const closeAddModal = () => {
-    setOpenAddModal(false)
-  }
+    setOpenAddModal(false);
+  };
 
   return (
     <div>
       <h2 className="mb-3">O'quvchilar bo'yicha</h2>
-      <div className="flex justify-end mb-4">
-        <Button size="sm" onClick={addModalFun}>
-          Qo&apos;shish
-        </Button>
-        <Dialog isOpen={openAddModal} onClose={closeAddModal} width={700}>
-          <AddStudentModal closeFun={closeAddModal} updateFun={updateData}/>
-        </Dialog>
-      </div>
+      {user.user_type == "MAKTAB" && (
+        <div className="flex justify-end mb-4">
+          <Button size="sm" onClick={addModalFun}>
+            Qo&apos;shish
+          </Button>
+          <Dialog isOpen={openAddModal} onClose={closeAddModal} width={700}>
+            <AddStudentModal closeFun={closeAddModal} updateFun={updateData} />
+          </Dialog>
+        </div>
+      )}
       <div className="date-filter text-right mb-4 flex justify-end">
         <DatePicker
           value={currentDate}
@@ -163,7 +173,11 @@ function Students() {
           className="w-1/4"
         />
       </div>
-      <TableData columns={columns} data={data}></TableData>
+      <TableData
+        columns={columns}
+        data={data}
+        updateData={updateData}
+      ></TableData>
     </div>
   );
 }
