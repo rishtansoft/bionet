@@ -1,40 +1,40 @@
-import React, { useState, useEffect } from 'react';
-import TableData from 'components/table/TableData';
-import { useParams, useNavigate } from 'react-router-dom';
-import { useSelector } from 'react-redux';
-import { DatePicker } from 'components/ui';
+import React, { useState, useEffect } from "react";
+import TableData from "components/table/TableData";
+import { useParams, useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { DatePicker } from "components/ui";
 import { ExportToExcelStudent } from '../excelConvert'
 
 function Schools() {
   const [currentDate, setCurrentDate] = useState(null);
   const [columns] = useState([
     {
-      Header: 'N#',
-      accessor: 'number',
+      Header: "N#",
+      accessor: "number",
     },
     {
-      Header: 'Tuman nomi',
-      accessor: 'name',
+      Header: "Maktab nomi",
+      accessor: "name",
     },
     {
-      Header: 'O`quvchilar soni',
-      accessor: 'studentsCount',
+      Header: "O`quvchilar soni",
+      accessor: "studentsCount",
     },
     {
-      Header: 'Davomat',
-      accessor: 'arrivalsCount',
+      Header: "Davomat",
+      accessor: "arrivalsCount",
     },
     {
-      Header: 'Davomat (%)',
-      accessor: 'arrivalsCountPercent',
+      Header: "Davomat (%)",
+      accessor: "arrivalsCountPercent",
     },
     {
-      Header: 'Kelmaganlar soni',
-      accessor: 'absenteesCount',
+      Header: "Kelmaganlar soni",
+      accessor: "absenteesCount",
     },
     {
-      Header: 'Kelmaganlar soni (%)',
-      accessor: 'absenteesCountPercent',
+      Header: "Kelmaganlar soni (%)",
+      accessor: "absenteesCountPercent",
     },
   ]);
   const [redirectTo, setRedirectTo] = useState('');
@@ -42,16 +42,16 @@ function Schools() {
   function getTodaysDate() {
     const today = new Date();
     const year = today.getFullYear();
-    const month = String(today.getMonth() + 1).padStart(2, '0');
-    const day = String(today.getDate()).padStart(2, '0');
+    const month = String(today.getMonth() + 1).padStart(2, "0");
+    const day = String(today.getDate()).padStart(2, "0");
     return `${year}-${month}-${day}`;
   }
 
   function formatDate(inputDate) {
     const date = new Date(inputDate);
     const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, '0');
-    const day = String(date.getDate()).padStart(2, '0');
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const day = String(date.getDate()).padStart(2, "0");
     return `${year}-${month}-${day}`;
   }
 
@@ -99,7 +99,6 @@ function Schools() {
   const [apiData, setApiData] = useState([]);
 
   const token = useSelector((state) => state?.auth?.session?.token);
-
   useEffect(() => {
     if (token && params.district_id) {
       const sendData = {
@@ -154,7 +153,6 @@ function Schools() {
       setData(res);
     }
   }, [apiData]);
-
   return (
     <div>
       <h2 className='mb-3'>Maktablar bo'yicha</h2>
