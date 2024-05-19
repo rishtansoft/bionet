@@ -58,6 +58,8 @@ function Schools() {
   const params = useParams();
   const navigate = useNavigate();
   useEffect(() => {
+    console.log("params", params);
+    console.log("user", user);
     if (user.user_type == 'TUMAN') {
       params.district_id = user.tumanshahar;
       params.region_id = user.viloyat_id;
@@ -81,7 +83,7 @@ function Schools() {
 
     if (user.user_type == 'VILOYAT') {
       setRedirectTo(
-        '/regions-regions/' + params.region_id + '/' + params.district_id
+        '/region-regions/' + params.district_id
       );
     }
 

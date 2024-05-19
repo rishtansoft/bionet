@@ -60,7 +60,7 @@ function Districts() {
     }
 
     if(user.user_type == 'VILOYAT') {
-      setRedirectTo('/region-regions/' + params.region_id)
+      setRedirectTo('/region-regions')
     }
 
     if(user.user_type == 'TUMAN') {
@@ -105,6 +105,7 @@ function Districts() {
       })
         .then((res) => res.json())
         .then((d) => {
+          console.log(108, d);
           setApiData(d);
         })
         .catch(err => {

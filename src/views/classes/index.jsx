@@ -72,7 +72,7 @@ function Classes() {
     }
 
     if(user.user_type == 'VILOYAT') {
-      setRedirectTo('/region-regions/' + params.region_id)
+      setRedirectTo('/region-regions/' + params.district_id + '/' + params.school_id)
     }
 
     if(user.user_type == 'TUMAN') {
