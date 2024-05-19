@@ -3,6 +3,7 @@ import TableData from 'components/table/TableData';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { DatePicker } from 'components/ui';
+import { ExportToExcelStudent } from '../excelConvert'
 
 function Schools() {
   const [currentDate, setCurrentDate] = useState(null);
@@ -157,7 +158,13 @@ function Schools() {
   return (
     <div>
       <h2 className='mb-3'>Maktablar bo'yicha</h2>
-      <div className='date-filter text-right mb-4 flex justify-end'>
+      <div className='date-filter text-right mb-4 flex justify-end' style={{
+        alignItems: 'center'
+      }}>
+        <ExportToExcelStudent
+          apiData={data}
+          headers={columns}
+        />
         <DatePicker
           value={currentDate}
           onChange={handleChangeDate}

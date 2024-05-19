@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import TableData from 'components/table/TableData';
 import { useSelector } from 'react-redux';
 import { DatePicker, Select, Button } from 'components/ui';
-
+import { ExportToExcelStudent } from '../excelConvert'
 const class_list = [
 	{
 		value: '1',
@@ -146,7 +146,7 @@ function ClassesCross() {
 			fetch(`${process.env.REACT_APP_API_URL}api/v1/davomattuman/`, {
 				method: "POST",
 				headers: {
-					Authorization: `Token ${testToken}`,
+					Authorization: `Token ${token}`,
 					'Content-type': 'application/json',
 				},
 				body: JSON.stringify(sendData)
@@ -190,7 +190,7 @@ function ClassesCross() {
 		fetch(`${process.env.REACT_APP_API_URL}api/v1/davomatrespsinf/`, {
 			method: "POST",
 			headers: {
-				Authorization: `Token ${testToken}`,
+				Authorization: `Token ${token}`,
 				'Content-type': 'application/json',
 			},
 			body: JSON.stringify(sendData)
@@ -345,7 +345,13 @@ function ClassesCross() {
 
 			</div>
 
-			<div className='date-filter text-right mb-4 flex justify-end'>
+			<div className='date-filter text-right mb-4 flex justify-end' style={{
+				alignItems: 'center'
+			}}>
+				<ExportToExcelStudent
+					apiData={data}
+					headers={columns}
+				/>
 				<DatePicker
 					value={currentDate}
 					onChange={handleChangeDate}

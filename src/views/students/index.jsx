@@ -1,9 +1,9 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import TableData from 'components/table/TableData';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { DatePicker } from 'components/ui';
-
+import { ExportToExcelStudent } from '../excelConvert'
 function Students() {
   const [currentDate, setCurrentDate] = useState(null);
   const [columns] = useState([
@@ -19,7 +19,7 @@ function Students() {
       Header: 'Kelgan vaqti',
       accessor: 'studentsCount',
     },
-    
+
   ]);
   const [redirectTo, setRedirectTo] = useState('');
 
@@ -111,11 +111,17 @@ function Students() {
       setData(res);
     }
   }, [apiData]);
-  
+
   return (
     <div>
       <h2 className='mb-3'>O'quvchilar bo'yicha</h2>
-      <div className='date-filter text-right mb-4 flex justify-end'>
+      <div className='date-filter text-right mb-4 flex justify-end' style={{
+        alignItems: 'center'
+      }}>
+        <ExportToExcelStudent
+          apiData={data}
+          headers={columns}
+        />
         <DatePicker
           value={currentDate}
           onChange={handleChangeDate}

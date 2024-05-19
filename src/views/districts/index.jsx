@@ -3,7 +3,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import TableData from 'components/table/TableData';
 import { useSelector } from 'react-redux';
 import { DatePicker } from 'components/ui';
-
+import { ExportToExcelStudent } from '../excelConvert'
 function Districts() {
   const [currentDate, setCurrentDate] = useState(null);
   const [columns] = useState([
@@ -45,7 +45,7 @@ function Districts() {
   const user = useSelector((state) => state.auth.user);
   const params = useParams();
   const navigate = useNavigate();
-  
+
   useEffect(() => {
     if (user.user_type == 'VILOYAT') {
       params.region_id = user.viloyat_id;
@@ -55,15 +55,15 @@ function Districts() {
       navigate('/');
     }
 
-    if(user.user_type == 'RESPUBLIKA') {
+    if (user.user_type == 'RESPUBLIKA') {
       setRedirectTo('/republic-regions/' + params.region_id)
     }
 
-    if(user.user_type == 'VILOYAT') {
+    if (user.user_type == 'VILOYAT') {
       setRedirectTo('/region-regions')
     }
 
-    if(user.user_type == 'TUMAN') {
+    if (user.user_type == 'TUMAN') {
       setRedirectTo('/district-district/' + params.region_id)
     }
   }, []);
@@ -149,7 +149,13 @@ function Districts() {
   return (
     <div>
       <h2 className='mb-3'>Tumanlar bo'yicha</h2>
-      <div className='date-filter text-right mb-4 flex justify-end'>
+      <div className='date-filter text-right mb-4 flex justify-end' style={{
+        alignItems: 'center'
+      }}>
+        <ExportToExcelStudent
+          apiData={data}
+          headers={columns}
+        />
         <DatePicker
           value={currentDate}
           onChange={handleChangeDate}
@@ -162,7 +168,7 @@ function Districts() {
         columns={columns}
         data={data}
         is_location={5}
-        
+
       ></TableData>
     </div>
   );

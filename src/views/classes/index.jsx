@@ -3,7 +3,7 @@ import TableData from 'components/table/TableData';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { DatePicker } from 'components/ui';
-
+import { ExportToExcelStudent } from '../excelConvert'
 function Classes() {
   const [currentDate, setCurrentDate] = useState(null);
   const [columns] = useState([
@@ -12,7 +12,7 @@ function Classes() {
       accessor: 'number',
     },
     {
-      Header: 'Tuman nomi',
+      Header: 'Sinf nomi',
       accessor: 'name',
     },
     {
@@ -69,19 +69,19 @@ function Classes() {
       navigate('/');
     }
 
-    if(user.user_type == 'RESPUBLIKA') {
+    if (user.user_type == 'RESPUBLIKA') {
       setRedirectTo('/republic-regions/' + params.region_id + '/' + params.district_id + '/' + params.school_id)
     }
 
-    if(user.user_type == 'VILOYAT') {
+    if (user.user_type == 'VILOYAT') {
       setRedirectTo('/region-regions/' + params.district_id + '/' + params.school_id)
     }
 
-    if(user.user_type == 'TUMAN') {
+    if (user.user_type == 'TUMAN') {
       setRedirectTo('/district-district/' + params.district_id + '/' + params.school_id)
     }
 
-    if(user.user_type == 'MAKTAB') {
+    if (user.user_type == 'MAKTAB') {
       setRedirectTo('/school-school/' + params.school_id)
     }
   }, []);
@@ -151,7 +151,13 @@ function Classes() {
   return (
     <div>
       <h2 className='mb-3'>Sinflar bo'yicha</h2>
-      <div className='date-filter text-right mb-4 flex justify-end'>
+      <div className='date-filter text-right mb-4 flex justify-end' style={{
+        alignItems: 'center'
+      }}>
+        <ExportToExcelStudent
+          apiData={data}
+          headers={columns}
+        />
         <DatePicker
           value={currentDate}
           onChange={handleChangeDate}
