@@ -17,7 +17,7 @@ const districtDistrictRoute = [
     },
     {
         key: 'districtDistrictStudents.districtDistrictStudents',
-        path: `${DISTRICT_DISTRICT_PATH}/:district_id/:school_id/:class_id`,
+        path: `${DISTRICT_DISTRICT_PATH}/:district_id/:school_id/:student_id`,
         component: React.lazy(() => import('views/students')),
         authority: [ADMIN],
     }

@@ -58,8 +58,6 @@ function Schools() {
   const params = useParams();
   const navigate = useNavigate();
   useEffect(() => {
-    console.log("params", params);
-    console.log("user", user);
     if (user.user_type == 'TUMAN') {
       params.district_id = user.tumanshahar;
       params.region_id = user.viloyat_id;
