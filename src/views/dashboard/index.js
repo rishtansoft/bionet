@@ -119,11 +119,11 @@ const CrmDashboard = () => {
             <Loading loading={false}>
                 <Statistic data={statisticData} />
                 <div className="grid grid-cols-1 xl:grid-cols-7 gap-4">
-                    {/* <LeadByCountries
+                    <LeadByCountries
                         className="xl:col-span-5"
                         data={leadByRegionData}
-                    /> */}
-                    <MapUzb className = "xl:col-span-5" ></MapUzb>
+                    />
+                    {/* <MapUzb className = "xl:col-span-5" ></MapUzb> */}
                     <EmailSent className="xl:col-span-2" data={emailSentData} />
                 </div>
 
