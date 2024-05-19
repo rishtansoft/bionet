@@ -26,6 +26,8 @@ import acrossClassDistrictRoute from './acrossClassDistrictRoute';
 import dashboardSchoolRoute from './dashboardSchoolRoute';
 import schoolSchoolRoute from './schoolSchoolRoute';
 import acrossClassSchoolRoute from './acrossClassSchoolRoute';
+import teacherSchoolRoute from './teacherSchoolRoute';
+
 export const publicRoutes = [...authRoute, ...homeRoute]
 
 export const protectedRoutes = [
@@ -74,5 +76,6 @@ export const protectedRoutesDistricts = [
 export const protectedRoutesSchools = [
     ...dashboardSchoolRoute,
     ...schoolSchoolRoute,
-    ...acrossClassSchoolRoute
+    ...acrossClassSchoolRoute,
+    ...teacherSchoolRoute,
 ]

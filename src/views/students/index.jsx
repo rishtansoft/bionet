@@ -43,9 +43,11 @@ function Students() {
   const params = useParams();
   const navigate = useNavigate();
   useEffect(() => {
-    if (!params.school_id) {
-      navigate('/');
-    }
+    console.log('params', params);
+    console.log('user', user);
+    // if (!params.school_id) {
+    //   navigate('/');
+    // }
 
     if (user.user_type == 'RESPUBLIKA') {
       setRedirectTo(

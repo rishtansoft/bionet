@@ -60,6 +60,7 @@ const navigationIcon = {
     regions: <HiLibrary />,
     dashboard: <HiHome />,
     acrossClass: <HiAcademicCap />,
+    teacher: <HiOutlineUserAdd />
 
 }
 

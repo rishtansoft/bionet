@@ -25,3 +25,6 @@ export const ACROSS_CLASS_DISTRICT_PATH = '/district-across-class'
 export const DASHBOARD_SCHOOL_PATH = '/school-dashboard'
 export const SCHOOL_SCHOOL_PATH = '/school-school'
 export const ACROSS_CLASS_SCHOOL_PATH = '/school-across-class'
+export const TEACHER_SCHOOL_PATH = '/school-teacher'
+
+

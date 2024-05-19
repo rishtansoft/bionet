@@ -90,7 +90,7 @@ function Schools() {
     }
 
     if (user.user_type == 'MAKTAB') {
-      setRedirectTo('/school-school/' + params.school_id);
+      setRedirectTo('/school-school');
     }
   }, []);
 

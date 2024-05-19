@@ -59,6 +59,8 @@ function Classes() {
 
   const navigate = useNavigate();
   useEffect(() => {
+    console.log('user', user);
+    console.log('param', params);
     if (user.user_type == 'VILOYAT') {
       params.region_id = user.viloyat_id;
     }
@@ -77,6 +79,10 @@ function Classes() {
 
     if(user.user_type == 'TUMAN') {
       setRedirectTo('/district-district/' + params.district_id + '/' + params.school_id)
+    }
+
+    if(user.user_type == 'MAKTAB') {
+      setRedirectTo('/school-school/' + params.school_id)
     }
   }, []);
 
