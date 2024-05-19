@@ -1,64 +1,80 @@
-import React from 'react';
-import { ComposableMap, Geographies, Geography } from 'react-simple-maps';
-
-// GeoJSON data for Uzbekistan with complete coordinates
-const uzbekistanGeo = {
-  "type": "FeatureCollection",
-  "features": [
-    {
-      "type": "Feature",
-      "properties": {
-        "name": "Uzbekistan"
-      },
-      "geometry": {
-        "type": "Polygon",
-        "coordinates": [
-          [
-            [55.968191, 41.308642], // Start point (west-north)
-            [55.928057, 41.29596],
-            [55.905941, 41.300832],
-            [55.883789, 41.292178],
-            [55.868713, 41.283523],
-            [55.853637, 41.274868],
-            [55.838561, 41.266213],
-            [55.823485, 41.257558],
-            [55.808409, 41.248903], // West-South
-
-            [55.808409, 37.206323], // South-West
-            [62.242773, 37.206323], // South-East
-            [62.242773, 45.579132], // North-East
-
-            [55.968191, 45.579132], // North-West (close the polygon)
-            [55.968191, 41.308642] // Start point again for continuity
-          ]
-        ]
-      }
-    }
-  ]
-};
+import React, { useState } from 'react';
+import { MapContainer, TileLayer, GeoJSON } from 'react-leaflet';
+import 'leaflet/dist/leaflet.css';
 
 const UzbekistanMap = () => {
+  const [selectedProvince, setSelectedProvince] = useState(null);
+
+  // Sample data of provinces in Uzbekistan
+  const provincesData = {
+    type: 'FeatureCollection',
+    features: [
+      {
+        type: 'Feature',
+        properties: { name: 'Andijan' },
+        geometry: {
+          type: 'Polygon',
+          coordinates: [40.816935688714885, 72.2917567445066],
+        },
+      },
+
+      {
+        type: 'Feature',
+        properties: { name: 'Farg`ona' },
+        geometry: {
+          type: 'Polygon',
+          coordinates: [40.364343239650225, 71.77539935437892],
+        },
+      },
+
+      {
+        type: 'Feature',
+        properties: { name: 'Namangan' },
+        geometry: {
+          type: 'Polygon',
+          coordinates: [40.997528927630775, 71.6435634249846],
+        },
+      },
+      {
+        type: 'Feature',
+        properties: { name: 'Toshkent' },
+        geometry: {
+          type: 'Polygon',
+          coordinates: [41.29948441089361, 69.19361227607567],
+        },
+      },
+      // Add more provinces similarly
+    ],
+  };
+
+  const onEachProvince = (province, layer) => {
+    layer.on({
+      click: () => {
+        setSelectedProvince(province.properties.name);
+      },
+    });
+  };
+
   return (
-    <div style={{ width: '100%', height: '500px', margin: '0 auto' }}> {/* Added styles */}
-      <ComposableMap
-        projection="geoMercator"
-        projectionConfig={{ scale: 1200 }}
-        style={{ width: '100%', height: '500px' }} // Added inline styles
-      >
-        <Geographies geography={uzbekistanGeo}>
-          {({ geographies }) =>
-            geographies.map((geo) => (
-              <Geography
-                key={geo.rsmKey}
-                geography={geo}
-                fill="#D6D6DA"
-                stroke="#FFFFFF"
-                strokeWidth={0.5}
-              />
-            ))
-          }
-        </Geographies>
-      </ComposableMap>
+    <div style={{ height: '500px', width: '100%' }}>
+      <MapContainer center={[41.3775, 64.5853]} zoom={7} scrollWheelZoom={false}>
+        <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
+        <GeoJSON
+          data={provincesData}
+          style={() => ({
+            color: '#3388ff',
+            weight: 1,
+            fillColor: '#3388ff',
+            fillOpacity: 0.3,
+          })}
+          onEachFeature={onEachProvince}
+        />
+      </MapContainer>
+      {selectedProvince && (
+        <div style={{ textAlign: 'center', marginTop: '10px' }}>
+          {selectedProvince.toUpperCase()}
+        </div>
+      )}
     </div>
   );
 };

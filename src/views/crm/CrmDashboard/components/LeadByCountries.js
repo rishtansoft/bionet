@@ -44,8 +44,8 @@ const LeadByCountries = ({ data = [], className }) => {
             <h4>Statistika</h4>
             <div className="grid lg:grid-cols-3 gap-4">
                 <div className="lg:col-span-2 px-4">
-                    {/* <Region`Map  data={getMapColors(data)} valueSuffix="%" /> */}
-                    <img src={map} alt="" />
+                    <RegionMap  data={getMapColors(data)} valueSuffix="%" />
+                    {/* <img src={map} alt="" /> */}
                 </div>
                 <div className="flex flex-col justify-center px-4">
                     {data.map((item, index) => (
