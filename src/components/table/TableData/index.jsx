@@ -40,7 +40,6 @@ const TableData = (props) => {
         </THead>
         <TBody {...getTableBodyProps()}>
           {rows.map((row, i) => {
-            // console.log(38, row);
             prepareRow(row);
             return (
               <Tr {...row.getRowProps()} key={i}>
@@ -52,7 +51,6 @@ const TableData = (props) => {
                     }}>
 
                       {
-
                         index == 1 && props.redirectTo && <Link to={`${props.redirectTo}/${row.original.id}`}>
                           {cell.render('Cell')}
                         </Link>

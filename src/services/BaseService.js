@@ -23,7 +23,6 @@ BaseService.interceptors.request.use(
                 config.headers[REQUEST_HEADER_AUTH_KEY] = `${TOKEN_TYPE} ${accessToken}`;
             }
         }
-        console.log('Request config:', config); // Log qo'shildi
         return config;
     },
     (error) => {

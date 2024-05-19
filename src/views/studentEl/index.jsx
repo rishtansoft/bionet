@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, {useState, useEffect} from 'react';
 import TableData from 'components/table/TableData';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { DatePicker } from 'components/ui';
 
-function Classes() {
+function Students() {
   const [currentDate, setCurrentDate] = useState(null);
   const [columns] = useState([
     {
@@ -12,32 +12,17 @@ function Classes() {
       accessor: 'number',
     },
     {
-      Header: 'Tuman nomi',
+      Header: 'O`quvchi',
       accessor: 'name',
     },
     {
-      Header: 'O`quvchilar soni',
+      Header: 'Kelgan vaqti',
       accessor: 'studentsCount',
     },
-    {
-      Header: 'Davomat',
-      accessor: 'arrivalsCount',
-    },
-    {
-      Header: 'Davomat (%)',
-      accessor: 'arrivalsCountPercent',
-    },
-    {
-      Header: 'Kelmaganlar soni',
-      accessor: 'absenteesCount',
-    },
-    {
-      Header: 'Kelmaganlar soni (%)',
-      accessor: 'absenteesCountPercent',
-    },
+    
   ]);
-  const [redirectTo, setRedirectTo] = useState('');
 
+  const user = useSelector((state) => state.auth.user);
   function getTodaysDate() {
     const today = new Date();
     const year = today.getFullYear();
@@ -54,38 +39,13 @@ function Classes() {
     return `${year}-${month}-${day}`;
   }
 
-  const user = useSelector((state) => state.auth.user);
   const params = useParams();
-
   const navigate = useNavigate();
   useEffect(() => {
-    console.log('user', user);
-    console.log('param', params);
-    if (user.user_type == 'VILOYAT') {
-      params.region_id = user.viloyat_id;
-    }
-
     if (!params.school_id) {
       navigate('/');
     }
-
-    if(user.user_type == 'RESPUBLIKA') {
-      setRedirectTo('/republic-regions/' + params.region_id + '/' + params.district_id + '/' + params.school_id)
-    }
-
-    if(user.user_type == 'VILOYAT') {
-      setRedirectTo('/region-regions/' + params.district_id + '/' + params.school_id)
-    }
-
-    if(user.user_type == 'TUMAN') {
-      setRedirectTo('/district-district/' + params.district_id + '/' + params.school_id)
-    }
-
-    if(user.user_type == 'MAKTAB') {
-      setRedirectTo('/school-school/' + params.school_id)
-    }
   }, []);
-
 
   const [data, setData] = useState([]);
   const [apiData, setApiData] = useState([]);
@@ -93,12 +53,12 @@ function Classes() {
   const token = useSelector((state) => state?.auth?.session?.token);
 
   useEffect(() => {
-    if (token && params.school_id) {
+    if (token && params.student_id) {
       const sendData = {
-        maktab_id: params.school_id,
+        sinf_id: params.student_id,
         sana: currentDate
       }
-      fetch(`${process.env.REACT_APP_API_URL}api/v1/davomatmaktab/`, {
+      fetch(`${process.env.REACT_APP_API_URL}api/v1/davomatsinf/`, {
         method: "POST",
         headers: {
           Authorization: `Token ${token}`,
@@ -131,13 +91,8 @@ function Classes() {
       apiData.forEach((el, index) => {
         const reg = {
           number: index + 1,
-          name: el[0].sinfnomi,
-          studentsCount: el[0].bolasoni,
-          arrivalsCount: el[0].kelganlar,
-          arrivalsCountPercent: el[0].foizi,
-          absenteesCount: el[0].kelmaganlar,
-          absenteesCountPercent: 100 - el[0].foizi,
-          id: el[0].sinf_id,
+          name: el[0].pupilname,
+          time: el[0].kelganvaqti
         };
 
         res.push(reg);
@@ -147,21 +102,13 @@ function Classes() {
       setData(res);
     }
   }, [apiData]);
-
+  
   return (
     <div>
-      <h2 className='mb-3'>Sinflar bo'yicha</h2>
-      <div className='date-filter text-right mb-4 flex justify-end'>
-        <DatePicker
-          value={currentDate}
-          onChange={handleChangeDate}
-          placeholder={currentDate}
-          className='w-1/4'
-        />
-      </div>
-      <TableData redirectTo={redirectTo} is_location={9999} columns={columns} data={data}></TableData>
+      <h2 className='mb-3'>O'quvchi ma'lumotlari</h2>
+      
     </div>
   )
 }
 
-export default Classes
+export default Students

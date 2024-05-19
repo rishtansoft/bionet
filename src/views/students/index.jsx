@@ -21,7 +21,9 @@ function Students() {
     },
     
   ]);
+  const [redirectTo, setRedirectTo] = useState('');
 
+  const user = useSelector((state) => state.auth.user);
   function getTodaysDate() {
     const today = new Date();
     const year = today.getFullYear();
@@ -41,8 +43,16 @@ function Students() {
   const params = useParams();
   const navigate = useNavigate();
   useEffect(() => {
-    if (!params.id) {
-      navigate('/regions');
+    console.log('params', params);
+    console.log('user', user);
+    // if (!params.school_id) {
+    //   navigate('/');
+    // }
+
+    if (user.user_type == 'RESPUBLIKA') {
+      setRedirectTo(
+        '/republic-regions/' + params.region_id + '/' + params.district_id + '/' + params.school_id + '/' + params.student_id
+      );
     }
   }, []);
 
@@ -52,18 +62,15 @@ function Students() {
   const token = useSelector((state) => state?.auth?.session?.token);
 
   useEffect(() => {
-    if (token && params.id) {
-      const testToken = 'eb577759f4ca0dde05b02ea699892ee560920594';
+    if (token && params.student_id) {
       const sendData = {
-        // sinf_id: params.id,
-        // sana: currentDate
-        sinf_id: 6,
-        sana: "2024-05-10"
+        sinf_id: params.student_id,
+        sana: currentDate
       }
       fetch(`${process.env.REACT_APP_API_URL}api/v1/davomatsinf/`, {
         method: "POST",
         headers: {
-          Authorization: `Token ${testToken}`,
+          Authorization: `Token ${token}`,
           'Content-type': 'application/json',
         },
         body: JSON.stringify(sendData)

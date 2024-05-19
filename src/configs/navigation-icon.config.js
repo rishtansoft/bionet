@@ -25,7 +25,8 @@ import {
     HiOutlineVariable,
     HiOutlineCode,
     HiLibrary,
-    HiHome
+    HiHome,
+    HiAcademicCap
 } from 'react-icons/hi'
 
 const navigationIcon = {
@@ -57,7 +58,9 @@ const navigationIcon = {
     utilsDoc: <HiOutlineVariable />,
     changeLog: <HiOutlineCode />,
     regions: <HiLibrary />,
-    dashboard: <HiHome />
+    dashboard: <HiHome />,
+    acrossClass: <HiAcademicCap />,
+    teacher: <HiOutlineUserAdd />
 
 }
 
