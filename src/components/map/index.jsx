@@ -1,7 +1,9 @@
 import React from 'react'
 
-import 'assets/map/mapdata';
-import 'assets/map/countrymap';
+// import 'assets/map/mapdata';
+// import 'assets/map/countrymap';
+import '../../assets/map/mapdata'
+import '../../assets/map/countrymap'
 
 function Map() {
   return (
