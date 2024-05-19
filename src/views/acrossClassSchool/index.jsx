@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
 import TableData from 'components/table/TableData';
 import { useSelector } from 'react-redux';
 import { DatePicker } from 'components/ui';
 
-function Districts() {
+function Regions() {
   const [currentDate, setCurrentDate] = useState(null);
   const [columns] = useState([
     {
@@ -12,7 +11,7 @@ function Districts() {
       accessor: 'number',
     },
     {
-      Header: 'Tuman nomi',
+      Header: 'Viloyat nomi',
       accessor: 'name',
     },
     {
@@ -24,11 +23,11 @@ function Districts() {
       accessor: 'studentsCount',
     },
     {
-      Header: 'Kelganlar soni',
+      Header: 'Davomat',
       accessor: 'arrivalsCount',
     },
     {
-      Header: 'Kelganlar soni (%)',
+      Header: 'Davomat (%)',
       accessor: 'arrivalsCountPercent',
     },
     {
@@ -40,34 +39,6 @@ function Districts() {
       accessor: 'absenteesCountPercent',
     },
   ]);
-  const [redirectTo, setRedirectTo] = useState('');
-
-  const user = useSelector((state) => state.auth.user);
-  const params = useParams();
-  const navigate = useNavigate();
-  
-  useEffect(() => {
-    if (user.user_type == 'VILOYAT') {
-      // params.region_id = user.viloyat_id;
-      params.region_id = 6;
-    }
-
-    if (!params.region_id) {
-      navigate('/');
-    }
-
-    if(user.user_type == 'RESPUBLIKA') {
-      setRedirectTo('/republic-regions/' + params.region_id)
-    }
-
-    if(user.user_type == 'VILOYAT') {
-      setRedirectTo('/region-regions/' + params.region_id)
-    }
-
-    if(user.user_type == 'TUMAN') {
-      setRedirectTo('/district-district/' + params.region_id)
-    }
-  }, []);
 
   function getTodaysDate() {
     const today = new Date();
@@ -85,33 +56,30 @@ function Districts() {
     return `${year}-${month}-${day}`;
   }
 
+
   const [data, setData] = useState([]);
   const [apiData, setApiData] = useState([]);
 
   const token = useSelector((state) => state?.auth?.session?.token);
 
   useEffect(() => {
-    console.log(93, params);
-    if (token && params.region_id && currentDate) {
-      const sendData = {
-        viloyat_id: params.region_id,
-        sana: currentDate
-      }
-      fetch(`${process.env.REACT_APP_API_URL}api/v1/davomatviloyat/`, {
-        method: "POST",
+    if (token && currentDate) {
+      const req = {
+        sana: currentDate,
+      };
+
+      const testToken = 'eb577759f4ca0dde05b02ea699892ee560920594';
+      fetch(`${process.env.REACT_APP_API_URL}api/v1/davomatresp/`, {
+        method: 'POST',
         headers: {
-          Authorization: `Token ${token}`,
+          Authorization: `Token ${testToken}`,
           'Content-type': 'application/json',
         },
-        body: JSON.stringify(sendData)
+        body: JSON.stringify(req),
       })
         .then((res) => res.json())
         .then((d) => {
-
           setApiData(d);
-        })
-        .catch(err => {
-          console.log(err);
         });
     }
   }, [currentDate]);
@@ -131,43 +99,28 @@ function Districts() {
       apiData.forEach((el, index) => {
         const reg = {
           number: index + 1,
-          name: el[0].tuman,
+          name: el[0].viloyat,
+          districtCount: 19,
           schoolCount: el[0].maktabsoni,
           studentsCount: el[0].bolasoni,
           arrivalsCount: el[0].kelganlar,
           arrivalsCountPercent: el[0].foizi,
           absenteesCount: el[0].kelmaganlar,
           absenteesCountPercent: 100 - el[0].foizi,
-          id: el[0].tuman_id,
+          id: el[0].viloyat_id,
         };
 
         res.push(reg);
-
       });
-
       setData(res);
     }
   }, [apiData]);
+
   return (
     <div>
-      <h2 className='mb-3'>Tumanlar bo'yicha</h2>
-      <div className='date-filter text-right mb-4 flex justify-end'>
-        <DatePicker
-          value={currentDate}
-          onChange={handleChangeDate}
-          placeholder={currentDate}
-          className='w-1/4'
-        />
-      </div>
-      <TableData
-        redirectTo={redirectTo}
-        columns={columns}
-        data={data}
-        is_location={5}
-        
-      ></TableData>
+      <h1>Across class school</h1>
     </div>
   );
 }
 
-export default Districts;
+export default Regions;

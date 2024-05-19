@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import React, {useState, useEffect} from 'react';
 import TableData from 'components/table/TableData';
+import { useParams, useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { DatePicker } from 'components/ui';
 
-function Districts() {
+function Schools() {
   const [currentDate, setCurrentDate] = useState(null);
   const [columns] = useState([
     {
@@ -16,19 +16,15 @@ function Districts() {
       accessor: 'name',
     },
     {
-      Header: 'Maktablar soni',
-      accessor: 'schoolCount',
-    },
-    {
       Header: 'O`quvchilar soni',
       accessor: 'studentsCount',
     },
     {
-      Header: 'Kelganlar soni',
+      Header: 'Davomat',
       accessor: 'arrivalsCount',
     },
     {
-      Header: 'Kelganlar soni (%)',
+      Header: 'Davomat (%)',
       accessor: 'arrivalsCountPercent',
     },
     {
@@ -40,34 +36,6 @@ function Districts() {
       accessor: 'absenteesCountPercent',
     },
   ]);
-  const [redirectTo, setRedirectTo] = useState('');
-
-  const user = useSelector((state) => state.auth.user);
-  const params = useParams();
-  const navigate = useNavigate();
-  
-  useEffect(() => {
-    if (user.user_type == 'VILOYAT') {
-      // params.region_id = user.viloyat_id;
-      params.region_id = 6;
-    }
-
-    if (!params.region_id) {
-      navigate('/');
-    }
-
-    if(user.user_type == 'RESPUBLIKA') {
-      setRedirectTo('/republic-regions/' + params.region_id)
-    }
-
-    if(user.user_type == 'VILOYAT') {
-      setRedirectTo('/region-regions/' + params.region_id)
-    }
-
-    if(user.user_type == 'TUMAN') {
-      setRedirectTo('/district-district/' + params.region_id)
-    }
-  }, []);
 
   function getTodaysDate() {
     const today = new Date();
@@ -85,19 +53,31 @@ function Districts() {
     return `${year}-${month}-${day}`;
   }
 
+  const params = useParams();
+  const navigate = useNavigate();
+  useEffect(() => {
+    console.log(59, 'tumanlar');
+    // if (!params.district_id) {
+    //   navigate('/');
+    // }
+  }, []);
+
   const [data, setData] = useState([]);
   const [apiData, setApiData] = useState([]);
 
   const token = useSelector((state) => state?.auth?.session?.token);
 
   useEffect(() => {
-    console.log(93, params);
-    if (token && params.region_id && currentDate) {
+    console.log();
+    if (token && params.district_id) {
+      console.log('params', params);
       const sendData = {
-        viloyat_id: params.region_id,
-        sana: currentDate
+        // tuman_id: params.id,
+        // sana: currentDate
+        tuman_id: params.district_id,
+        sana: "2024-05-08"
       }
-      fetch(`${process.env.REACT_APP_API_URL}api/v1/davomatviloyat/`, {
+      fetch(`${process.env.REACT_APP_API_URL}api/v1/davomattuman/`, {
         method: "POST",
         headers: {
           Authorization: `Token ${token}`,
@@ -107,7 +87,6 @@ function Districts() {
       })
         .then((res) => res.json())
         .then((d) => {
-
           setApiData(d);
         })
         .catch(err => {
@@ -131,14 +110,13 @@ function Districts() {
       apiData.forEach((el, index) => {
         const reg = {
           number: index + 1,
-          name: el[0].tuman,
-          schoolCount: el[0].maktabsoni,
+          name: el[0].maktabnomi,
           studentsCount: el[0].bolasoni,
           arrivalsCount: el[0].kelganlar,
           arrivalsCountPercent: el[0].foizi,
           absenteesCount: el[0].kelmaganlar,
           absenteesCountPercent: 100 - el[0].foizi,
-          id: el[0].tuman_id,
+          id: el[0].maktab_id,
         };
 
         res.push(reg);
@@ -148,9 +126,10 @@ function Districts() {
       setData(res);
     }
   }, [apiData]);
+  
   return (
     <div>
-      <h2 className='mb-3'>Tumanlar bo'yicha</h2>
+      <h2 className='mb-3'>Maktablar bo'yicha</h2>
       <div className='date-filter text-right mb-4 flex justify-end'>
         <DatePicker
           value={currentDate}
@@ -159,15 +138,9 @@ function Districts() {
           className='w-1/4'
         />
       </div>
-      <TableData
-        redirectTo={redirectTo}
-        columns={columns}
-        data={data}
-        is_location={5}
-        
-      ></TableData>
+      <TableData redirectTo='/classes' columns={columns} data={data} is_location={4}></TableData>
     </div>
-  );
+  )
 }
 
-export default Districts;
+export default Schools

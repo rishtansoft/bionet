@@ -22,6 +22,7 @@ function Students() {
     
   ]);
 
+  const user = useSelector((state) => state.auth.user);
   function getTodaysDate() {
     const today = new Date();
     const year = today.getFullYear();
@@ -41,8 +42,10 @@ function Students() {
   const params = useParams();
   const navigate = useNavigate();
   useEffect(() => {
-    if (!params.id) {
-      navigate('/regions');
+    console.log('params', params);
+    console.log('user', user);
+    if (!params.class_id) {
+      navigate('/');
     }
   }, []);
 
@@ -53,7 +56,6 @@ function Students() {
 
   useEffect(() => {
     if (token && params.id) {
-      const testToken = 'eb577759f4ca0dde05b02ea699892ee560920594';
       const sendData = {
         // sinf_id: params.id,
         // sana: currentDate
@@ -63,7 +65,7 @@ function Students() {
       fetch(`${process.env.REACT_APP_API_URL}api/v1/davomatsinf/`, {
         method: "POST",
         headers: {
-          Authorization: `Token ${testToken}`,
+          Authorization: `Token ${token}`,
           'Content-type': 'application/json',
         },
         body: JSON.stringify(sendData)
