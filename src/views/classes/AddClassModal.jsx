@@ -10,9 +10,12 @@ import {
   Notification,
 } from "components/ui";
 import { useParams } from "react-router-dom";
+import { useSelector } from "react-redux";
 import dayjs from "dayjs";
 
 const AddClassModal = ({ closeFun, updateFun }) => {
+  const user = useSelector((state) => state.auth.user);
+  const token = useSelector((state) => state?.auth?.session?.token);
   const params = useParams();
   const [teachersData, setTeachersData] = useState([]);
   const [name, setName] = useState("");
@@ -25,11 +28,10 @@ const AddClassModal = ({ closeFun, updateFun }) => {
   const [disabledButton, setDisabledButton] = useState(false);
 
   useEffect(() => {
-    const testToken = "eb577759f4ca0dde05b02ea699892ee560920594";
-    fetch(`${process.env.REACT_APP_API_URL}api/v1/getteachers/${params.id}`, {
+    fetch(`${process.env.REACT_APP_API_URL}api/v1/getteachers/${user.school}`, {
       method: "GET",
       headers: {
-        Authorization: `Token ${testToken}`,
+        Authorization: `Token ${token}`,
         "Content-type": "application/json",
       },
     })
@@ -70,10 +72,10 @@ const AddClassModal = ({ closeFun, updateFun }) => {
       const sendData = {
         name: name,
         startoflesson: startTimeFilter,
-        school: String(params?.id),
+        school: String(user.school),
         rahbar: String(teacher.value),
       };
-      fetch(`${process.env.REACT_APP_API_URL}api/v1/addsinf/${params?.id}`, {
+      fetch(`${process.env.REACT_APP_API_URL}api/v1/addsinf/${user.school}`, {
         method: "POST",
         headers: {
           Authorization: `Token ${testToken}`,
@@ -103,7 +105,7 @@ const AddClassModal = ({ closeFun, updateFun }) => {
             toast.push(
               <Notification
                 title={"Xatolik"}
-                type="error"
+                type="danger"
                 duration={5000}
                 transitionType="fade"
               >

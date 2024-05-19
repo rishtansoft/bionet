@@ -10,10 +10,13 @@ import {
   Notification,
 } from "components/ui";
 import { useParams } from "react-router-dom";
+import { useSelector } from "react-redux";
 import dayjs from "dayjs";
 
 const UpdateClassModal = ({ item, closeFun, updateFun }) => {
   const params = useParams();
+  const user = useSelector((state) => state.auth.user);
+  const token = useSelector((state) => state?.auth?.session?.token);
   const [teachersData, setTeachersData] = useState([]);
   const [name, setName] = useState();
   const [errorName, setErrorName] = useState(false);
@@ -24,11 +27,10 @@ const UpdateClassModal = ({ item, closeFun, updateFun }) => {
   const [errorTeacher, setErrorTeacher] = useState(false);
   const [disabledButton, setDisabledButton] = useState(false);
   useEffect(() => {
-    const testToken = "eb577759f4ca0dde05b02ea699892ee560920594";
-    fetch(`${process.env.REACT_APP_API_URL}api/v1/getteachers/${params.id}`, {
+    fetch(`${process.env.REACT_APP_API_URL}api/v1/getteachers/${user.school}`, {
       method: "GET",
       headers: {
-        Authorization: `Token ${testToken}`,
+        Authorization: `Token ${token}`,
         "Content-type": "application/json",
       },
     })
@@ -45,10 +47,13 @@ const UpdateClassModal = ({ item, closeFun, updateFun }) => {
       .catch((err) => {
         console.log(err);
       });
-    fetch(`${process.env.REACT_APP_API_URL}api/v1/getsinf/${item.id}`, {
+  }, []);
+
+  useEffect(() => {
+    fetch(`${process.env.REACT_APP_API_URL}api/v1/getsinf/${user.school}`, {
       method: "GET",
       headers: {
-        Authorization: `Token ${testToken}`,
+        Authorization: `Token ${token}`,
         "Content-type": "application/json",
       },
     })
@@ -70,13 +75,15 @@ const UpdateClassModal = ({ item, closeFun, updateFun }) => {
               setStartTime(startTimeFromApi);
               setStartTimeFilter(dayjs(startTimeFromApi).format('hh:mm:ss'))
           }
-          setTeacher(filterData?.rahbar && filterData?.rahbar !== null  ? filterData?.rahbar : '');
+          const getTeacher = teachersData.find(e => e.value == filterData?.rahbar)
+          setTeacher(filterData?.rahbar && filterData?.rahbar !== null && getTeacher  ? {value: filterData?.rahbar, label: getTeacher.label} : '');
         }
       })
       .catch((err) => {
         console.log(err);
       });
-  }, []);
+  }, [teachersData])
+  
 
   const changeName = (e) => {
     setName(e.target.value);
@@ -96,24 +103,22 @@ const UpdateClassModal = ({ item, closeFun, updateFun }) => {
     e.preventDefault();
     if (name && !/^\s*$/.test(name) && startTimeFilter && teacher) {
       setDisabledButton(true);
-      const testToken = "eb577759f4ca0dde05b02ea699892ee560920594";
       const sendData = {
         id: item.id,
         name: name,
         startoflesson: startTimeFilter,
-        school: String(params?.id),
+        school: String(user.school),
         rahbar: String(teacher.value),
       };
       fetch(`${process.env.REACT_APP_API_URL}api/v1/editsinf/`, {
         method: "PUT",
         headers: {
-          Authorization: `Token ${testToken}`,
+          Authorization: `Token ${token}`,
           "Content-type": "application/json",
         },
         body: JSON.stringify(sendData),
       })
         .then((res) => {
-          console.log(65, res);
           if (res.status == 200 || 201) {
             toast.push(
               <Notification
@@ -135,7 +140,7 @@ const UpdateClassModal = ({ item, closeFun, updateFun }) => {
             toast.push(
               <Notification
                 title={"Xatolik"}
-                type="error"
+                type="danger"
                 duration={5000}
                 transitionType="fade"
               >
@@ -153,7 +158,7 @@ const UpdateClassModal = ({ item, closeFun, updateFun }) => {
           toast.push(
             <Notification
               title={"Xatolik"}
-              type="error"
+              type="danger"
               duration={5000}
               transitionType="fade"
             >

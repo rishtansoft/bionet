@@ -4,24 +4,25 @@ import { useParams, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { DatePicker, Button, Dialog } from "components/ui";
 import AddClassModal from "./AddClassModal";
-import { Loading } from "components/shared";
 
 function Classes() {
   const [currentDate, setCurrentDate] = useState(null);
   const [openAddModal, setOpenAddModal] = useState(false);
   const [dataUpdate, setDataUpdate] = useState(false);
-  const [loading, setLoading] = useState(true);
+  const [data, setData] = useState([]);
+  const [apiData, setApiData] = useState([]);
+  const token = useSelector((state) => state?.auth?.session?.token);
   const [columns] = useState([
     {
       Header: "N#",
       accessor: "number",
     },
     {
-      Header: "Sinf nomi",
-      accessor: "name",
+      Header: "Sinf Nomi",
+      accessor: 'name'
     },
     {
-      Header: "O`quvchilar soni",
+      Header: "O'quvchilar soni",
       accessor: "studentsCount",
     },
     {
@@ -91,12 +92,6 @@ function Classes() {
     }
   }, []);
 
-
-  const [data, setData] = useState([]);
-  const [apiData, setApiData] = useState([]);
-
-  const token = useSelector((state) => state?.auth?.session?.token);
-
   useEffect(() => {
     if (user.user_type == 'VILOYAT') {
       params.region_id = user.viloyat_id;
@@ -117,20 +112,38 @@ function Classes() {
     if(user.user_type == 'TUMAN') {
       setRedirectTo('/district-district/' + params.district_id + '/' + params.school_id)
     }
-  }, [currentDate]);
-  useEffect(() => {
-    if (token && params.id && dataUpdate) {
-      const testToken = "eb577759f4ca0dde05b02ea699892ee560920594";
+    if (token && params.school_id) {
       const sendData = {
-        // maktab_id: params.id,
-        // sana: currentDate
-        maktab_id: 2,
-        sane: "2024-05-08",
+        maktab_id: params.school_id,
+        sana: currentDate
       };
       fetch(`${process.env.REACT_APP_API_URL}api/v1/davomatmaktab/`, {
         method: "POST",
         headers: {
-          Authorization: `Token ${testToken}`,
+          Authorization: `Token ${token}`,
+          "Content-type": "application/json",
+        },
+        body: JSON.stringify(sendData),
+      })
+        .then((res) => res.json())
+        .then((d) => {
+          setApiData(d);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+  }, [currentDate]);
+  useEffect(() => {
+    if (token && params.school_id && dataUpdate) {
+      const sendData = {
+        maktab_id: params.school_id,
+        sana: currentDate
+      };
+      fetch(`${process.env.REACT_APP_API_URL}api/v1/davomatmaktab/`, {
+        method: "POST",
+        headers: {
+          Authorization: `Token ${token}`,
           "Content-type": "application/json",
         },
         body: JSON.stringify(sendData),
@@ -175,7 +188,6 @@ function Classes() {
 
       setData(res);
     }
-    setLoading(false);
   }, [apiData]);
 
   const addModalFun = (e) => {
@@ -185,7 +197,6 @@ function Classes() {
 
   const updateData = () => {
     setDataUpdate(true);
-    setLoading(true);
   };
 
   const closeAddModal = () => {
@@ -193,15 +204,10 @@ function Classes() {
   }
 
   return (
-    <div className="h-full">
-      {loading ? (
-        <div className="flex flex-auto flex-col justify-center items-center h-full">
-          <Loading loading={loading} />
-        </div>
-      ) : (
         <div>
           <h2 className="mb-3">Sinflar bo'yicha</h2>
-          <div className="flex justify-end mb-4">
+         {user.user_type == 'MAKTAB' && (
+           <div className="flex justify-end mb-4">
             <Button size="sm" onClick={addModalFun}>
               Qo&apos;shish
             </Button>
@@ -212,6 +218,7 @@ function Classes() {
               <AddClassModal updateFun={updateData} closeFun={closeAddModal}/>
             </Dialog>
           </div>
+         )}
           <div className="date-filter text-right mb-4 flex justify-end">
             <DatePicker
               value={currentDate}
@@ -226,10 +233,8 @@ function Classes() {
             columns={columns}
             data={data}
             updateData={updateData}
-          ></TableData>
+          />
         </div>
-      )}
-    </div>
   );
 }
 

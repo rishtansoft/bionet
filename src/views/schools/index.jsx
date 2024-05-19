@@ -152,7 +152,6 @@ function Schools() {
       setData(res);
     }
   }, [apiData]);
-
   return (
     <div>
       <h2 className='mb-3'>Maktablar bo'yicha</h2>

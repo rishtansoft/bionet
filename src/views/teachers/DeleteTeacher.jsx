@@ -3,19 +3,22 @@ import { Button, toast, Notification } from "components/ui";
 import { useSelector } from "react-redux";
 
 const DeleteModal = ({ item, updateFun, closeFun }) => {
-    const token = useSelector((state) => state?.auth?.session?.token);
+  const token = useSelector((state) => state?.auth?.session?.token);
   const [disabledButton, setDisabledButton] = useState(false);
 
   const deleteClassFun = (e) => {
     e.preventDefault();
     setDisabledButton(true);
-    fetch(`${process.env.REACT_APP_API_URL}api/v1/deletesinf/${item.id}`, {
-      method: "DELETE",
-      headers: {
-        Authorization: `Token ${token}`,
-        // "Content-type": "application/json",
-      },
-    })
+    fetch(
+        `${process.env.REACT_APP_API_URL}api/v1/deleteteacher/${item.id}/`,
+        {
+          method: "DELETE",
+          headers: {
+            Authorization: `Token ${token}`,
+            // "Content-type": "application/json",
+          },
+        }
+      )
       .then((res) => {
         if (res.status == 204) {
           toast.push(
@@ -25,7 +28,7 @@ const DeleteModal = ({ item, updateFun, closeFun }) => {
               duration={5000}
               transitionType="fade"
             >
-              {"Sinf muvaffaqiyatli o'qhirildi"}
+              {"O'qituvchi muvaffaqiyatli o'chirildi"}
             </Notification>,
             {
               placement: "top-center",
@@ -60,7 +63,7 @@ const DeleteModal = ({ item, updateFun, closeFun }) => {
   return (
     <div className="flex flex-col gap-4 text-center pt-[20px]">
       <h3>{item?.name}</h3>
-      <p>Ushbu sinfni o'chirishni hohlaysizmi ?</p>
+      <p>Ushbu o'qituvchini o'chirishni hohlaysizmi ?</p>
       <div className="flex justify-between items-center pt-4">
         <Button onClick={closeFun}>Bekor qilish</Button>
         <Button

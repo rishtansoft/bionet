@@ -6,10 +6,15 @@ import { FaPen } from "react-icons/fa";
 import { FaTrash } from "react-icons/fa";
 import UpdateClassModal from "views/classes/UpdateClassModal";
 import DeleteModal from "views/classes/DeleteModal";
+import UpdateTeacherModal from "views/teachers/UpdateTeacher";
+import UpdateStudentModal from "views/students/UpdateStudentModal";
+import DeleteTeacherModal from "views/teachers/DeleteTeacher";
+import { useSelector } from "react-redux";
 
 const { Tr, Th, Td, THead, TBody, Sorter } = Table;
 
 const TableData = (props) => {
+  const user = useSelector((state) => state.auth.user);
   const { columns, data, is_location, updateData } = props;
   const [location, setlocation] = useState(4);
   const [updateModal, setUpdateModal] = useState(false);
@@ -32,21 +37,38 @@ const TableData = (props) => {
   const isRegion = headerGroups[0].headers.find(
     (e) => e.Header == "Viloyat nomi"
   );
-  const isClass = headerGroups[0].headers.find((e) => e.Header == "Sinf nomi");
+  const isTeacher = headerGroups[0].headers.find(
+    (e) => e.Header == "O'qituvchi"
+  );
+  const isClass = headerGroups[0].headers.find(
+    (e) => e.Header == "Sinf Nomi"
+  );
+  const isStudent = headerGroups[0].headers.find(
+    (e) => e.Header == "O'quvchi"
+  );
   const openUpdateModal = (arg) => {
     if (isClass) {
       setActionName("class");
+      setSelectedItem(arg);
+    }
+    if (isTeacher) {
+      setActionName("teacher");
+      setSelectedItem(arg);
+    }
+    if (isStudent) {
+      setActionName("student");
       setSelectedItem(arg);
     }
     setUpdateModal(true);
   };
 
   const openDeleteModal = (arg) => {
-    const isClass = headerGroups[0].headers.find(
-      (e) => e.Header == "Sinf nomi"
-    );
     if (isClass) {
       setActionName("class");
+      setSelectedItem(arg);
+    }
+    if (isTeacher) {
+      setActionName("teacher");
       setSelectedItem(arg);
     }
     setDeleteModal(true);
@@ -79,7 +101,9 @@ const TableData = (props) => {
                   )}
                 </Th>
               ))}
-              {isClass && <Th>Amallar</Th>}
+              {isTeacher && user.user_type == 'MAKTAB' && <Th style={{ textAlign: "end" }}>Amallar</Th>}
+              {isClass && user.user_type == 'MAKTAB' && <Th style={{ textAlign: "end" }}>Amallar</Th>}
+              {isStudent && user.user_type == 'MAKTAB' && <Th style={{ textAlign: "end" }}>Amallar</Th>}
             </Tr>
           ))}
         </THead>
@@ -146,7 +170,51 @@ const TableData = (props) => {
                     </Td>
                   );
                 })}
-                {isClass && (
+                {isClass && user.user_type == 'MAKTAB' && (
+                  <Td className="text-end">
+                    <div className="flex justify-end items-center gap-4">
+                      <Tooltip title={"Tahrirlash"}>
+                        <FaPen
+                          className="cursor-pointer"
+                          onClick={() => {
+                            openUpdateModal(row.original);
+                          }}
+                        />
+                      </Tooltip>
+                      <Tooltip title={"O'chirish"}>
+                        <FaTrash
+                          className="cursor-pointer"
+                          onClick={() => {
+                            openDeleteModal(row.original);
+                          }}
+                        />
+                      </Tooltip>
+                    </div>
+                  </Td>
+                )}
+                {isTeacher && user.user_type == 'MAKTAB' && (
+                  <Td className="text-end">
+                    <div className="flex justify-end items-center gap-4">
+                      <Tooltip title={"Tahrirlash"}>
+                        <FaPen
+                          className="cursor-pointer"
+                          onClick={() => {
+                            openUpdateModal(row.original);
+                          }}
+                        />
+                      </Tooltip>
+                      <Tooltip title={"O'chirish"}>
+                        <FaTrash
+                          className="cursor-pointer"
+                          onClick={() => {
+                            openDeleteModal(row.original);
+                          }}
+                        />
+                      </Tooltip>
+                    </div>
+                  </Td>
+                )}
+                {isStudent && user.user_type == 'MAKTAB' && (
                   <Td className="text-end">
                     <div className="flex justify-end items-center gap-4">
                       <Tooltip title={"Tahrirlash"}>
@@ -172,24 +240,52 @@ const TableData = (props) => {
             );
           })}
         </TBody>
-        <Dialog isOpen={updateModal} onClose={closeUpdateModal}>
-          {actionName === "class" && (
+        {actionName === "class" && (
+          <Dialog isOpen={updateModal} onClose={closeUpdateModal}>
             <UpdateClassModal
               item={selectedItem}
               updateFun={updateData}
               closeFun={closeUpdateModal}
             />
-          )}
-        </Dialog>
-        <Dialog isOpen={deleteModal} onClose={closeDeleteModal}>
-          {actionName === "class" && (
+          </Dialog>
+        )}
+        {actionName === "teacher" && (
+          <Dialog isOpen={updateModal} onClose={closeUpdateModal} width={700}>
+            <UpdateTeacherModal
+              item={selectedItem}
+              updateFun={updateData}
+              closeFun={closeUpdateModal}
+            />
+          </Dialog>
+        )}
+        {actionName === "student" && (
+          <Dialog isOpen={updateModal} onClose={closeUpdateModal} width={700}>
+            <UpdateStudentModal
+              item={selectedItem}
+              updateFun={updateData}
+              closeFun={closeUpdateModal}
+            />
+          </Dialog>
+        )}
+
+        {actionName === "class" && (
+          <Dialog isOpen={deleteModal} onClose={closeDeleteModal}>
             <DeleteModal
               item={selectedItem}
               updateFun={updateData}
               closeFun={closeDeleteModal}
             />
-          )}
-        </Dialog>
+          </Dialog>
+        )}
+        {actionName == "teacher" && (
+          <Dialog isOpen={deleteModal} onClose={closeDeleteModal}>
+            <DeleteTeacherModal
+              item={selectedItem}
+              updateFun={updateData}
+              closeFun={closeDeleteModal}
+            />
+          </Dialog>
+        )}
       </Table>
     </>
   );

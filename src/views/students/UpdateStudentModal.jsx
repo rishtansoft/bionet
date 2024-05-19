@@ -4,7 +4,7 @@ import { useMask } from "@react-input/mask";
 import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 
-const AddStudentModal = ({updateFun, closeFun}) => {
+const UpdateStudentModal = ({updateFun, closeFun}) => {
   const user = useSelector((state) => state.auth.user);
   const token = useSelector((state) => state?.auth?.session?.token);
   const params = useParams();
@@ -155,7 +155,7 @@ const AddStudentModal = ({updateFun, closeFun}) => {
                 duration={5000}
                 transitionType="fade"
               >
-                {"O'quvchi muvaffaqiyatli qo'shildi"}
+                {"O'quvchi ma'lumotlari muvaffaqiyatli tahrirlandi"}
               </Notification>,
               {
                 placement: "top-center",
@@ -225,7 +225,7 @@ const AddStudentModal = ({updateFun, closeFun}) => {
 
   return (
     <div className="flex flex-col gap-4">
-      <h3 className="text-center">O'quvchi qo'shish</h3>
+      <h3 className="text-center">O'quvchi ma'lumotlarini tahrirlash</h3>
         <FormContainer className="mt-4 grid grid-cols-3 gap-2">
           <FormItem
             label={"Ism Familiyasi"}
@@ -314,4 +314,4 @@ const AddStudentModal = ({updateFun, closeFun}) => {
   );
 };
 
-export default AddStudentModal;
+export default UpdateStudentModal;

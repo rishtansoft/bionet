@@ -8,13 +8,14 @@ import AddStudentModal from "./AddStudentModal";
 function Students() {
   const [currentDate, setCurrentDate] = useState(null);
   const [openAddModal, setOpenAddModal] = useState(false);
+  const [dataUpdate, setDataUpdate] = useState(false);
   const [columns] = useState([
     {
       Header: "N#",
       accessor: "number",
     },
     {
-      Header: "O`quvchi",
+      Header: "O'quvchi",
       accessor: "name",
     },
     {
@@ -79,6 +80,30 @@ function Students() {
         });
     }
   }, [currentDate]);
+  useEffect(() => {
+    if (token && params.student_id && dataUpdate) {
+      const sendData = {
+        sinf_id: params.student_id,
+        sana: currentDate
+      }
+      fetch(`${process.env.REACT_APP_API_URL}api/v1/davomatsinf/`, {
+        method: "POST",
+        headers: {
+          Authorization: `Token ${token}`,
+          'Content-type': 'application/json',
+        },
+        body: JSON.stringify(sendData)
+      })
+        .then((res) => res.json())
+        .then((d) => {
+          setApiData(d);
+          setDataUpdate(false);
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    }
+  }, [dataUpdate]);
 
   useEffect(() => {
     let today = getTodaysDate();
@@ -111,6 +136,14 @@ function Students() {
     setOpenAddModal(true)
   }
 
+  const updateData = () => {
+    setDataUpdate(true);
+  }
+
+  const closeAddModal = () => {
+    setOpenAddModal(false)
+  }
+
   return (
     <div>
       <h2 className="mb-3">O'quvchilar bo'yicha</h2>
@@ -118,8 +151,8 @@ function Students() {
         <Button size="sm" onClick={addModalFun}>
           Qo&apos;shish
         </Button>
-        <Dialog isOpen={openAddModal} onClose={() => setOpenAddModal(false)} width={700}>
-          <AddStudentModal />
+        <Dialog isOpen={openAddModal} onClose={closeAddModal} width={700}>
+          <AddStudentModal closeFun={closeAddModal} updateFun={updateData}/>
         </Dialog>
       </div>
       <div className="date-filter text-right mb-4 flex justify-end">
