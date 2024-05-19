@@ -40,32 +40,12 @@ function Districts() {
       accessor: 'absenteesCountPercent',
     },
   ]);
-  const [redirectTo, setRedirectTo] = useState('');
 
-  const user = useSelector((state) => state.auth.user);
   const params = useParams();
   const navigate = useNavigate();
-  
   useEffect(() => {
-    if (user.user_type == 'VILOYAT') {
-      // params.region_id = user.viloyat_id;
-      params.region_id = 6;
-    }
-
-    if (!params.region_id) {
-      navigate('/');
-    }
-
-    if(user.user_type == 'RESPUBLIKA') {
-      setRedirectTo('/republic-regions/' + params.region_id)
-    }
-
-    if(user.user_type == 'VILOYAT') {
-      setRedirectTo('/region-regions/' + params.region_id)
-    }
-
-    if(user.user_type == 'TUMAN') {
-      setRedirectTo('/district-district/' + params.region_id)
+    if (!params.id) {
+      navigate('/regions');
     }
   }, []);
 
@@ -91,23 +71,23 @@ function Districts() {
   const token = useSelector((state) => state?.auth?.session?.token);
 
   useEffect(() => {
-    console.log(93, params);
-    if (token && params.region_id && currentDate) {
+    if (token && params.id && currentDate) {
+      console.log('params', params);
+      const testToken = 'eb577759f4ca0dde05b02ea699892ee560920594';
       const sendData = {
-        viloyat_id: params.region_id,
+        viloyat_id: params.id,
         sana: currentDate
       }
       fetch(`${process.env.REACT_APP_API_URL}api/v1/davomatviloyat/`, {
         method: "POST",
         headers: {
-          Authorization: `Token ${token}`,
+          Authorization: `Token ${testToken}`,
           'Content-type': 'application/json',
         },
         body: JSON.stringify(sendData)
       })
         .then((res) => res.json())
         .then((d) => {
-
           setApiData(d);
         })
         .catch(err => {
@@ -160,7 +140,7 @@ function Districts() {
         />
       </div>
       <TableData
-        redirectTo={redirectTo}
+        redirectTo='/schools'
         columns={columns}
         data={data}
         is_location={5}

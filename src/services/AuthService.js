@@ -1,11 +1,33 @@
 import ApiService from './ApiService'
+import { PERSIST_STORE_NAME } from 'constants/app.constant';
+import deepParseJson from 'utils/deepParseJson';
+
+async function signInReq(user) {
+    try {
+        console.log("user", user);
+        const resp = await fetch(`${process.env.REACT_APP_API_URL}api/v1/api-token-auth/`, {
+            method: "POST",
+            headers: {
+                'Content-type': 'application/json'
+            },
+            body: JSON.stringify(user)
+        });
+
+        const data = resp.json();
+
+        return data;
+    } catch (error) {
+        console.log(error);
+    }
+}
 
 export async function apiSignIn(data) {
-    return ApiService.fetchData({
-        url: '/sign-in',
-        method: 'post',
-        data,
-    })
+    const user = {
+        username: data.userName,
+        password: data.password
+    }
+
+    return signInReq(user);
 }
 
 export async function apiSignUp(data) {

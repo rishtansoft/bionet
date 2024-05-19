@@ -36,6 +36,7 @@ function Schools() {
       accessor: 'absenteesCountPercent',
     },
   ]);
+  const [redirectTo, setRedirectTo] = useState('');
 
   function getTodaysDate() {
     const today = new Date();
@@ -53,11 +54,40 @@ function Schools() {
     return `${year}-${month}-${day}`;
   }
 
+  const user = useSelector((state) => state.auth.user);
   const params = useParams();
   const navigate = useNavigate();
   useEffect(() => {
-    if (!params.id) {
-      navigate('/regions');
+    
+    if (user.user_type == 'TUMAN') {
+      params.district_id = user.tumanshahar;
+      params.region_id = user.viloyat_id;
+    }
+
+    if (user.user_type == 'MAKTAB') {
+      params.district_id = user.tumanshahar;
+      params.region_id = user.viloyat_id;
+      params.school_id = user.school
+    }
+
+    if (!params.district_id) {
+      navigate('/');
+    }
+
+    if(user.user_type == 'RESPUBLIKA') {
+      setRedirectTo('/republic-regions/' + params.region_id + "/" + params.district_id)
+    }
+
+    if(user.user_type == 'VILOYAT') {
+      setRedirectTo('/regions-regions/' + params.region_id + "/" + params.district_id)
+    }
+
+    if(user.user_type == 'TUMAN') {
+      setRedirectTo('/district-district/' + params.district_id)
+    }
+
+    if(user.user_type == 'MAKTAB') {
+      setRedirectTo('/school-school/' + params.school_id)
     }
   }, []);
 
@@ -67,19 +97,17 @@ function Schools() {
   const token = useSelector((state) => state?.auth?.session?.token);
 
   useEffect(() => {
-    if (token && params.id) {
-      console.log('params', params);
-      const testToken = 'eb577759f4ca0dde05b02ea699892ee560920594';
+    if (token && params.district_id) {
       const sendData = {
         // tuman_id: params.id,
         // sana: currentDate
-        tuman_id: 78,
+        tuman_id: params.district_id,
         sana: "2024-05-08"
       }
       fetch(`${process.env.REACT_APP_API_URL}api/v1/davomattuman/`, {
         method: "POST",
         headers: {
-          Authorization: `Token ${testToken}`,
+          Authorization: `Token ${token}`,
           'Content-type': 'application/json',
         },
         body: JSON.stringify(sendData)
@@ -137,7 +165,7 @@ function Schools() {
           className='w-1/4'
         />
       </div>
-      <TableData redirectTo='/classes' columns={columns} data={data} is_location={4}></TableData>
+      <TableData redirectTo={redirectTo} columns={columns} data={data} is_location={4}></TableData>
     </div>
   )
 }

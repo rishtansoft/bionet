@@ -7,24 +7,20 @@ import { Link } from 'react-router-dom'
 import classNames from 'classnames'
 import { HiOutlineUser, HiOutlineCog, HiOutlineLogout } from 'react-icons/hi'
 import { FiActivity } from 'react-icons/fi'
-
+import avatar01 from 'assets/thumb-13.jpg';
 const dropdownItemList = [
     {
         label: 'Profile',
         path: '/app/account/settings/profile',
         icon: <HiOutlineUser />,
-    },
-    {
-        label: 'Akkaunt sozlamalari',
-        path: '/app/account/settings/profile',
-        icon: <HiOutlineCog />,
-    },
-    {
-        label: 'Activity Log',
-        path: '/app/account/activity-log',
-        icon: <FiActivity />,
-    },
+    }
 ]
+
+function AvatarSelf() {
+    return (
+        <img className='w-[40px] h-[40px] rounded-[50%]' src={avatar01} alt="" />
+    );
+}
 
 export const UserDropdown = ({ className }) => {
     const { avatar, userName, authority, email } = useSelector(
@@ -35,7 +31,7 @@ export const UserDropdown = ({ className }) => {
 
     const UserAvatar = (
         <div className={classNames(className, 'flex items-center gap-2')}>
-            <Avatar size={32} shape="circle" src={avatar} />
+            <AvatarSelf></AvatarSelf>
             <div className="hidden md:block">
                 <div className="text-xs capitalize">
                     {authority[0] || 'guest'}
@@ -54,7 +50,7 @@ export const UserDropdown = ({ className }) => {
             >
                 <Dropdown.Item variant="header">
                     <div className="py-2 px-3 flex items-center gap-2">
-                        <Avatar shape="circle" src={avatar} />
+                    <AvatarSelf></AvatarSelf>
                         <div>
                             <div className="font-bold text-gray-900 dark:text-gray-100">
                                 {userName}

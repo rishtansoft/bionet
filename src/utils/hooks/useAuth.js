@@ -19,17 +19,25 @@ function useAuth() {
     const signIn = async (values) => {
         try {
             const resp = await apiSignIn(values)
-            if (resp.data) {
-                const { token } = resp.data
+            
+            if (resp.token) {
+                const token  = resp.token
                 dispatch(onSignInSuccess(token))
-                if (resp.data.user) {
+                
+                if (resp.user_id && resp.isactive) {
+                    
                     dispatch(
                         setUser(
-                            resp.data.user || {
+                            {
                                 avatar: '',
-                                userName: 'Anonymous',
-                                authority: ['USER'],
-                                email: '',
+                                userName: values.userName,
+                                authority: ['admin'],
+                                email: values.userName,
+                                viloyat_id: resp.viloyat_id,
+                                user_type: resp.user_type,
+                                user_id: resp.user_id,
+                                tumanshahar: resp.tumanshahar,
+                                school: resp.school
                             }
                         )
                     )
@@ -93,7 +101,6 @@ function useAuth() {
     }
 
     const signOut = async () => {
-        await apiSignOut()
         handleSignOut()
     }
 

@@ -36,6 +36,7 @@ function Classes() {
       accessor: 'absenteesCountPercent',
     },
   ]);
+  const [redirectTo, setRedirectTo] = useState('');
 
   function getTodaysDate() {
     const today = new Date();
@@ -53,13 +54,34 @@ function Classes() {
     return `${year}-${month}-${day}`;
   }
 
+  const user = useSelector((state) => state.auth.user);
   const params = useParams();
   const navigate = useNavigate();
   useEffect(() => {
-    if (!params.id) {
-      navigate('/regions');
+    if (user.user_type == 'VILOYAT') {
+      // params.region_id = user.viloyat_id;
+      params.region_id = 6;
+    }
+
+    if (!params.school_id) {
+      navigate('/');
+    }
+
+    if(user.user_type == 'RESPUBLIKA') {
+      setRedirectTo('/republic-regions/' + params.region_id)
+    }
+
+    if(user.user_type == 'VILOYAT') {
+      setRedirectTo('/region-regions/' + params.region_id)
+    }
+
+    if(user.user_type == 'TUMAN') {
+      setRedirectTo('/district-district/' + params.district_id + '/' + params.school_id)
     }
   }, []);
+
+
+
 
   const [data, setData] = useState([]);
   const [apiData, setApiData] = useState([]);
@@ -67,8 +89,7 @@ function Classes() {
   const token = useSelector((state) => state?.auth?.session?.token);
 
   useEffect(() => {
-    if (token && params.id) {
-      const testToken = 'eb577759f4ca0dde05b02ea699892ee560920594';
+    if (token && params.school_id) {
       const sendData = {
         // maktab_id: params.id,
         // sana: currentDate
@@ -78,7 +99,7 @@ function Classes() {
       fetch(`${process.env.REACT_APP_API_URL}api/v1/davomatmaktab/`, {
         method: "POST",
         headers: {
-          Authorization: `Token ${testToken}`,
+          Authorization: `Token ${token}`,
           'Content-type': 'application/json',
         },
         body: JSON.stringify(sendData)
@@ -136,7 +157,7 @@ function Classes() {
           className='w-1/4'
         />
       </div>
-      <TableData redirectTo='/students' is_location={9999} columns={columns} data={data}></TableData>
+      <TableData redirectTo={redirectTo} is_location={9999} columns={columns} data={data}></TableData>
     </div>
   )
 }
