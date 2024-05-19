@@ -21,8 +21,9 @@ const CrmDashboard = () => {
     const dispatch = useDispatch();
     const [dataMap, setDataMap] = useState([]);
     const [currentDate, setCurrentDate] = useState(null);
-    const user = useSelector((state) => state.auth.user);
     const token = JSON.parse(JSON.parse(localStorage.getItem('admin')).auth).session.token;
+    const [headData, setHeadData] = useState({});
+    const [statisticData, setStatisticData] = useState([]);
 
     function getTodaysDate() {
         const today = new Date();
@@ -44,6 +45,24 @@ const CrmDashboard = () => {
         const today = getTodaysDate();
         setCurrentDate(today);
     }, []);
+
+    useEffect(() => {
+        const req = { sana: currentDate };
+            fetch(`${process.env.REACT_APP_API_URL}api/v1/headerchart/`, {
+                headers: {
+                    Authorization: `Token ${token}`,
+                    'Content-type': 'application/json',
+                },
+                method: 'POST',
+                body: JSON.stringify(req),
+            })
+                .then((res) => res.json())
+                .then((resp) => {
+                    console.log(61, resp);
+                    setHeadData(resp[0][0])
+                })
+                .catch((err) => console.log(err));
+    }, [])
 
     function handleChangeDate(e) {
         setCurrentDate(formatDate(e));
@@ -80,18 +99,23 @@ const CrmDashboard = () => {
         dispatch(getCrmDashboardData());
     };
 
-    const statisticData = [
-        { key: 'newLeads', label: 'Maktablar', value: '10522', growShrink: 2.6 },
-        { key: 'emailResponse', label: "O'qituvchilar", value: '10534', growShrink: 5.5 },
-        { key: 'proposals', label: 'Qizlar', value: '45.2%', growShrink: 32.7 },
-        { key: 'appointment', label: 'Bollar', value: '54.8%', growShrink: 2.6 },
-    ];
+    useEffect(() => {
+        if (headData.maktabsoni) {
+            setStatisticData([
+                { key: 'newLeads', label: 'Maktablar', value: headData.maktabsoni, growShrink: 2.6 },
+                { key: 'emailResponse', label: "O'qituvchilar", value: headData.ustozsoni, growShrink: 5.5 },
+                { key: 'proposals', label: 'Qizlar', value: headData.qizlar_foiz.toFixed(0), growShrink: 32.7 },
+                { key: 'appointment', label: 'Bollar', value: headData.bolalar_foiz.toFixed(0), growShrink: 2.6 },
+            ])
+        }
+    }, [headData])
+
 
     const emailSentData = {
         precent: 97.2,
         opened: 893,
         unopen: 330,
-        total: 1223,
+        total: 2000,
     };
 
     const davSelectFun = (event) => {
@@ -103,7 +127,7 @@ const CrmDashboard = () => {
             <Loading loading={false}>
                 <Statistic data={statisticData} />
                 <div className="grid grid-cols-1 xl:grid-cols-7 gap-4">
-                    <LeadByCountries className="xl:col-span-5" data={dataMap} />
+                    <LeadByCountries currentDate={currentDate} change = {handleChangeDate} className="xl:col-span-5" data={dataMap} />
                     {/* <MapUzb className="xl:col-span-5" /> */}
                     <EmailSent className="xl:col-span-2" data={emailSentData} />
                 </div>
