@@ -23,7 +23,6 @@ const TableData = (props) => {
   const [actionName, setActionName] = useState("");
   const [regionId, setRegionId] = useState("");
   const [selectedItem, setSelectedItem] = useState({});
-
   useEffect(() => {
     setlocation(is_location);
   }, [is_location]);
@@ -38,15 +37,17 @@ const TableData = (props) => {
   const isRegion = headerGroups[0].headers.find(
     (e) => e.Header == "Viloyat nomi"
   );
+  const isDistrict = headerGroups[0].headers.find(
+    (e) => e.Header == "Tuman nomi"
+  );
+  const isSchool = headerGroups[0].headers.find(
+    (e) => e.Header == "Maktab nomi"
+  );
   const isTeacher = headerGroups[0].headers.find(
     (e) => e.Header == "O'qituvchi"
   );
-  const isClass = headerGroups[0].headers.find(
-    (e) => e.Header == "Sinf Nomi"
-  );
-  const isStudent = headerGroups[0].headers.find(
-    (e) => e.Header == "O'quvchi"
-  );
+  const isClass = headerGroups[0].headers.find((e) => e.Header == "Sinf Nomi");
+  const isStudent = headerGroups[0].headers.find((e) => e.Header == "O'quvchi");
   const openUpdateModal = (arg) => {
     if (isClass) {
       setActionName("class");
@@ -87,6 +88,22 @@ const TableData = (props) => {
     setActionName("");
   };
 
+  const writeRegionId = (e) => {
+    isRegion && localStorage.setItem("regionId", e);
+  };
+  const callBreadCrump = (value) => {
+    if(user.user_type == "RESPUBLIKA"){
+      let backPages = localStorage.getItem('backUrls');
+      let backPagesFilter = JSON.parse(backPages);
+      if(isDistrict){
+        backPagesFilter?.push({url: `${props.redirectTo}`, label: 'Tumanlar'})
+      }else if(isSchool){
+        backPagesFilter?.push({url: `${props.redirectTo}/${value}`, label: 'Maktablar'})
+      }
+      localStorage.setItem('backUrls', JSON.stringify(backPagesFilter))
+    }
+  }
+
   return (
     <>
       <Table {...getTableProps()}>
@@ -106,9 +123,15 @@ const TableData = (props) => {
                   )}
                 </Th>
               ))}
-              {isTeacher && user.user_type == 'MAKTAB' && <Th style={{ textAlign: "end" }}>Amallar</Th>}
-              {isClass && user.user_type == 'MAKTAB' && <Th style={{ textAlign: "end" }}>Amallar</Th>}
-              {isStudent && user.user_type == 'MAKTAB' && <Th style={{ textAlign: "end" }}>Amallar</Th>}
+              {isTeacher && user.user_type == "MAKTAB" && (
+                <Th style={{ textAlign: "end" }}>Amallar</Th>
+              )}
+              {isClass && user.user_type == "MAKTAB" && (
+                <Th style={{ textAlign: "end" }}>Amallar</Th>
+              )}
+              {isStudent && user.user_type == "MAKTAB" && (
+                <Th style={{ textAlign: "end" }}>Amallar</Th>
+              )}
             </Tr>
           ))}
         </THead>
@@ -139,8 +162,8 @@ const TableData = (props) => {
                         <Link
                           to={`${props.redirectTo}/${row.original.id}`}
                           onMouseDown={() => {
-                            isRegion &&
-                              localStorage.setItem("regionId", row.original.id);
+                            callBreadCrump(row.original.id)
+                            writeRegionId(row.original.id);
                           }}
                         >
                           {cell.render("Cell")}
@@ -174,7 +197,7 @@ const TableData = (props) => {
                     </Td>
                   );
                 })}
-                {isClass && user.user_type == 'MAKTAB' && (
+                {isClass && user.user_type == "MAKTAB" && (
                   <Td className="text-end">
                     <div className="flex justify-end items-center gap-4">
                       <Tooltip title={"Tahrirlash"}>
@@ -196,7 +219,7 @@ const TableData = (props) => {
                     </div>
                   </Td>
                 )}
-                {isTeacher && user.user_type == 'MAKTAB' && (
+                {isTeacher && user.user_type == "MAKTAB" && (
                   <Td className="text-end">
                     <div className="flex justify-end items-center gap-4">
                       <Tooltip title={"Tahrirlash"}>
@@ -218,7 +241,7 @@ const TableData = (props) => {
                     </div>
                   </Td>
                 )}
-                {isStudent && user.user_type == 'MAKTAB' && (
+                {isStudent && user.user_type == "MAKTAB" && (
                   <Td className="text-end">
                     <div className="flex justify-end items-center gap-4">
                       <Tooltip title={"Tahrirlash"}>

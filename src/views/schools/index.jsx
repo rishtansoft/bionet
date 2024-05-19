@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from "react";
 import TableData from "components/table/TableData";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { DatePicker } from "components/ui";
 import { ExportToExcelStudent } from '../excelConvert'
+import { Breadcrumbs } from "@mui/material";
 
 function Schools() {
   const [currentDate, setCurrentDate] = useState(null);
+  const [backLinks, setBackLinks] = useState([]);
   const [columns] = useState([
     {
       Header: "N#",
@@ -93,6 +95,9 @@ function Schools() {
     if (user.user_type == 'MAKTAB') {
       setRedirectTo('/school-school');
     }
+    let getBackUrls = localStorage.getItem("backUrls");
+    let filterGetBackUrls = JSON.parse(getBackUrls);
+    setBackLinks(filterGetBackUrls);
   }, []);
 
   const [data, setData] = useState([]);
@@ -153,8 +158,28 @@ function Schools() {
       setData(res);
     }
   }, [apiData]);
+
+  const changeUrls = (arg) => {
+    const nerUrls = backLinks.filter(e => e.url !== arg.url);
+    localStorage.setItem('backUrls', JSON.stringify(nerUrls));
+  }
+
   return (
     <div>
+       <div className="mb-4">
+        <Breadcrumbs aria-label="breadcrumb">
+          {backLinks &&
+            backLinks?.length > 0 &&
+            backLinks.map((value, index) => (
+              <Link key={index} to={value.url} className="hover:underline" onMouseDown={() => changeUrls(value)}>
+                {value.label}
+              </Link>
+            ))}
+          <Link className="hover:underline">
+            Maktablar
+          </Link>
+        </Breadcrumbs>
+      </div>
       <h2 className='mb-3'>Maktablar bo'yicha</h2>
       <div className='date-filter text-right mb-4 flex justify-end' style={{
         alignItems: 'center'

@@ -1,11 +1,14 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams, Link } from "react-router-dom";
 import TableData from "components/table/TableData";
 import { useSelector } from "react-redux";
 import { DatePicker } from "components/ui";
 import { ExportToExcelStudent } from "../excelConvert";
+import { Breadcrumbs } from "@mui/material";
+
 function Districts() {
   const [currentDate, setCurrentDate] = useState(null);
+  const [backLinks, setBackLinks] = useState([]);
   const [columns] = useState([
     {
       Header: "N#",
@@ -77,6 +80,9 @@ function Districts() {
     if (user.user_type == "TUMAN") {
       setRedirectTo("/district-district/" + params.region_id);
     }
+    let getBackUrls = localStorage.getItem("backUrls");
+    let filterGetBackUrls = JSON.parse(getBackUrls);
+    setBackLinks(filterGetBackUrls);
   }, []);
   function getTodaysDate() {
     const today = new Date();
@@ -157,6 +163,20 @@ function Districts() {
   }, [apiData]);
   return (
     <div>
+      <div className="mb-4">
+        <Breadcrumbs aria-label="breadcrumb">
+          {backLinks &&
+            backLinks?.length > 0 &&
+            backLinks.map((value, index) => (
+              <Link key={index} to={value.url} className="hover:underline">
+                {value.label}
+              </Link>
+            ))}
+          <Link className="hover:underline">
+            Tumanlar
+          </Link>
+        </Breadcrumbs>
+      </div>
       <h2 className="mb-3">Tumanlar bo'yicha</h2>
       <div
         className="date-filter text-right mb-4 flex justify-end"
