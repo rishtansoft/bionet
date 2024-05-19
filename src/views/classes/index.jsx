@@ -3,8 +3,8 @@ import TableData from "components/table/TableData";
 import { useParams, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { DatePicker, Button, Dialog } from "components/ui";
-import AddClassModal from "./AddClassModal";
-
+import AddClassModal from "./AddClassModal";;
+import { ExportToExcelStudent } from '../excelConvert'
 function Classes() {
   const [currentDate, setCurrentDate] = useState(null);
   const [openAddModal, setOpenAddModal] = useState(false);
@@ -75,19 +75,19 @@ function Classes() {
       navigate('/');
     }
 
-    if(user.user_type == 'RESPUBLIKA') {
+    if (user.user_type == 'RESPUBLIKA') {
       setRedirectTo('/republic-regions/' + params.region_id + '/' + params.district_id + '/' + params.school_id)
     }
 
-    if(user.user_type == 'VILOYAT') {
+    if (user.user_type == 'VILOYAT') {
       setRedirectTo('/region-regions/' + params.district_id + '/' + params.school_id)
     }
 
-    if(user.user_type == 'TUMAN') {
+    if (user.user_type == 'TUMAN') {
       setRedirectTo('/district-district/' + params.district_id + '/' + params.school_id)
     }
 
-    if(user.user_type == 'MAKTAB') {
+    if (user.user_type == 'MAKTAB') {
       setRedirectTo('/school-school/' + params.school_id)
     }
   }, []);
@@ -219,14 +219,20 @@ function Classes() {
             </Dialog>
           </div>
          )}
-          <div className="date-filter text-right mb-4 flex justify-end">
-            <DatePicker
-              value={currentDate}
-              onChange={handleChangeDate}
-              placeholder={currentDate}
-              className="w-1/4"
-            />
-          </div>
+          <div className='date-filter text-right mb-4 flex justify-end' style={{
+        alignItems: 'center'
+      }}>
+        <ExportToExcelStudent
+          apiData={data}
+          headers={columns}
+        />
+        <DatePicker
+          value={currentDate}
+          onChange={handleChangeDate}
+          placeholder={currentDate}
+          className='w-1/4'
+        />
+      </div>
           <TableData
             redirectTo={redirectTo}
             is_location={9999}

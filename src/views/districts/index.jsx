@@ -3,7 +3,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import TableData from "components/table/TableData";
 import { useSelector } from "react-redux";
 import { DatePicker } from "components/ui";
-
+import { ExportToExcelStudent } from "../excelConvert";
 function Districts() {
   const [currentDate, setCurrentDate] = useState(null);
   const [columns] = useState([
@@ -40,31 +40,43 @@ function Districts() {
       accessor: "absenteesCountPercent",
     },
   ]);
-  const [redirectTo, setRedirectTo] = useState('');
+  const [redirectTo, setRedirectTo] = useState("");
 
   const user = useSelector((state) => state.auth.user);
   const params = useParams();
   const navigate = useNavigate();
-  
-  useEffect(() => { if (user.user_type == 'VILOYAT') {
-    params.region_id = user.viloyat_id;
-  }
 
-  if (!params.region_id) {
-    navigate('/');
-  }
+  useEffect(() => {
+    if (user.user_type == "VILOYAT") {
+      params.region_id = user.viloyat_id;
+    }
 
-  if(user.user_type == 'RESPUBLIKA') {
-    setRedirectTo('/republic-regions/' + params.region_id)
-  }
+    if (!params.region_id) {
+      navigate("/");
+    }
 
-  if(user.user_type == 'VILOYAT') {
-    setRedirectTo('/region-regions')
-  }
+    if (user.user_type == "RESPUBLIKA") {
+      setRedirectTo("/republic-regions/" + params.region_id);
+    }
 
-  if(user.user_type == 'TUMAN') {
-    setRedirectTo('/district-district/' + params.region_id)
-  }
+    if (user.user_type == "VILOYAT") {
+      setRedirectTo("/region-regions");
+    }
+
+    if (user.user_type == "TUMAN") {
+      setRedirectTo("/district-district/" + params.region_id);
+    }
+    if (user.user_type == "RESPUBLIKA") {
+      setRedirectTo("/republic-regions/" + params.region_id);
+    }
+
+    if (user.user_type == "VILOYAT") {
+      setRedirectTo("/region-regions");
+    }
+
+    if (user.user_type == "TUMAN") {
+      setRedirectTo("/district-district/" + params.region_id);
+    }
   }, []);
   function getTodaysDate() {
     const today = new Date();
@@ -91,22 +103,22 @@ function Districts() {
     if (token && params.region_id && currentDate) {
       const sendData = {
         viloyat_id: params.region_id,
-        sana: currentDate
-      }
+        sana: currentDate,
+      };
       fetch(`${process.env.REACT_APP_API_URL}api/v1/davomatviloyat/`, {
         method: "POST",
         headers: {
           Authorization: `Token ${token}`,
-          'Content-type': 'application/json',
+          "Content-type": "application/json",
         },
-        body: JSON.stringify(sendData)
+        body: JSON.stringify(sendData),
       })
         .then((res) => res.json())
         .then((d) => {
           console.log(108, d);
           setApiData(d);
         })
-        .catch(err => {
+        .catch((err) => {
           console.log(err);
         });
     }
@@ -146,7 +158,13 @@ function Districts() {
   return (
     <div>
       <h2 className="mb-3">Tumanlar bo'yicha</h2>
-      <div className="date-filter text-right mb-4 flex justify-end">
+      <div
+        className="date-filter text-right mb-4 flex justify-end"
+        style={{
+          alignItems: "center",
+        }}
+      >
+        <ExportToExcelStudent apiData={data} headers={columns} />
         <DatePicker
           value={currentDate}
           onChange={handleChangeDate}

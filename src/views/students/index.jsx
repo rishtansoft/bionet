@@ -4,7 +4,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { DatePicker, Button, Dialog } from "components/ui";
 import AddStudentModal from "./AddStudentModal";
-
+import { ExportToExcelStudent } from "../excelConvert";
 function Students() {
   const [currentDate, setCurrentDate] = useState(null);
   const [openAddModal, setOpenAddModal] = useState(false);
@@ -155,6 +155,20 @@ function Students() {
   return (
     <div>
       <h2 className="mb-3">O'quvchilar bo'yicha</h2>
+      <div
+        className="date-filter text-right mb-4 flex justify-end"
+        style={{
+          alignItems: "center",
+        }}
+      >
+        <ExportToExcelStudent apiData={data} headers={columns} />
+        <DatePicker
+          value={currentDate}
+          onChange={handleChangeDate}
+          placeholder={currentDate}
+          className="w-1/4"
+        />
+      </div>
       {user.user_type == "MAKTAB" && (
         <div className="flex justify-end mb-4">
           <Button size="sm" onClick={addModalFun}>
@@ -165,14 +179,6 @@ function Students() {
           </Dialog>
         </div>
       )}
-      <div className="date-filter text-right mb-4 flex justify-end">
-        <DatePicker
-          value={currentDate}
-          onChange={handleChangeDate}
-          placeholder={currentDate}
-          className="w-1/4"
-        />
-      </div>
       <TableData
         columns={columns}
         data={data}
