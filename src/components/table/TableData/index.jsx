@@ -122,18 +122,6 @@ const TableData = (props) => {
                     <Td
                       {...cell.getCellProps()}
                       key={index}
-                      style={{
-                        background:
-                          index == location &&
-                          (row?.original?.arrivalsCountPercent <= 20
-                            ? "#e55c5c"
-                            : row?.original?.arrivalsCountPercent > 20 &&
-                              row?.original?.arrivalsCountPercent <= 60
-                            ? "#e5d85c"
-                            : row?.original?.arrivalsCountPercent > 60
-                            ? "#52be4e"
-                            : "#e55c5c"),
-                      }}
                     >
                       {index == 1 && props.redirectTo && (
                         <Link
@@ -150,7 +138,7 @@ const TableData = (props) => {
                       {index == location && props.redirectTo && (
                         <p
                           style={{
-                            background:
+                            color:
                               row?.original?.arrivalsCountPercent <= 20
                                 ? "#e55c5c"
                                 : row?.original?.arrivalsCountPercent > 20 &&
@@ -160,7 +148,6 @@ const TableData = (props) => {
                                 ? "#52be4e"
                                 : "#e55c5c",
                             textAlign: "center",
-                            color: "#fff",
                           }}
                         >
                           {row?.original?.arrivalsCountPercent == null
