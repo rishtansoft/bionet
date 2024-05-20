@@ -10,13 +10,12 @@ import DashboardChartLate from 'components/DashboardChartLate';
 import { Select } from 'components/ui';
 
 const CrmDashboard = () => {
-    const dataRange = [
-        { value: 'haftalik', label: 'Haftalik' },
-        { value: 'oylik', label: 'Oylik' },
-        { value: 'choraklik', label: 'Choraklik' },
-        { value: 'yillik', label: 'Yillik' },
-    ];
-
+    const [dataRange] = useState([
+        { value: 'hafta', label: 'Haftalik' },
+        { value: 'oy', label: 'Oylik' },
+        { value: 'chorak', label: 'Choraklik' },
+        { value: 'yil', label: 'Yillik' },
+    ])
     const [chartDataSelect1, setChartDataSelect1] = useState(dataRange[0]);
     const dispatch = useDispatch();
     const [dataMap, setDataMap] = useState([]);
@@ -24,6 +23,7 @@ const CrmDashboard = () => {
     const token = JSON.parse(JSON.parse(localStorage.getItem('admin')).auth).session.token;
     const [headData, setHeadData] = useState({});
     const [statisticData, setStatisticData] = useState([]);
+    const [lateState, setLateState] = useState({ value: 'hafta', label: 'Haftalik' });
 
     function getTodaysDate() {
         const today = new Date();
@@ -58,7 +58,6 @@ const CrmDashboard = () => {
             })
                 .then((res) => res.json())
                 .then((resp) => {
-                    console.log(61, resp);
                     setHeadData(resp[0][0])
                 })
                 .catch((err) => console.log(err));
@@ -152,10 +151,11 @@ const CrmDashboard = () => {
                             <Select
                                 placeholder="Please Select"
                                 options={dataRange}
-                                value={dataRange[0]}
+                                value={lateState}
+                                onChange = {(e) => {setLateState(e)}}
                             />
                         </div>
-                        <DashboardChartLate />
+                        <DashboardChartLate state = {lateState}/>
                     </div>
                 </div>
                 {/* <Leads data={recentLeadsData} /> */}
