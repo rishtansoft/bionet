@@ -23,6 +23,7 @@ const TableData = (props) => {
   const [actionName, setActionName] = useState("");
   const [regionId, setRegionId] = useState("");
   const [selectedItem, setSelectedItem] = useState({});
+
   useEffect(() => {
     setlocation(is_location);
   }, [is_location]);
@@ -79,10 +80,12 @@ const TableData = (props) => {
     }
     setDeleteModal(true);
   };
+
   const closeUpdateModal = () => {
     setUpdateModal(false);
     setActionName("");
   };
+
   const closeDeleteModal = () => {
     setDeleteModal(false);
     setActionName("");
@@ -91,6 +94,7 @@ const TableData = (props) => {
   const writeRegionId = (e) => {
     isRegion && localStorage.setItem("regionId", e);
   };
+
   const callBreadCrump = (value) => {
     if(user.user_type == "RESPUBLIKA"){
       let backPages = localStorage.getItem('backUrls');

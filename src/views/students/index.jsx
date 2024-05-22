@@ -20,7 +20,7 @@ function Students() {
     },
     {
       Header: "Kelgan vaqti",
-      accessor: "studentsCount",
+      accessor: "time",
     },
   ]);
   const [redirectTo, setRedirectTo] = useState("");
@@ -43,7 +43,7 @@ function Students() {
   }
 
   const params = useParams();
-  const navigate = useNavigate();
+  
   useEffect(() => {
     if (user.user_type == "RESPUBLIKA") {
       setRedirectTo(
@@ -128,7 +128,7 @@ function Students() {
         const reg = {
           number: index + 1,
           name: el[0].pupilname,
-          time: el[0].kelganvaqti,
+          time: el[0].kelganvaqti ? el[0].kelganvaqti : '-',
           id: el[0].pupil_id,
         };
 
