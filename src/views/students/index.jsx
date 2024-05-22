@@ -1,14 +1,19 @@
 import React, { useState, useEffect } from "react";
 import TableData from "components/table/TableData";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { DatePicker, Button, Dialog } from "components/ui";
 import AddStudentModal from "./AddStudentModal";
 import { ExportToExcelStudent } from "../excelConvert";
+import NavigateNextIcon from '@mui/icons-material/NavigateNext';
+import { Breadcrumbs } from "@mui/material";
 function Students() {
   const [currentDate, setCurrentDate] = useState(null);
   const [openAddModal, setOpenAddModal] = useState(false);
   const [dataUpdate, setDataUpdate] = useState(false);
+  const [backLinks, setBackLinks] = useState([]);
+  const [backLinksNew, setBackLinksNew] = useState([]);
+
   const [columns] = useState([
     {
       Header: "N#",
@@ -24,7 +29,14 @@ function Students() {
     },
   ]);
   const [redirectTo, setRedirectTo] = useState("");
-
+  function removeDuplicates(arr) {
+    const seen = new Set();
+    return arr.filter(item => {
+      const duplicate = seen.has(item.url);
+      seen.add(item.url);
+      return !duplicate;
+    });
+  }
   const user = useSelector((state) => state.auth.user);
   function getTodaysDate() {
     const today = new Date();
@@ -48,15 +60,24 @@ function Students() {
     if (user.user_type == "RESPUBLIKA") {
       setRedirectTo(
         "/republic-regions/" +
-          params.region_id +
-          "/" +
-          params.district_id +
-          "/" +
-          params.school_id +
-          "/" +
-          params.student_id
+        params.region_id +
+        "/" +
+        params.district_id +
+        "/" +
+        params.school_id +
+        "/" +
+        params.student_id
       );
     }
+    let getBackUrls = localStorage.getItem("backUrls");
+    let filterGetBackUrls = removeDuplicates(JSON.parse(getBackUrls));
+    setBackLinks(filterGetBackUrls);
+
+
+
+    let getBackUrlsNew = localStorage.getItem("locationUrlName");
+    let filterGetBackUrlsNew = JSON.parse(getBackUrlsNew);
+    setBackLinksNew(filterGetBackUrlsNew);
   }, []);
 
   const [data, setData] = useState([]);
@@ -130,6 +151,7 @@ function Students() {
           name: el[0].pupilname,
           time: el[0].kelganvaqti,
           id: el[0].pupil_id,
+          studentsCount: el[0].kelganvaqti ? el[0].kelganvaqti : '-'
         };
 
         res.push(reg);
@@ -151,9 +173,39 @@ function Students() {
   const closeAddModal = () => {
     setOpenAddModal(false);
   };
+  const changeUrls = (arg) => {
+    let nerUrls = []
+    if (arg.label == 'Viloyatlar') {
+      nerUrls = backLinksNew.filter((el) => el.label != 'Tumanlar' && el.label != 'Maktablar' && el.label != 'Sinflar' && el.label != "O'quvchilar");
 
+    } else if (arg.label == 'Tumanlar') {
+      nerUrls = backLinksNew.filter((el) => el.label != 'Maktablar' && el.label != 'Sinflar' && el.label != "O'quvchilar");
+
+    } else if (arg.label == 'Maktablar') {
+      nerUrls = backLinksNew.filter((el) => el.label != 'Sinflar' && el.label != "O'quvchilar");
+
+    } else if (arg.label == 'Sinflar') {
+      nerUrls = backLinksNew.filter((el) => el.label != "O'quvchilar");
+
+    }
+    localStorage.setItem('locationUrlName', JSON.stringify(nerUrls));
+  }
   return (
     <div>
+      <div className="mb-4">
+        <Breadcrumbs
+          separator={<NavigateNextIcon fontSize="small" />}
+          aria-label="breadcrumb">
+          {backLinksNew &&
+            backLinksNew?.length > 0 &&
+            backLinksNew.map((value, index) => (
+              <Link key={index} to={value.old_url} className="hover:underline" onMouseDown={() => changeUrls(value)}>
+                {value.name}
+              </Link>
+            ))}
+
+        </Breadcrumbs>
+      </div>
       <h2 className="mb-3">O'quvchilar bo'yicha</h2>
       <div
         className="date-filter text-right mb-4 flex justify-end"
@@ -183,6 +235,8 @@ function Students() {
         columns={columns}
         data={data}
         updateData={updateData}
+        locationName={"O'quvchilar"}
+
       ></TableData>
     </div>
   );
