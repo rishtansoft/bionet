@@ -58,6 +58,7 @@ const CrmDashboard = () => {
             })
                 .then((res) => res.json())
                 .then((resp) => {
+                    console.log(61, resp);
                     setHeadData(resp[0][0])
                 })
                 .catch((err) => console.log(err));
@@ -103,8 +104,8 @@ const CrmDashboard = () => {
             setStatisticData([
                 { key: 'newLeads', label: 'Maktablar', value: headData.maktabsoni, growShrink: 2.6 },
                 { key: 'emailResponse', label: "O'qituvchilar", value: headData.ustozsoni, growShrink: 5.5 },
-                { key: 'proposals', label: 'Qizlar', value: headData.qizlar_foiz.toFixed(0), growShrink: 32.7 },
-                { key: 'appointment', label: 'Bollar', value: headData.bolalar_foiz.toFixed(0), growShrink: 2.6 },
+                { key: 'proposals', label: 'Qizlar', value: headData.qizlar_foiz ? Number(headData.qizlar_foiz).toFixed(0) : 0, growShrink: 32.7 },
+                { key: 'appointment', label: 'Bollar', value: Number(headData.bolalar_foiz).toFixed(0), growShrink: 2.6 },
             ])
         }
     }, [headData])

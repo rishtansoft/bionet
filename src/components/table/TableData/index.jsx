@@ -146,6 +146,7 @@ const TableData = (props) => {
                   }
                   localStorage.setItem('backUrls', JSON.stringify(backPagesFilter))
             }
+
       }
 
       return (
