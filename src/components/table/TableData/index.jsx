@@ -92,19 +92,54 @@ const TableData = (props) => {
       const writeRegionId = (e) => {
             isRegion && localStorage.setItem("regionId", e);
       };
+      console.log(96, user);
+
       const writeLocatinName = (e, locationName) => {
+
             const locationGetValue = localStorage.getItem('locationUrlName')
             let newLocationArr = locationGetValue ? JSON.parse(locationGetValue) : []
 
-            const defultValue = {
+            const defultValueRes = {
                   old_url: `/republic-regions`,
                   id: '0',
                   name: "Barcha viloyatlar",
                   label: "Barcha viloyatlar"
             }
-            const isdefultValueOne = newLocationArr.find((el) => el.label == 'Barcha viloyatlar')
-            if (newLocationArr.length == 0 || !isdefultValueOne) {
-                  newLocationArr.push(defultValue);
+
+            const defultValueVil = {
+                  old_url: `/region-regions`,
+                  id: '0',
+                  name: "Barcha Tumanlar",
+                  label: "Barcha Tumanlar"
+            }
+
+            const defultValueTum = {
+                  old_url: `/district-district`,
+                  id: '0',
+                  name: "Barcha maktablar",
+                  label: "Barcha maktablar"
+            }
+
+            const defultValueMak = {
+                  old_url: `/school-school`,
+                  id: '0',
+                  name: "Barcha sinflar",
+                  label: "Barcha sinflar"
+            }
+
+            const isdefultValueOneRes = newLocationArr.find((el) => el.label == 'Barcha viloyatlar')
+            const isdefultValueOneVil = newLocationArr.find((el) => el.label == 'Barcha Tumanlar')
+            const isdefultValueOneTum = newLocationArr.find((el) => el.label == 'Barcha maktablar')
+            const isdefultValueOneMak = newLocationArr.find((el) => el.label == 'Barcha sinflar')
+
+            if (user.user_type == "RESPUBLIKA" && (newLocationArr.length == 0 || !isdefultValueOneRes)) {
+                  newLocationArr.push(defultValueRes);
+            } else if (user.user_type == "VILOYAT" && (newLocationArr.length == 0 || !isdefultValueOneVil)) {
+                  newLocationArr.push(defultValueVil);
+            } else if (user.user_type == "TUMAN" && (newLocationArr.length == 0 || !isdefultValueOneTum)) {
+                  newLocationArr.push(defultValueTum);
+            } else if (user.user_type == "MAKTAB" && (newLocationArr.length == 0 || !isdefultValueOneMak)) {
+                  newLocationArr.push(defultValueMak);
             }
 
             const newLocationValue = {

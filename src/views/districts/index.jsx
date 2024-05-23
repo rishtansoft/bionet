@@ -52,12 +52,7 @@ function Districts() {
       const params = useParams();
       const navigate = useNavigate();
       function removeDuplicates(arr) {
-            const seen = new Set();
-            return arr.filter(item => {
-                  const duplicate = seen.has(item.url);
-                  seen.add(item.url);
-                  return !duplicate;
-            });
+            
       }
 
       useEffect(() => {

@@ -67,12 +67,7 @@ function Classes() {
     }
 
     function removeDuplicates(arr) {
-        const seen = new Set();
-        return arr.filter(item => {
-            const duplicate = seen.has(item.url);
-            seen.add(item.url);
-            return !duplicate;
-        });
+      
     }
 
     const user = useSelector((state) => state.auth.user);
