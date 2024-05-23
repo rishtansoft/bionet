@@ -123,7 +123,7 @@ const TableData = (props) => {
             const defultValueMak = {
                   old_url: `/school-school`,
                   id: '0',
-                  name: "Barcha sinflar",
+                  name: "Bosh sahifa",
                   label: "Barcha sinflar"
             }
 
