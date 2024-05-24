@@ -46,6 +46,7 @@ function useAuth() {
                 navigate(
                     redirectUrl ? redirectUrl : appConfig.authenticatedEntryPath
                 )
+                window.location.reload();
                 return {
                     status: 'success',
                     message: '',
