@@ -40,6 +40,7 @@ const SignInForm = (props) => {
         const result = await signIn({ userName, password })
         if (result?.status === 'failed') {
             setMessage(result.message)
+            window.location.reload();
         } else {
             setMessage("Login yoki Parol noto'g'ri kiritildi");
         }
