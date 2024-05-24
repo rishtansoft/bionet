@@ -92,9 +92,8 @@ const TableData = (props) => {
       const writeRegionId = (e) => {
             isRegion && localStorage.setItem("regionId", e);
       };
-      console.log(96, user);
 
-      const writeLocatinName = (e, locationName) => {
+      const writeLocatinName = (e, locationName, itemArr = []) => {
 
             const locationGetValue = localStorage.getItem('locationUrlName')
             let newLocationArr = locationGetValue ? JSON.parse(locationGetValue) : []
@@ -103,29 +102,36 @@ const TableData = (props) => {
                   old_url: `/republic-regions`,
                   id: '0',
                   name: "Barcha viloyatlar",
-                  label: "Barcha viloyatlar"
+                  label: "Barcha viloyatlar",
+                  item: []
             }
 
             const defultValueVil = {
                   old_url: `/region-regions`,
                   id: '0',
                   name: "Barcha Tumanlar",
-                  label: "Barcha Tumanlar"
+                  label: "Barcha Tumanlar",
+                  item: []
             }
 
             const defultValueTum = {
                   old_url: `/district-district`,
                   id: '0',
                   name: "Barcha maktablar",
-                  label: "Barcha maktablar"
+                  label: "Barcha maktablar",
+                  item: []
+
             }
 
             const defultValueMak = {
                   old_url: `/school-school`,
                   id: '0',
                   name: "Bosh sahifa",
-                  label: "Barcha sinflar"
+                  label: "Barcha sinflar",
+                  item: []
             }
+
+
 
             const isdefultValueOneRes = newLocationArr.find((el) => el.label == 'Barcha viloyatlar')
             const isdefultValueOneVil = newLocationArr.find((el) => el.label == 'Barcha Tumanlar')
@@ -142,11 +148,26 @@ const TableData = (props) => {
                   newLocationArr.push(defultValueMak);
             }
 
+            const items = []
+
+            if (itemArr.length > 0) {
+                  itemArr.forEach((el) => {
+                        const newItems = {
+                              old_url: `${props.redirectTo}/${el.original.id}`,
+                              id: el.original.id,
+                              name: el.original.name,
+                              label: locationName
+                        }
+                        items.push(newItems)
+                  });
+            }
+
             const newLocationValue = {
                   old_url: `${props.redirectTo}/${e.id}`,
                   id: e.id,
                   name: e.name,
-                  label: locationName
+                  label: locationName,
+                  item:items
             }
 
 
@@ -232,7 +253,7 @@ const TableData = (props) => {
                                                                               onMouseDown={() => {
                                                                                     callBreadCrump(row.original.id)
                                                                                     writeRegionId(row.original.id);
-                                                                                    writeLocatinName(row.original, locationName);
+                                                                                    writeLocatinName(row.original, locationName, rows);
                                                                               }}
                                                                         >
                                                                               {cell.render("Cell")}

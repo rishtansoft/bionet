@@ -6,12 +6,16 @@ import { DatePicker } from "components/ui";
 import { ExportToExcelStudent } from "../excelConvert";
 import { Breadcrumbs } from "@mui/material";
 import NavigateNextIcon from '@mui/icons-material/NavigateNext';
+import MenuItem from '@mui/material/MenuItem';
+import Select from '@mui/material/Select';
 
 function Districts() {
       const [currentDate, setCurrentDate] = useState(null);
       const [backLinks, setBackLinks] = useState([]);
       const [backLinksNew, setBackLinksNew] = useState([]);
-
+      const [subLinks, setSubLinks] = useState([]);
+      const [selectedSubLink, setSelectedSubLink] = useState('');
+      const [updateData, setUpdateData] = useState(true);
       const [columns] = useState([
             {
                   Header: "N#",
@@ -52,7 +56,7 @@ function Districts() {
       const params = useParams();
       const navigate = useNavigate();
       function removeDuplicates(arr) {
-            
+
       }
 
       useEffect(() => {
@@ -119,7 +123,7 @@ function Districts() {
       const token = useSelector((state) => state?.auth?.session?.token);
 
       useEffect(() => {
-            if (token && params.region_id && currentDate) {
+            if (token && params.region_id && currentDate && updateData) {
                   const sendData = {
                         viloyat_id: params.region_id,
                         sana: currentDate,
@@ -134,14 +138,14 @@ function Districts() {
                   })
                         .then((res) => res.json())
                         .then((d) => {
-                              console.log(108, d);
                               setApiData(d);
                         })
                         .catch((err) => {
                               console.log(err);
                         });
+                  setUpdateData(false)
             }
-      }, [currentDate]);
+      }, [currentDate, updateData]);
 
       useEffect(() => {
             let today = getTodaysDate();
@@ -174,6 +178,16 @@ function Districts() {
                   setData(res);
             }
       }, [apiData]);
+
+      const changeUrls = (arg) => {
+            setSubLinks(arg.item)
+      }
+
+      const handleSubLinkChange = (event) => {
+            setUpdateData(true)
+
+      };
+
       return (
             <div>
                   <div className="mb-4">
@@ -183,7 +197,7 @@ function Districts() {
                               {backLinksNew &&
                                     backLinksNew?.length > 0 &&
                                     backLinksNew.map((value, index) => (
-                                          <Link key={index} to={value.old_url} className="hover:underline">
+                                          <Link key={index} to={value.old_url} className="hover:underline" onMouseDown={() => changeUrls(value)}>
                                                 {value.name}
                                           </Link>
                                     ))}
@@ -191,6 +205,26 @@ function Districts() {
                                     Tumanlar
                               </Link> */}
                         </Breadcrumbs>
+
+                        <div>
+                              {subLinks.length > 0 && (
+                                    <Select
+                                    // value={selectedSubLink}
+                                    // onChange={handleSubLinkChange}
+                                    // displayEmpty
+                                    >
+                                          {subLinks.map((subLink, index) => (
+                                                <MenuItem key={index} value={subLink.id}>
+                                                      <Link onMouseDown={() => handleSubLinkChange(subLink)} to={subLink.old_url} className="hover:underline" >
+                                                            {subLink.name}
+                                                      </Link>
+                                                </MenuItem>
+                                          ))}
+                                    </Select>
+                              )}
+                        </div>
+
+
                   </div>
                   <h2 className="mb-3">Tumanlar bo'yicha</h2>
                   <div
