@@ -94,7 +94,6 @@ const TableData = (props) => {
       };
 
       const writeLocatinName = (e, locationName, itemArr = []) => {
-
             const locationGetValue = localStorage.getItem('locationUrlName')
             let newLocationArr = locationGetValue ? JSON.parse(locationGetValue) : []
 
@@ -130,9 +129,6 @@ const TableData = (props) => {
                   label: "Barcha sinflar",
                   item: []
             }
-
-
-
             const isdefultValueOneRes = newLocationArr.find((el) => el.label == 'Barcha viloyatlar')
             const isdefultValueOneVil = newLocationArr.find((el) => el.label == 'Barcha Tumanlar')
             const isdefultValueOneTum = newLocationArr.find((el) => el.label == 'Barcha maktablar')

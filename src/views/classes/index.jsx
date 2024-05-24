@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import TableData from "components/table/TableData";
-import { useParams, useNavigate, Link } from "react-router-dom";
+import { useParams, useNavigate, Link, useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { DatePicker, Button, Dialog } from "components/ui";
 import AddClassModal from "./AddClassModal";
@@ -49,6 +49,8 @@ function Classes() {
         },
     ]);
     const [redirectTo, setRedirectTo] = useState('');
+    const [onMouserValue, setonMouserValue] = useState('');
+    const location = useLocation();
 
     function getTodaysDate() {
         const today = new Date();
@@ -67,7 +69,7 @@ function Classes() {
     }
 
     function removeDuplicates(arr) {
-      
+
     }
 
     const user = useSelector((state) => state.auth.user);
@@ -151,7 +153,10 @@ function Classes() {
                     console.log(err);
                 });
         }
-    }, [currentDate]);
+        let getBackUrlsNew = localStorage.getItem("locationUrlName");
+        let filterGetBackUrlsNew = JSON.parse(getBackUrlsNew);
+        setBackLinksNew(filterGetBackUrlsNew);
+    }, [currentDate, location.pathname]);
     useEffect(() => {
         if (token && params.school_id && dataUpdate) {
             const sendData = {
@@ -175,7 +180,7 @@ function Classes() {
                     console.log(err);
                 });
         }
-    }, [dataUpdate]);
+    }, [dataUpdate, location.pathname]);
 
     useEffect(() => {
         let today = getTodaysDate();
@@ -187,8 +192,8 @@ function Classes() {
     }
 
     useEffect(() => {
+        let res = [];
         if (apiData.length > 0) {
-            let res = [];
             apiData.forEach((el, index) => {
                 const reg = {
                     number: index + 1,
@@ -203,10 +208,11 @@ function Classes() {
 
                 res.push(reg);
             });
-
-            setData(res);
         }
-    }, [apiData]);
+        setData(res);
+    }, [apiData, location.pathname]);
+
+
 
     const addModalFun = (e) => {
         e.preventDefault();
@@ -223,20 +229,51 @@ function Classes() {
     const changeUrls = (arg) => {
         let nerUrls = []
         if (arg.label == 'Viloyatlar') {
-          nerUrls = backLinksNew.filter((el) => el.label != 'Tumanlar' && el.label != 'Maktablar' && el.label != 'Sinflar' && el.label != "O'quvchilar");
-    
+            nerUrls = backLinksNew.filter((el) => el.label != 'Tumanlar' && el.label != 'Maktablar' && el.label != 'Sinflar' && el.label != "O'quvchilar");
+
         } else if (arg.label == 'Tumanlar') {
-          nerUrls = backLinksNew.filter((el) => el.label != 'Maktablar' && el.label != 'Sinflar' && el.label != "O'quvchilar");
-    
+            nerUrls = backLinksNew.filter((el) => el.label != 'Maktablar' && el.label != 'Sinflar' && el.label != "O'quvchilar");
+
         } else if (arg.label == 'Maktablar') {
-          nerUrls = backLinksNew.filter((el) => el.label != 'Sinflar' && el.label != "O'quvchilar");
-    
+            nerUrls = backLinksNew.filter((el) => el.label != 'Sinflar' && el.label != "O'quvchilar");
+
         } else if (arg.label == 'Sinflar') {
-          nerUrls = backLinksNew.filter((el) => el.label != "O'quvchilar");
-    
+            nerUrls = backLinksNew.filter((el) => el.label != "O'quvchilar");
+
         }
         localStorage.setItem('locationUrlName', JSON.stringify(nerUrls));
-      }
+    }
+
+    const mouseoverFun = (e) => {
+        setonMouserValue(e)
+    }
+    const mouseoutFun = () => {
+        setonMouserValue('')
+    }
+
+    const changeItemsUrls = (arg, item) => {
+        try {
+            let nerUrls = []
+            if (arg.label == 'Viloyatlar') {
+                nerUrls = backLinksNew.filter((el) => el.label != 'Viloyatlar' && el.label != 'Tumanlar' && el.label != 'Maktablar' && el.label != 'Sinflar' && el.label != "O'quvchilar");
+            } else if (arg.label == 'Tumanlar') {
+                nerUrls = backLinksNew.filter((el) => el.label != 'Tumanlar' && el.label != 'Maktablar' && el.label != 'Sinflar' && el.label != "O'quvchilar");
+            } else if (arg.label == 'Maktablar') {
+                nerUrls = backLinksNew.filter((el) => el.label != 'Maktablar' && el.label != 'Sinflar' && el.label != "O'quvchilar");
+            } else if (arg.label == 'Sinflar') {
+                nerUrls = backLinksNew.filter((el) => el.label != 'Sinflar' && el.label != "O'quvchilar");
+            } else if (arg.label == "O'quvchilar") {
+                nerUrls = backLinksNew.filter((el) => el.label != "O'quvchilar");
+            }
+            const newObj = { ...arg };
+            newObj.item = item;
+            nerUrls.push(newObj);
+            localStorage.setItem('locationUrlName', JSON.stringify(nerUrls));
+            setDataUpdate(updateData);
+        } catch (error) {
+            console.log(204, error);
+        }
+    }
 
     return (
         <div>
@@ -247,11 +284,54 @@ function Classes() {
                     {backLinksNew &&
                         backLinksNew?.length > 0 &&
                         backLinksNew.map((value, index) => (
-                            <Link key={index} to={value.old_url} className="hover:underline" onMouseDown={() => changeUrls(value)}>
-                                {value.name}
-                            </Link>
-                        ))}
+                            <div
+                                onMouseOut={() => mouseoutFun(value.label)}
+                                onMouseOver={() => mouseoverFun(value.label)}
+                                style={{
+                                    position: 'relative',
+                                    width: 'auto'
 
+                                }}
+                                key={index}>
+                                <Link to={value.old_url}
+
+                                    className="hover:underline" onMouseDown={() => changeUrls(value)}>
+                                    {value.name}
+                                </Link>
+                                <div style={
+                                    {
+                                        position: 'absolute',
+                                        visibility: index > 0 && (onMouserValue == value.label) ? 'visible' : 'hidden',
+                                        background: '#fff',
+                                        padding: '20px',
+                                        display: 'flex',
+                                        flexDirection: 'column',
+                                        gap: '1rem',
+                                        boxShadow: '0px 0px 10px 2px rgba(138,138,138,1)',
+                                        width: '300px',
+                                        borderRadius: '5px',
+                                        height: "auto",
+                                        maxHeight: '50vh',
+                                        overflowY: 'auto',
+                                    }
+                                }>
+
+                                    {
+                                        value.item.map((el, i) => (
+                                            <div key={`index-${i}`}>
+                                                <Link to={el.old_url}
+                                                    className="hover:underline" onMouseDown={() => changeItemsUrls(el, value.item)}>
+                                                    {el.name}
+                                                </Link>
+                                            </div>
+                                        ))
+
+                                    }
+
+
+                                </div>
+                            </div>
+                        ))}
                 </Breadcrumbs>
             </div>
             <h2 className="mb-3">Sinflar bo'yicha</h2>
