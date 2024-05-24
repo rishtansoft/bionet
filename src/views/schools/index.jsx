@@ -5,6 +5,8 @@ import { useSelector } from "react-redux";
 import { DatePicker } from "components/ui";
 import { ExportToExcelStudent } from '../excelConvert'
 import { Breadcrumbs } from "@mui/material";
+import NavigateNextIcon from '@mui/icons-material/NavigateNext';
+
 
 function Schools() {
   const [currentDate, setCurrentDate] = useState(null);
@@ -40,6 +42,7 @@ function Schools() {
     },
   ]);
   const [redirectTo, setRedirectTo] = useState('');
+  const [backLinksNew, setBackLinksNew] = useState([]);
 
   function getTodaysDate() {
     const today = new Date();
@@ -60,6 +63,9 @@ function Schools() {
   const user = useSelector((state) => state.auth.user);
   const params = useParams();
   const navigate = useNavigate();
+  function removeDuplicates(arr) {
+   
+  }
   useEffect(() => {
     if (user.user_type == 'TUMAN') {
       params.district_id = user.tumanshahar;
@@ -96,14 +102,20 @@ function Schools() {
       setRedirectTo('/school-school');
     }
     let getBackUrls = localStorage.getItem("backUrls");
-    let filterGetBackUrls = JSON.parse(getBackUrls);
+    let filterGetBackUrls = removeDuplicates(JSON.parse(getBackUrls));
     setBackLinks(filterGetBackUrls);
+
+
+    let getBackUrlsNew = localStorage.getItem("locationUrlName");
+    let filterGetBackUrlsNew = JSON.parse(getBackUrlsNew);
+    setBackLinksNew(filterGetBackUrlsNew);
   }, []);
 
   const [data, setData] = useState([]);
   const [apiData, setApiData] = useState([]);
 
   const token = useSelector((state) => state?.auth?.session?.token);
+
   useEffect(() => {
     if (token && params.district_id) {
       const sendData = {
@@ -160,24 +172,39 @@ function Schools() {
   }, [apiData]);
 
   const changeUrls = (arg) => {
-    const nerUrls = backLinks.filter(e => e.url !== arg.url);
-    localStorage.setItem('backUrls', JSON.stringify(nerUrls));
+    let nerUrls = []
+    if (arg.label == 'Viloyatlar') {
+      nerUrls = backLinksNew.filter((el) => el.label != 'Tumanlar' && el.label != 'Maktablar' && el.label != 'Sinflar' && el.label != "O'quvchilar");
+
+    } else if (arg.label == 'Tumanlar') {
+      nerUrls = backLinksNew.filter((el) => el.label != 'Maktablar' && el.label != 'Sinflar' && el.label != "O'quvchilar");
+
+    } else if (arg.label == 'Maktablar') {
+      nerUrls = backLinksNew.filter((el) => el.label != 'Sinflar' && el.label != "O'quvchilar");
+
+    } else if (arg.label == 'Sinflar') {
+      nerUrls = backLinksNew.filter((el) => el.label != "O'quvchilar");
+
+    }
+    localStorage.setItem('locationUrlName', JSON.stringify(nerUrls));
   }
 
   return (
     <div>
-       <div className="mb-4">
-        <Breadcrumbs aria-label="breadcrumb">
-          {backLinks &&
-            backLinks?.length > 0 &&
-            backLinks.map((value, index) => (
-              <Link key={index} to={value.url} className="hover:underline" onMouseDown={() => changeUrls(value)}>
-                {value.label}
+      <div className="mb-4">
+        <Breadcrumbs
+          separator={<NavigateNextIcon fontSize="small" />}
+          aria-label="breadcrumb">
+          {backLinksNew &&
+            backLinksNew?.length > 0 &&
+            backLinksNew.map((value, index) => (
+              <Link key={index} to={value.old_url} className="hover:underline" onMouseDown={() => changeUrls(value)}>
+                {value.name}
               </Link>
             ))}
-          <Link className="hover:underline">
+          {/* <Link className="hover:underline">
             Maktablar
-          </Link>
+          </Link> */}
         </Breadcrumbs>
       </div>
       <h2 className='mb-3'>Maktablar bo'yicha</h2>
@@ -200,6 +227,7 @@ function Schools() {
         columns={columns}
         data={data}
         is_location={4}
+        locationName={'Maktablar'}
       ></TableData>
     </div>
   );

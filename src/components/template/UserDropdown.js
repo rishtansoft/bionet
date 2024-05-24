@@ -30,7 +30,8 @@ export const UserDropdown = ({ className }) => {
     const { signOut } = useAuth()
 
     const signOutFunction = () => {
-        localStorage.removeItem('backUrls')
+        localStorage.removeItem('backUrls');
+        localStorage.removeItem('locationUrlName');
         signOut();
     }
 

@@ -5,6 +5,8 @@ import { DatePicker } from "components/ui";
 import { ExportToExcelStudent } from "../excelConvert";
 import { Breadcrumbs } from "@mui/material";
 import { Link } from "react-router-dom";
+import NavigateNextIcon from '@mui/icons-material/NavigateNext';
+
 function Regions() {
   const [currentDate, setCurrentDate] = useState(null);
   const [columns] = useState([
@@ -64,10 +66,10 @@ function Regions() {
   const token = useSelector((state) => state?.auth?.session?.token);
 
   useEffect(() => {
-    const pages = [{url: '/republic-regions', label: 'Viloyatlar'}]
+    const pages = [{ url: '/republic-regions', label: 'Viloyatlar' }]
     localStorage.setItem('backUrls', JSON.stringify(pages))
   }, [])
-  
+
 
   useEffect(() => {
     if (token && currentDate) {
@@ -125,9 +127,11 @@ function Regions() {
   return (
     <div>
       <div className="mb-4">
-        <Breadcrumbs aria-label="breadcrumb">
+        <Breadcrumbs
+          separator={<NavigateNextIcon fontSize="small" />}
+          aria-label="breadcrumb">
           <Link className="hover:underline">
-            Viloyatlar
+            Barcha viloyatlar
           </Link>
         </Breadcrumbs>
       </div>
@@ -153,6 +157,8 @@ function Regions() {
         columns={columns}
         data={data}
         is_location={5}
+        locationName={'Viloyatlar'}
+
       ></TableData>
     </div>
   );
