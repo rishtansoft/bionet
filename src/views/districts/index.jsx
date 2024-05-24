@@ -1,17 +1,22 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate, useParams, Link } from "react-router-dom";
+import { useNavigate, useParams, Link, useLocation } from "react-router-dom";
 import TableData from "components/table/TableData";
 import { useSelector } from "react-redux";
 import { DatePicker } from "components/ui";
 import { ExportToExcelStudent } from "../excelConvert";
 import { Breadcrumbs } from "@mui/material";
 import NavigateNextIcon from '@mui/icons-material/NavigateNext';
+import MenuItem from '@mui/material/MenuItem';
+import Select from '@mui/material/Select';
 
 function Districts() {
       const [currentDate, setCurrentDate] = useState(null);
       const [backLinks, setBackLinks] = useState([]);
       const [backLinksNew, setBackLinksNew] = useState([]);
-
+      const [subLinks, setSubLinks] = useState([]);
+      const [selectedSubLink, setSelectedSubLink] = useState('');
+      const [updateData, setUpdateData] = useState(true);
+      const [onMouserValue, setonMouserValue] = useState('');
       const [columns] = useState([
             {
                   Header: "N#",
@@ -47,12 +52,12 @@ function Districts() {
             },
       ]);
       const [redirectTo, setRedirectTo] = useState("");
-
+      const location = useLocation();
       const user = useSelector((state) => state.auth.user);
       const params = useParams();
       const navigate = useNavigate();
       function removeDuplicates(arr) {
-            
+
       }
 
       useEffect(() => {
@@ -86,12 +91,6 @@ function Districts() {
             if (user.user_type == "TUMAN") {
                   setRedirectTo("/district-district/" + params.region_id);
             }
-
-            let getBackUrls = localStorage.getItem("backUrls");
-            let filterGetBackUrls = removeDuplicates(JSON.parse(getBackUrls));
-            setBackLinks(filterGetBackUrls);
-
-
             let getBackUrlsNew = localStorage.getItem("locationUrlName");
             let filterGetBackUrlsNew = JSON.parse(getBackUrlsNew);
             setBackLinksNew(filterGetBackUrlsNew);
@@ -134,14 +133,19 @@ function Districts() {
                   })
                         .then((res) => res.json())
                         .then((d) => {
-                              console.log(108, d);
                               setApiData(d);
                         })
                         .catch((err) => {
                               console.log(err);
                         });
+                  setUpdateData(false)
             }
-      }, [currentDate]);
+            let getBackUrlsNew = localStorage.getItem("locationUrlName");
+            let filterGetBackUrlsNew = JSON.parse(getBackUrlsNew);
+            setBackLinksNew(filterGetBackUrlsNew);
+
+      }, [currentDate, location.pathname]);
+
 
       useEffect(() => {
             let today = getTodaysDate();
@@ -173,7 +177,61 @@ function Districts() {
 
                   setData(res);
             }
-      }, [apiData]);
+      }, [apiData, location.pathname]);
+
+      const changeUrls = (arg) => {
+            let nerUrls = []
+            if (arg.label == 'Viloyatlar') {
+                  nerUrls = backLinksNew.filter((el) => el.label != 'Tumanlar' && el.label != 'Maktablar' && el.label != 'Sinflar' && el.label != "O'quvchilar");
+
+            } else if (arg.label == 'Tumanlar') {
+                  nerUrls = backLinksNew.filter((el) => el.label != 'Maktablar' && el.label != 'Sinflar' && el.label != "O'quvchilar");
+
+            } else if (arg.label == 'Maktablar') {
+                  nerUrls = backLinksNew.filter((el) => el.label != 'Sinflar' && el.label != "O'quvchilar");
+
+            } else if (arg.label == 'Sinflar') {
+                  nerUrls = backLinksNew.filter((el) => el.label != "O'quvchilar");
+
+            }
+            localStorage.setItem('locationUrlName', JSON.stringify(nerUrls));
+      }
+
+      const changeItemsUrls = (arg, item) => {
+            try {
+                  let nerUrls = []
+                  if (arg.label == 'Viloyatlar') {
+                        nerUrls = backLinksNew.filter((el) => el.label != 'Viloyatlar' && el.label != 'Tumanlar' && el.label != 'Maktablar' && el.label != 'Sinflar' && el.label != "O'quvchilar");
+                  } else if (arg.label == 'Tumanlar') {
+                        nerUrls = backLinksNew.filter((el) => el.label != 'Tumanlar' && el.label != 'Maktablar' && el.label != 'Sinflar' && el.label != "O'quvchilar");
+                  } else if (arg.label == 'Maktablar') {
+                        nerUrls = backLinksNew.filter((el) => el.label != 'Maktablar' && el.label != 'Sinflar' && el.label != "O'quvchilar");
+                  } else if (arg.label == 'Sinflar') {
+                        nerUrls = backLinksNew.filter((el) => el.label != 'Sinflar' && el.label != "O'quvchilar");
+                  } else if (arg.label == "O'quvchilar") {
+                        nerUrls = backLinksNew.filter((el) => el.label != "O'quvchilar");
+                  }
+                  const newObj = { ...arg };
+                  newObj.item = item;
+                  nerUrls.push(newObj);
+                  localStorage.setItem('locationUrlName', JSON.stringify(nerUrls));
+            } catch (error) {
+                  console.log(204, error);
+            }
+      }
+
+      const handleSubLinkChange = (event) => {
+            setUpdateData(true)
+
+      };
+
+      const mouseoverFun = (e) => {
+            setonMouserValue(e)
+      }
+      const mouseoutFun = () => {
+            setonMouserValue('')
+      }
+
       return (
             <div>
                   <div className="mb-4">
@@ -183,14 +241,58 @@ function Districts() {
                               {backLinksNew &&
                                     backLinksNew?.length > 0 &&
                                     backLinksNew.map((value, index) => (
-                                          <Link key={index} to={value.old_url} className="hover:underline">
-                                                {value.name}
-                                          </Link>
+                                          <div
+                                                onMouseOut={() => mouseoutFun(value.label)}
+                                                onMouseOver={() => mouseoverFun(value.label)}
+                                                style={{
+                                                      position: 'relative',
+                                                      width: 'auto'
+                                                }}
+                                                key={index}>
+                                                <Link to={value.old_url}
+                                                      className="hover:underline">
+                                                      {value.name}
+                                                </Link>
+                                                <div style={
+                                                      {
+                                                            position: 'absolute',
+                                                            visibility: index > 0 && (onMouserValue == value.label) ? 'visible' : 'hidden',
+                                                            background: '#fff',
+                                                            padding: '20px',
+                                                            display: 'flex',
+                                                            flexDirection: 'column',
+                                                            gap: '1rem',
+                                                            boxShadow: '0px 0px 10px 2px rgba(138,138,138,1)',
+                                                            width: '300px',
+                                                            borderRadius: '5px',
+                                                            height: "auto",
+                                                            maxHeight: '50vh',
+                                                            overflowY: 'auto'
+                                                      }
+                                                }>
+
+                                                      {
+                                                            value.item.map((el, i) => (
+                                                                  <div key={`index-${i}`}>
+                                                                        <Link to={el.old_url}
+                                                                              className="hover:underline" onMouseDown={() => changeItemsUrls(el, value.item)}>
+                                                                              {el.name}
+                                                                        </Link>
+                                                                  </div>
+                                                            ))
+
+                                                      }
+
+
+                                                </div>
+                                          </div>
                                     ))}
-                              {/* <Link className="hover:underline">
-                                    Tumanlar
-                              </Link> */}
+
                         </Breadcrumbs>
+
+
+
+
                   </div>
                   <h2 className="mb-3">Tumanlar bo'yicha</h2>
                   <div
