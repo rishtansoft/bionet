@@ -1,0 +1,66 @@
+.main-banner {
+    background: url(../../../assets/assets/images/newBackground.jpg);
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+.mobile-view-menu {
+    position: relative;
+    /* right: 40px; */
+    /* z-index: 99; */
+    /* top: 33px; */
+}
+.mobile-view-menu .showMenu{
+    position: absolute;
+    right: 10px;
+    top: 85px;
+    background-color: #F7F7F7;
+    z-index: 100;
+    width: 250px;
+    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+    padding: 15px;
+    border-radius: 5px;
+    display: none;
+    transition: 0.3s ease;
+}
+.mobile-view-menu .showMenu.inactive{
+   transform: translateY(-20px);
+   visibility: hidden;
+   opacity: 0;
+}
+.mobile-view-menu .showMenu.active{
+   transform: translateY(0px);
+   visibility: visible;
+   opacity: 1;
+}
+
+.mobile-view-menu .showMenu ul li{
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+@media (max-width: 767px) {
+    .mobile-view-menu .showMenu{
+        display: block;
+    }
+}
+
+.feedback-part .inputs-part{
+    width: 70%;
+}
+.feedback-part .contacts-part{
+    width: 30%;
+}
+
+@media (max-width: 992px) {
+    .feedback-part{
+        flex-direction: column;
+    }
+    .feedback-part .inputs-part{
+        width: 100%;
+    }
+    .feedback-part .contacts-part{
+        width: 100%;
+    }
+}
