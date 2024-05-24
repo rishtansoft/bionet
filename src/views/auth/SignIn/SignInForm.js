@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import {
     Input,
     Button,
@@ -14,8 +14,8 @@ import * as Yup from 'yup'
 import useAuth from 'utils/hooks/useAuth'
 
 const validationSchema = Yup.object().shape({
-    userName: Yup.string().required('Please enter your user name'),
-    password: Yup.string().required('Please enter your password'),
+    userName: Yup.string().required('Loginni kiriting'),
+    password: Yup.string().required('Palolni kiritng'),
     rememberMe: Yup.bool(),
 })
 
@@ -25,7 +25,9 @@ const SignInForm = (props) => {
         className,
         forgotPasswordUrl = '/forgot-password',
         signUpUrl = '/sign-up',
-    } = props
+    } = props;
+
+    const [loginError, setLoginError] = useState(false);
 
     const [message, setMessage] = useTimeOutMessage()
 
@@ -36,9 +38,11 @@ const SignInForm = (props) => {
         setSubmitting(true)
 
         const result = await signIn({ userName, password })
-        window.location.reload();
-        if (result.status === 'failed') {
+        if (result?.status === 'failed') {
             setMessage(result.message)
+            window.location.reload();
+        } else {
+            setMessage("Login yoki Parol noto'g'ri kiritildi");
         }
 
         setSubmitting(false)
@@ -95,7 +99,7 @@ const SignInForm = (props) => {
                                     component={PasswordInput}
                                 />
                             </FormItem>
-                            
+
                             <Button
                                 block
                                 loading={isSubmitting}
