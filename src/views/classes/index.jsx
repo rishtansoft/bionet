@@ -199,10 +199,10 @@ function Classes() {
                     number: index + 1,
                     name: el[0].sinfnomi,
                     studentsCount: el[0].bolasoni,
-                    arrivalsCount: el[0].kelganlar,
-                    arrivalsCountPercent: el[0].foizi,
-                    absenteesCount: el[0].kelmaganlar,
-                    absenteesCountPercent: 100 - el[0].foizi,
+                    arrivalsCount: Math.round(el[0].kelganlar * 100) / 100,
+                    arrivalsCountPercent: Math.round(el[0].foizi * 100) / 100,
+                    absenteesCount: Math.round(el[0].kelmaganlar * 100) / 100,
+                    absenteesCountPercent: Math.round((100 - el[0].foizi) * 100) / 100,
                     id: el[0].sinf_id,
                 };
 

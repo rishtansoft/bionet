@@ -10,6 +10,10 @@ const BasicLine = ({ select_value }) => {
     const token = useSelector((state) => state?.auth?.session?.token);
     const [chartData, setChartData] = useState([]);
 
+    const region_id = useSelector((state) => state.auth.user.viloyat_id);
+    const district_id = useSelector((state) => state.auth.user.tumanshahar);
+    const school_id = useSelector((state) => state.auth.user.school);
+
 
     useEffect(() => {
         const year = new Date().getFullYear();
@@ -19,13 +23,13 @@ const BasicLine = ({ select_value }) => {
         const newDate = year + '-' + (month <= 9 ? '0' : '') + month + '-' + (date <= 9 ? '0' : '') + date;
 
         const sendData = {
-            "viloyat_id": null,
-            "tuman_id": null,
-            "maktab_id": null,
-            "hafta": select_value.value == 'haftalik' ? 1 : 0,
-            "oy": select_value.value == 'oylik' ? 1 : 0,
-            "chorak": select_value.value == 'choraklik' ? 1 : 0,
-            "yil": select_value.value == 'yillik' ? 1 : 0,
+            "viloyat_id": region_id ? region_id : null,
+            "tuman_id": district_id ? district_id : null,
+            "maktab_id": school_id ? school_id : null,
+            "hafta": select_value.value == 'hafta' ? 1 : 0,
+            "oy": select_value.value == 'oy' ? 1 : 0,
+            "chorak": select_value.value == 'chorak' ? 1 : 0,
+            "yil": select_value.value == 'yil' ? 1 : 0,
             sana: newDate,
 
         }

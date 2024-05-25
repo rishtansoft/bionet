@@ -245,7 +245,7 @@ function ClassesCross() {
           setCurrentDate(formatDate(e));
      }
 
-     const filterFun = () => {
+     const filterFun = (clear = false) => {
           const sendData = {
                viloyat_id: region_id,
                tuman_id: districtsDataValue ? districtsDataValue.value : null,
@@ -253,18 +253,25 @@ function ClassesCross() {
                sinf: classDataValue ? Number(classDataValue.value) : 1,
                sana: currentDate
           }
-          const testToken = 'ad7fac83fac077b1c817bfeee50d1303ded94d56';
+          const clearFunData = {
+               viloyat_id: region_id,
+               tuman_id: null,
+               maktab_id: null,
+               sinf: 1,
+               sana: currentDate
+          }
+
           fetch(`${process.env.REACT_APP_API_URL}api/v1/davomatrespsinf/`, {
                method: "POST",
                headers: {
                     Authorization: `Token ${token}`,
                     'Content-type': 'application/json',
                },
-               body: JSON.stringify(sendData)
+               body: JSON.stringify(!clear ? sendData : clearFunData)
           })
                .then((res) => res.json())
                .then((d) => {
-                    if (!districtsDataValue && !schoolDataValue) {
+                    if (clear || (!districtsDataValue && !schoolDataValue)) {
                          setColumns([
                               {
                                    Header: 'N#',
@@ -303,9 +310,9 @@ function ClassesCross() {
                                    districtCount: 19,
                                    schoolCount: el[0].maktabsoni,
                                    studentsCount: el[0].bolasoni,
-                                   arrivalsCount: el[0].kelganlar,
-                                   arrivalsCountPercent: el[0].foizi,
-                                   absenteesCount: el[0].kelmaganlar,
+                                   arrivalsCount: Math.round(el[0].kelganlar * 100) / 100,
+                                   arrivalsCountPercent: Math.round(el[0].foizi * 100) / 100,
+                                   absenteesCount: Math.round(el[0].kelmaganlar * 100) / 100,
                                    id: el[0].tuman_id,
                               }
                          }).filter((el) => el && el);
@@ -344,9 +351,9 @@ function ClassesCross() {
                                    name: el[0].maktabnomi,
                                    districtCount: 19,
                                    studentsCount: el[0].bolasoni,
-                                   arrivalsCount: el[0].kelganlar,
-                                   arrivalsCountPercent: el[0].foizi,
-                                   absenteesCount: el[0].kelmaganlar,
+                                   arrivalsCount: Math.round(el[0].kelganlar * 100) / 100,
+                                   arrivalsCountPercent: Math.round(el[0].foizi * 100) / 100,
+                                   absenteesCount: Math.round(el[0].kelmaganlar * 100) / 100,
                                    id: el[0].viloyat_id,
                               }
                          }).filter((el) => el && el);
@@ -385,9 +392,9 @@ function ClassesCross() {
                                    name: el[0].sinfnomi,
                                    districtCount: 19,
                                    studentsCount: el[0].bolasoni,
-                                   arrivalsCount: el[0].kelganlar,
-                                   arrivalsCountPercent: el[0].foizi,
-                                   absenteesCount: el[0].kelmaganlar,
+                                   arrivalsCount: Math.round(el[0].kelganlar * 100) / 100,
+                                   arrivalsCountPercent: Math.round(el[0].foizi * 100) / 100,
+                                   absenteesCount: Math.round(el[0].kelmaganlar * 100) / 100,
                                    id: el[0].viloyat_id,
                               }
                          }).filter((el) => el && el);
@@ -402,6 +409,14 @@ function ClassesCross() {
      useEffect(() => {
           filterFun();
      }, [apiData]);
+
+     const filterClearFun = () => {
+          setRegionDataValue(null);
+          setDistrictsDataValue(null);
+          setSchoolDataValue(null);
+          setClassDataValue(class_list[0]);
+          filterFun(true);
+     }
 
      return (
           <div>
@@ -457,16 +472,33 @@ function ClassesCross() {
 
                               </Select>
                          </div>
-                         <div>
+                         <div style={{
+                              display: 'flex',
+                              alignItems: 'center',
+                              gap: '2rem'
+                         }}>
 
                               <button
                                    style={{
                                         border: '1px solid #a5a5a5',
                                         padding: '0.7rem  1rem',
-                                        borderRadius: '8px'
+                                        borderRadius: '8px',
+                                        cursor: 'pointer'
                                    }}
-                                   onClick={filterFun}>
+                                   onClick={() => filterFun(false)}>
                                    Filter
+                              </button>
+
+                              <button
+                                   style={{
+                                        border: '1px solid #a5a5a5',
+                                        padding: '0.7rem  1rem',
+                                        borderRadius: '8px',
+                                        cursor: !districtsDataValue ? 'not-allowed' : 'pointer'
+                                   }}
+                                   disabled={!districtsDataValue ? true : false}
+                                   onClick={filterClearFun}>
+                                   Tozalash
                               </button>
                          </div>
                     </div>
