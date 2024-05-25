@@ -292,6 +292,10 @@ function Schools() {
                 <ExportToExcelStudent
                     apiData={data}
                     headers={columns}
+                    titleValue={
+                        backLinksNew?.length > 1 ?
+                            `${backLinksNew[1]?.name ? backLinksNew[1]?.name : ''} ${backLinksNew[2]?.name ? backLinksNew[2]?.name : ''}ni makablari bo'yicha hisobotlar`
+                            : `Maktablar bo'yicha hisobotlar`}
                 />
                 <DatePicker
                     value={currentDate}

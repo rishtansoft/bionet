@@ -143,7 +143,7 @@ function Regions() {
           alignItems: "center",
         }}
       >
-        <ExportToExcelStudent apiData={data} headers={columns} />
+        <ExportToExcelStudent titleValue={`Viloyatlar bo'yicha hisobotlar`} apiData={data} headers={columns} />
         <DatePicker
           value={currentDate}
           onChange={handleChangeDate}

@@ -354,6 +354,10 @@ function Classes() {
                 <ExportToExcelStudent
                     apiData={data}
                     headers={columns}
+                    titleValue={
+                        backLinksNew?.length > 1 ?
+                            `${backLinksNew[1]?.name ? backLinksNew[1]?.name : ''} ${backLinksNew[2]?.name ? backLinksNew[2]?.name : ''}  ${backLinksNew[3]?.name ? backLinksNew[3]?.name : ''} bo'yicha hisobotlar `
+                            : `Sinflar bo'yicha hisobotlar`}
                 />
                 <DatePicker
                     value={currentDate}

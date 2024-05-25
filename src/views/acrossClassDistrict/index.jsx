@@ -387,6 +387,7 @@ function ClassesCross() {
 				<ExportToExcelStudent
 					apiData={data}
 					headers={columns}
+					titleValue={'Sinflar kesimida'}
 				/>
 				<DatePicker
 					value={currentDate}

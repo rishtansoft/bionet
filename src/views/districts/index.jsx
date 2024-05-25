@@ -301,7 +301,11 @@ function Districts() {
                               alignItems: "center",
                         }}
                   >
-                        <ExportToExcelStudent apiData={data} headers={columns} />
+                        <ExportToExcelStudent titleValue={
+                              backLinksNew?.length > 1 ?
+                                    `${backLinksNew[1]?.name ? backLinksNew[1]?.name : ''} tumanlari bo'yicha hisobotlar`
+                                    : `Tumanlar bo'yicha hisobotlar`}
+                              apiData={data} headers={columns} />
                         <DatePicker
                               value={currentDate}
                               onChange={handleChangeDate}
