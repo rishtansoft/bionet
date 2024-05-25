@@ -119,14 +119,7 @@ const AddStudentModal = ({updateFun, closeFun}) => {
       fullName &&
       !/^\s*$/.test(fullName) &&
       gender &&
-      address &&
-      !/^\s*$/.test(address) &&
-      phoneNumber &&
-      phoneNumber.length === 17 &&
-      relative &&
-      !/^\s*$/.test(relative) &&
-      relativePhoneNumber &&
-      relativePhoneNumber.length === 17 && birthday
+      birthday
     ) {
       const sendData = {
         name: fullName,
@@ -195,35 +188,15 @@ const AddStudentModal = ({updateFun, closeFun}) => {
       } else {
         setErrorFullName(false);
       }
-      if (!address || /^\s*$/.test(address)) {
-        setErrorAddress(true);
-      } else {
-        setErrorAddress(false);
-      }
       if (!gender) {
         setErrorGender(true);
       } else {
         setErrorGender(false);
       }
-      if (!phoneNumber || phoneNumber.length !== 17) {
-        setErrorPhoneNumber(true);
-      } else {
-        setErrorPhoneNumber(false);
-      }
-      if (!relative || /^\s*$/.test(relative)) {
-        setErrorRelative(true);
-      } else {
-        setErrorRelative(false);
-      }
       if (!birthday || birthday == null) {
         setErrorBirthday(true);
       } else {
         setErrorBirthday(false);
-      }
-      if (!relativePhoneNumber || /^\s*$/.test(relativePhoneNumber)) {
-        setErrorRelativeNumber(true);
-      } else {
-        setErrorRelativeNumber(false);
       }
     }
   };
