@@ -23,7 +23,7 @@ const CrmDashboard = () => {
     const token = JSON.parse(JSON.parse(localStorage.getItem('admin')).auth).session.token;
     const [headData, setHeadData] = useState({});
     const [statisticData, setStatisticData] = useState([]);
-    const [lateState, setLateState] = useState({ value: 'hafta', label: 'Haftalik' });
+    const [lateState, setLateState] = useState(dataRange[0]);
 
     function getTodaysDate() {
         const today = new Date();
@@ -48,20 +48,20 @@ const CrmDashboard = () => {
 
     useEffect(() => {
         const req = { sana: currentDate };
-            fetch(`${process.env.REACT_APP_API_URL}api/v1/headerchart/`, {
-                headers: {
-                    Authorization: `Token ${token}`,
-                    'Content-type': 'application/json',
-                },
-                method: 'POST',
-                body: JSON.stringify(req),
+        fetch(`${process.env.REACT_APP_API_URL}api/v1/headerchart/`, {
+            headers: {
+                Authorization: `Token ${token}`,
+                'Content-type': 'application/json',
+            },
+            method: 'POST',
+            body: JSON.stringify(req),
+        })
+            .then((res) => res.json())
+            .then((resp) => {
+                console.log(61, resp);
+                setHeadData(resp[0][0])
             })
-                .then((res) => res.json())
-                .then((resp) => {
-                    console.log(61, resp);
-                    setHeadData(resp[0][0])
-                })
-                .catch((err) => console.log(err));
+            .catch((err) => console.log(err));
     }, [])
 
     function handleChangeDate(e) {
@@ -127,7 +127,7 @@ const CrmDashboard = () => {
             <Loading loading={false}>
                 <Statistic data={statisticData} />
                 <div className="grid grid-cols-1 xl:grid-cols-7 gap-4">
-                    <LeadByCountries currentDate={currentDate} change = {handleChangeDate} className="xl:col-span-5" data={dataMap} />
+                    <LeadByCountries currentDate={currentDate} change={handleChangeDate} className="xl:col-span-5" data={dataMap} />
                     {/* <MapUzb className="xl:col-span-5" /> */}
                     <EmailSent className="xl:col-span-2" data={emailSentData} />
                 </div>
@@ -153,10 +153,10 @@ const CrmDashboard = () => {
                                 placeholder="Please Select"
                                 options={dataRange}
                                 value={lateState}
-                                onChange = {(e) => {setLateState(e)}}
+                                onChange={(e) => { setLateState(e) }}
                             />
                         </div>
-                        <DashboardChartLate state = {lateState}/>
+                        <DashboardChartLate state={lateState} />
                     </div>
                 </div>
                 {/* <Leads data={recentLeadsData} /> */}
