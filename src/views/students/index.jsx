@@ -288,7 +288,14 @@ function Students() {
                     alignItems: "center",
                 }}
             >
-                <ExportToExcelStudent apiData={data} headers={columns} />
+                <ExportToExcelStudent
+                    titleValue={
+                        backLinksNew?.length > 1 ?
+                            `${backLinksNew[1]?.name ? backLinksNew[1]?.name : ''} ${backLinksNew[2]?.name ? backLinksNew[2]?.name : ''}  ${backLinksNew[3]?.name ? backLinksNew[3]?.name : ''} ${backLinksNew[4]?.name ? backLinksNew[4]?.name : ''} bo'yicha hisobotlar `
+                            : `O'quvchilar bo'yicha`}
+                    apiData={data}
+
+                    headers={columns} />
                 <DatePicker
                     value={currentDate}
                     onChange={handleChangeDate}
