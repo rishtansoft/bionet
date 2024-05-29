@@ -308,7 +308,9 @@ function Students() {
                     <Button size="sm" onClick={addModalFun}>
                         Qo&apos;shish
                     </Button>
-                    <Dialog isOpen={openAddModal} onClose={closeAddModal} width={700}>
+                    <Dialog style={{
+                        padding: '0'
+                    }} isOpen={openAddModal} onClose={closeAddModal} width={850}>
                         <AddStudentModal closeFun={closeAddModal} updateFun={updateData} />
                     </Dialog>
                 </div>

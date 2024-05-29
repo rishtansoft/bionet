@@ -3,19 +3,22 @@ import React, { useEffect, useState } from 'react'
 import Chart from 'react-apexcharts'
 import { COLOR_2 } from 'constants/chart.constant'
 import { useSelector } from "react-redux";
+import Skeleton from 'react-loading-skeleton'
+import 'react-loading-skeleton/dist/skeleton.css'
 
 
 const BasicLine = ({ select_value }) => {
     const [dataValue, setdataValue] = useState([]);
     const token = useSelector((state) => state?.auth?.session?.token);
     const [chartData, setChartData] = useState([]);
-
+    const [loader, setLoader] = useState(true);
     const region_id = useSelector((state) => state.auth.user.viloyat_id);
     const district_id = useSelector((state) => state.auth.user.tumanshahar);
     const school_id = useSelector((state) => state.auth.user.school);
 
 
     useEffect(() => {
+        setLoader(true)
         const year = new Date().getFullYear();
         const month = new Date().getMonth() + 1;
         const date = new Date().getDate();
@@ -53,6 +56,7 @@ const BasicLine = ({ select_value }) => {
                         data: d.map((el) => el[0].foizi)
                     }
                 ])
+                setLoader(false);
             })
             .catch(err => {
                 console.log(err);
@@ -60,29 +64,39 @@ const BasicLine = ({ select_value }) => {
     }, [select_value]);
 
     return (
-        <Chart
-            options={{
-                chart: {
-                    type: 'line',
-                    zoom: {
-                        enabled: false,
-                    },
-                },
-                dataLabels: {
-                    enabled: false,
-                },
-                stroke: {
-                    curve: 'smooth',
-                    width: 3,
-                },
-                colors: [COLOR_2],
-                xaxis: {
-                    categories: dataValue,
-                },
-            }}
-            series={chartData}
-            height={300}
-        />
+        <>
+
+            {
+                loader ? (
+                    <Skeleton height={20} count={15} />
+                ) : (
+                    <Chart
+                        options={{
+                            chart: {
+                                type: 'line',
+                                zoom: {
+                                    enabled: false,
+                                },
+                            },
+                            dataLabels: {
+                                enabled: false,
+                            },
+                            stroke: {
+                                curve: 'smooth',
+                                width: 3,
+                            },
+                            colors: [COLOR_2],
+                            xaxis: {
+                                categories: dataValue,
+                            },
+                        }}
+                        series={chartData}
+                        height={450}
+                    />
+                )
+            }
+
+        </>
     )
 }
 

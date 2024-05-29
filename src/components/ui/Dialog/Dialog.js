@@ -9,7 +9,6 @@ import useWindowSize from '../hooks/useWindowSize'
 
 const Dialog = (props) => {
     const currentSize = useWindowSize()
-
     const {
         children,
         className,
@@ -35,6 +34,11 @@ const Dialog = (props) => {
         <CloseButton
             onClick={onCloseClick}
             className="ltr:right-6 rtl:left-6"
+            style={
+                {
+                    marginRight: '1rem'
+                }
+            }
             absolute
         />
     )
@@ -71,6 +75,7 @@ const Dialog = (props) => {
                 afterOpen: 'dialog-after-open',
                 beforeClose: 'dialog-before-close',
             }}
+            
             overlayClassName={{
                 base: classNames('dialog-overlay', overlayClassName),
                 afterOpen: 'dialog-overlay-after-open flex justify-center items-center',
