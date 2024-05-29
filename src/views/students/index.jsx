@@ -22,6 +22,10 @@ function Students() {
             accessor: "number",
         },
         {
+            Header: "Rasmi",
+            accessor: "img",
+        },
+        {
             Header: "O'quvchi",
             accessor: "name",
         },
@@ -151,6 +155,11 @@ function Students() {
             apiData.forEach((el, index) => {
                 const reg = {
                     number: index + 1,
+                    img: <img style={{
+                        width: '60px',
+                        height: '60px',
+                        borderRadius: '50%'
+                    }} src="https://static.vecteezy.com/system/resources/previews/026/910/903/original/happy-student-boy-with-books-isolated-png.png" alt="" />,
                     name: el[0].pupilname,
                     time: el[0].kelganvaqti ? el[0].kelganvaqti : '-',
                     id: el[0].pupil_id,
