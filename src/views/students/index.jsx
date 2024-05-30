@@ -15,6 +15,9 @@ function Students() {
     const [backLinksNew, setBackLinksNew] = useState([]);
     const [onMouserValue, setonMouserValue] = useState('');
     const location = useLocation();
+    const [dataExcel, setDataExcel] = useState([]);
+
+
 
     const [columns] = useState([
         {
@@ -151,6 +154,7 @@ function Students() {
 
     useEffect(() => {
         let res = [];
+        let resExcel = [];
         if (apiData.length > 0) {
             apiData.forEach((el, index) => {
                 const reg = {
@@ -159,15 +163,29 @@ function Students() {
                         width: '60px',
                         height: '60px',
                         borderRadius: '50%'
-                    }} src="https://static.vecteezy.com/system/resources/previews/026/910/903/original/happy-student-boy-with-books-isolated-png.png" alt="" />,
+                    }} src={el[0].image ? process.env.REACT_APP_API_URL + 'media/' + el[0].image : ''} alt="O'quvchni rasmi" />,
                     name: el[0].pupilname,
                     time: el[0].kelganvaqti ? el[0].kelganvaqti : '-',
                     id: el[0].pupil_id,
                     studentsCount: el[0].kelganvaqti ? el[0].kelganvaqti : '-'
                 };
+                const regExcel = {
+                    number: index + 1,
+                    // img: <img style={{
+                    //     width: '60px',
+                    //     height: '60px',
+                    //     borderRadius: '50%'
+                    // }} src={el[0].image ? process.env.REACT_APP_API_URL + 'media/' + el[0].image : ''} alt="student img" />,
+                    name: el[0].pupilname,
+                    time: el[0].kelganvaqti ? el[0].kelganvaqti : '-',
+                    id: el[0].pupil_id,
+                    studentsCount: el[0].kelganvaqti ? el[0].kelganvaqti : '-'
+                };
+                resExcel.push(regExcel)
                 res.push(reg);
             });
         }
+        setDataExcel(resExcel)
         setData(res);
 
     }, [apiData, , location.pathname]);
@@ -302,9 +320,22 @@ function Students() {
                         backLinksNew?.length > 1 ?
                             `${backLinksNew[1]?.name ? backLinksNew[1]?.name : ''} ${backLinksNew[2]?.name ? backLinksNew[2]?.name : ''}  ${backLinksNew[3]?.name ? backLinksNew[3]?.name : ''} ${backLinksNew[4]?.name ? backLinksNew[4]?.name : ''} bo'yicha hisobotlar `
                             : `O'quvchilar bo'yicha`}
-                    apiData={data}
+                    apiData={dataExcel}
 
-                    headers={columns} />
+                    headers={[
+                        {
+                            Header: "N#",
+                            accessor: "number",
+                        },
+                        {
+                            Header: "O'quvchi",
+                            accessor: "name",
+                        },
+                        {
+                            Header: "Kelgan vaqti",
+                            accessor: "time",
+                        },
+                    ]} />
                 <DatePicker
                     value={currentDate}
                     onChange={handleChangeDate}
