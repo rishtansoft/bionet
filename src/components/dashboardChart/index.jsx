@@ -46,9 +46,18 @@ const BasicLine = ({ select_value }) => {
         })
             .then((res) => res.json())
             .then((d) => {
+
+
                 const dateValue = d.map((el) => {
-                    return el[0].sana
+                    if (select_value.value == 'hafta' || select_value.value == 'oy') {
+                        return el[0].sana
+                    }else{
+                        return el[0].month
+                    }
+
                 }).filter((el) => el && el);
+
+
                 setdataValue(dateValue);
                 setChartData([
                     {

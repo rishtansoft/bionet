@@ -371,7 +371,7 @@ const TableData = (props) => {
                               </Dialog>
                         )}
                         {actionName === "student" && (
-                              <Dialog isOpen={updateModal} onClose={closeUpdateModal} width={700}>
+                              <Dialog isOpen={updateModal} onClose={closeUpdateModal} width={850}>
                                     <UpdateStudentModal
                                           item={selectedItem}
                                           updateFun={updateData}

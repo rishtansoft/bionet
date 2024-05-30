@@ -4,6 +4,8 @@ import { useMask } from "@react-input/mask";
 import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import dayjs from "dayjs";
+import CloseIcon from '@mui/icons-material/Close';
+
 
 const AddStudentModal = ({ updateFun, closeFun }) => {
     const user = useSelector((state) => state.auth.user);
@@ -25,6 +27,7 @@ const AddStudentModal = ({ updateFun, closeFun }) => {
     const [relativePhoneNumber, setRelativePhoneNumber] = useState("");
     const [errorRelativeNumber, setErrorRelativeNumber] = useState(false);
     const [disabledButton, setDisabledButton] = useState(false);
+    const [isHovered, setIsHovered] = useState(false);
 
     const [selectedImage, setSelectedImage] = useState(null);
     const [selectedImageUrl, setSelectedImageUrl] = useState('');
@@ -38,12 +41,10 @@ const AddStudentModal = ({ updateFun, closeFun }) => {
 
     const handleImageChange = (e) => {
         const file = e.target.files[0];
-        console.log(37, e);
         if (file && (file.type === 'image/png' || file.type === 'image/jpg' || file.type === 'image/jpeg')) {
             setSelectedImage(URL.createObjectURL(file));
             setSelectedImageFile(file);
             setSelectedImageUrl(e.target.value)
-            console.log(39, file);
             setErrorMessage('');
         } else {
             setSelectedImage(null);
@@ -199,7 +200,6 @@ const AddStudentModal = ({ updateFun, closeFun }) => {
                         );
 
                         if (selectedImageFile) {
-                            console.log(198, selectedImageFile);
                             const data = JSON.parse(res._bodyInit);
                             const formData = new FormData();
                             formData.append('id', data.id);
@@ -266,11 +266,14 @@ const AddStudentModal = ({ updateFun, closeFun }) => {
         }
     };
 
+    const imgDeleteFun = () => {
+        setSelectedImage(null);
+        setSelectedImageFile(null);
+        setSelectedImageUrl('');
+    }
+
     return (
-        <div className="flex flex-col gap-4" style={{
-            overflowY: 'auto',
-            height: selectedImage ? '90vh' : '60vh'
-        }}>
+        <div className="flex flex-col gap-4" selectedImage>
             <h3 className="text-center">O'quvchi qo'shish</h3>
             <FormContainer className="mt-4 grid grid-cols-3 gap-2" style={
                 {
@@ -394,9 +397,38 @@ const AddStudentModal = ({ updateFun, closeFun }) => {
             <div style={{
                 width: '100%',
                 padding: '2rem',
-                display: selectedImage ? 'block' : 'nones'
+                display: selectedImage ? 'flex' : 'none',
+                flexDirection: 'row',
+                alignItems: 'center',
+                justifyContent: 'center',
+                position: 'relative'
             }}>
-                <img src={selectedImage} width='100%' height={'100px'} alt="" srcset="" />
+                <img src={selectedImage} style={{
+                    height: '320px',
+                    width: '320px',
+                    border:'1px solid #3a3a3a',
+                    padding:'1rem',
+                    borderRadius:'10px'
+                }} alt="" srcset="" />
+                <button style={{
+                    position: 'absolute',
+                    top: '1.1rem',
+                    right: '28%',
+                    padding: '0.2rem',
+                    transition: 'all 0.3s',
+                    borderRadius: '50%',
+                    background: isHovered ? '#7c7c7c' : '#b1b1b1',
+                    color: isHovered ? '#d9d9d9' : '#5b5b5b',
+
+                }}
+                    onMouseEnter={() => setIsHovered(true)}
+                    onMouseLeave={() => setIsHovered(false)}
+                    onClick={imgDeleteFun}
+                >
+                    <CloseIcon sx={{
+                        fontSize: '1.5rem'
+                    }} />
+                </button>
             </div>
 
             <Button color="indigo-500" variant="solid" onClick={addStudentFun} loading={disabledButton}>
