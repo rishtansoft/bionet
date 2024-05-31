@@ -60,7 +60,7 @@ function ClassesCross() {
     const [districtsDataValue, setDistrictsDataValue] = useState(null);
     const [schoolDataValue, setSchoolDataValue] = useState(null);
     const [classDataValue, setClassDataValue] = useState(class_list[0]);
-
+    const [excelTitleValue, setexcelTitleValue] = useState('');
     const [columns, setColumns] = useState(
         [
             {
@@ -265,6 +265,7 @@ function ClassesCross() {
             },
             body: JSON.stringify(!clear ? sendData : clearFunData)
         })
+
             .then((res) => res.json())
             .then((d) => {
                 if (clear || (!regionDataValue && !districtsDataValue && !schoolDataValue)) {
@@ -303,7 +304,6 @@ function ClassesCross() {
                         return {
                             number: index + 1,
                             name: el[0].viloyat,
-                            districtCount: 19,
                             schoolCount: el[0].maktabsoni,
                             studentsCount: el[0].bolasoni,
                             arrivalsCount: Math.round(el[0].kelganlar * 100) / 100,
@@ -312,6 +312,7 @@ function ClassesCross() {
                             id: el[0].viloyat_id,
                         }
                     }).filter((el) => el && el);
+                    setexcelTitleValue(`Barcha viloyatlardagi ${clear ? '1' : classDataValue.value}-sinflar bo'yicha hisobotlar`)
                     setData(resData)
                 } else if (regionDataValue && !districtsDataValue && !schoolDataValue) {
                     setColumns([
@@ -349,7 +350,6 @@ function ClassesCross() {
                         return {
                             number: index + 1,
                             name: el[0].tuman,
-                            districtCount: 19,
                             schoolCount: el[0].maktabsoni,
                             studentsCount: el[0].bolasoni,
                             arrivalsCount: Math.round(el[0].kelganlar * 100) / 100,
@@ -358,6 +358,8 @@ function ClassesCross() {
                             id: el[0].tuman_id,
                         }
                     }).filter((el) => el && el);
+                    setexcelTitleValue(`${regionDataValue.label}dagi ${classDataValue.value}-sinflar bo'yicha hisobotlar`)
+
                     setData(resData)
                 } else if (regionDataValue && districtsDataValue && !schoolDataValue) {
                     setColumns([
@@ -391,7 +393,6 @@ function ClassesCross() {
                         return {
                             number: index + 1,
                             name: el[0].maktabnomi,
-                            districtCount: 19,
                             studentsCount: el[0].bolasoni,
                             arrivalsCount: Math.round(el[0].kelganlar * 100) / 100,
                             arrivalsCountPercent: Math.round(el[0].foizi * 100) / 100,
@@ -399,6 +400,7 @@ function ClassesCross() {
                             id: el[0].viloyat_id,
                         }
                     }).filter((el) => el && el);
+                    setexcelTitleValue(`${regionDataValue.label} ${districtsDataValue.label}dagi ${classDataValue.value}-sinflar bo'yicha hisobotlar`)
                     setData(resData)
                 } else if (regionDataValue && districtsDataValue && schoolDataValue) {
                     setColumns([
@@ -432,7 +434,6 @@ function ClassesCross() {
                         return {
                             number: index + 1,
                             name: el[0].sinfnomi,
-                            districtCount: 19,
                             studentsCount: el[0].bolasoni,
                             arrivalsCount: Math.round(el[0].kelganlar * 100) / 100,
                             arrivalsCountPercent: Math.round(el[0].foizi * 100) / 100,
@@ -440,6 +441,8 @@ function ClassesCross() {
                             id: el[0].viloyat_id,
                         }
                     }).filter((el) => el && el);
+                    setexcelTitleValue(`${regionDataValue.label} ${districtsDataValue.label} ${schoolDataValue.label}dagi ${classDataValue.value}-sinflar bo'yicha hisobotlar`)
+
                     setData(resData)
                 }
             })
@@ -567,7 +570,7 @@ function ClassesCross() {
                 <ExportToExcelStudent
                     apiData={data}
                     headers={columns}
-                    titleValue={'Sinflar kesimida'}
+                    titleValue={excelTitleValue}
                 />
 
                 <DatePicker

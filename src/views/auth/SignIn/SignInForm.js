@@ -87,14 +87,14 @@ const SignInForm = (props) => {
                                 />
                             </FormItem>
                             <FormItem
-                                label="Paro'l"
+                                label="Parol"
                                 invalid={errors.password && touched.password}
                                 errorMessage={errors.password}
                             >
                                 <Field
                                     autoComplete="off"
                                     name="password"
-                                    placeholder="Paro'l"
+                                    placeholder="Parol"
                                     component={PasswordInput}
                                 />
                             </FormItem>

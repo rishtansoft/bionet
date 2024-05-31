@@ -30,6 +30,11 @@ const AddStudentModal = ({ updateFun, closeFun }) => {
     const [birthdayFilter, setBirthdayFilter] = useState("");
     const [errorBirthday, setErrorBirthday] = useState(false);
     const [disabledButton, setDisabledButton] = useState(false);
+    const [dateOfEmployment, setDateOfEmployment] = useState(null);
+    const [dateOfEmploymentError, setDateOfEmploymentError] = useState(false);
+    const [dateOfEmploymentFilter, setDateOfEmploymentFilter] = useState('');
+    const [description, setDescription] = useState('');
+    const [category, setCategory] = useState('');
     const inputPhoneRef = useMask({
         mask: "+998 __ ___ __ __",
         replacement: { _: /\d/ },
@@ -39,6 +44,15 @@ const AddStudentModal = ({ updateFun, closeFun }) => {
         setFullName(e.target.value);
         setErrorFullName(false);
     };
+
+    const changedescription = (e) => {
+        setDescription(e.target.value);
+    };
+
+    const changeCategory = (e) => {
+        setCategory(e.target.value);
+    };
+
     const changeGender = (e) => {
         setGender(e);
         setErrorGender(false);
@@ -59,6 +73,12 @@ const AddStudentModal = ({ updateFun, closeFun }) => {
         setBirthday(e);
         setBirthdayFilter(dayjs(e).format('YYYY-MM-DD'))
         setErrorBirthday(false);
+    };
+
+    const changeDateOfEmployment = (e) => {
+        setDateOfEmployment(e);
+        setDateOfEmploymentFilter(dayjs(e).format('YYYY-MM-DD'))
+        setDateOfEmploymentError(false);
     };
 
     const genders = [
@@ -109,9 +129,9 @@ const AddStudentModal = ({ updateFun, closeFun }) => {
                 address: address ? address : null,
                 phone: phoneNumber ? phoneNumber : null,
                 email: email ? email : null,
-                category: "",
-                datapriyoma: getCurrentDate(),
-                primech: null,
+                category: category ? category : '',
+                datapriyoma: dateOfEmploymentFilter ? dateOfEmploymentFilter : null,
+                primech: description ? description : null,
                 school: user.school
             }
             fetch(
@@ -169,13 +189,13 @@ const AddStudentModal = ({ updateFun, closeFun }) => {
             } else {
                 setErrorFullName(false);
             }
-           
+
             if (!gender) {
                 setErrorGender(true);
             } else {
                 setErrorGender(false);
             }
-           
+
             if (!birthday || birthday == null) {
                 setErrorBirthday(true);
             } else {
@@ -251,7 +271,29 @@ const AddStudentModal = ({ updateFun, closeFun }) => {
                 // invalid={errorEmail}
                 // errorMessage="Maydonni to'ldiring"
                 >
-                    <Input placeholder="Email" value={email} onChange={changeEmail} />
+                    <Input type='email' placeholder="Email" value={email} onChange={changeEmail} />
+                </FormItem>
+                <FormItem
+                    label={"Kategoriya"}
+                >
+                    <Input type='text' placeholder="Kategoriya" value={category} onChange={changeCategory} />
+                </FormItem>
+                <FormItem
+                    label={"Ishga qabul qilingan sana"}
+                    invalid={dateOfEmploymentError}
+                    errorMessage="Maydonni to'ldiring"
+                >
+                    <DatePicker
+                        placeholder="Ishga qabul qilingan sana"
+                        value={dateOfEmployment}
+                        name="date"
+                        onChange={changeDateOfEmployment}
+                    />
+                </FormItem>
+                <FormItem
+                    label={"Eslatma"}
+                >
+                    <Input type='text' placeholder="Eslatma" value={description} onChange={changedescription} />
                 </FormItem>
             </FormContainer>
             <Button color="indigo-500" variant="solid" onClick={addTeacherFun} loading={disabledButton}>

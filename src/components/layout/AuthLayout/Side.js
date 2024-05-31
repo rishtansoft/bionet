@@ -27,10 +27,13 @@ const Side = ({ children, content, ...rest }) => {
                                 color:'#fff',
                                 fontWeight:'600',
                                 textAlign:'center',
-                                
+                                marginLeft: sideNavCollapse ? '0.5rem' : '0'
+
                             }}
                         href='#'>
-                            Bionet 
+                             {
+                                !sideNavCollapse ? 'Bionet' : 'B'
+                            } 
                         </a>
                 </div>
                 {/* <div>

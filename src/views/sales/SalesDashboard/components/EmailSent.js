@@ -3,11 +3,12 @@ import { Card, Progress } from 'components/ui'
 import { useSelector } from "react-redux";
 
 
-const ProgressInfo = ({ precent , student_count}) => {
+const ProgressInfo = ({ precent, student_count }) => {
+
     return (
         <div>
-            <h3 className="font-bold">{precent?precent:0}%</h3>
-            <p>Bugungi kelganlar soni: {student_count ? student_count:0}</p>
+            <h3 className="font-bold">{precent ? Number(precent) : 0}%</h3>
+            <p>Bugungi kelganlar soni: {student_count ? student_count : 0}</p>
         </div>
     )
 }
@@ -49,11 +50,11 @@ const EmailSent = ({ className }) => {
             <div className="mt-6">
                 <Progress
                     variant="circle"
-                    percent={data && data.foizi}
+                    percent={data && Number(data.foizi)}
                     width={350}
                     className="flex justify-center text-center h5"
                     strokeWidth={4}
-                    customInfo={<ProgressInfo precent={data && data.foizi} student_count ={data && data.bolasoni}/>}
+                    customInfo={<ProgressInfo precent={data && data.foizi} student_count={data && data.bolasoni} />}
                 />
             </div>
             {/* <div className="text-center mt-6">

@@ -226,7 +226,6 @@ function ClassesCross() {
                 const reg = {
                     number: index + 1,
                     name: el[0].viloyat,
-                    districtCount: 19,
                     schoolCount: el[0].maktabsoni,
                     studentsCount: el[0].bolasoni,
                     arrivalsCount: el[0].kelganlar,

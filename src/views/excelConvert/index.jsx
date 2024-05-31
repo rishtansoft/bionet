@@ -45,7 +45,7 @@ export const ExportToExcelStudent = ({ apiData, fileName, groupData, headers, ti
 
         if (typeof dataFiled[0] === 'object' && Object.keys(dataFiled[0]).length === 0 &&
             typeof dataFiled[1] === 'object' && Object.keys(dataFiled[1]).length === 0) {
-                console.log(48);
+            console.log(48);
         } else {
             console.log(50);
             dataFiled.unshift({}, {});
@@ -107,7 +107,7 @@ export const ExportToExcelStudent = ({ apiData, fileName, groupData, headers, ti
 
         const wb = { Sheets: { data: ws }, SheetNames: ['data'] };
         XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
-        XLSXStyle.writeFile(wb, `Hisobotlar.xlsx`);
+        XLSXStyle.writeFile(wb, `${titleValue}.xlsx`);
     };
 
     return (

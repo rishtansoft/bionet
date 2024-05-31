@@ -52,6 +52,7 @@ const class_list = [
 
 function ClassesCross() {
     const [currentDate, setCurrentDate] = useState(null);
+    const [excelTitleValue, setexcelTitleValue] = useState('');
 
     const [classDataValue, setClassDataValue] = useState(class_list[0]);
 
@@ -109,12 +110,7 @@ function ClassesCross() {
     const selectClassFun = (event) => {
         setClassDataValue(event)
     }
-
-
-
-
-
-
+    
     const [data, setData] = useState([]);
     const [apiData, setApiData] = useState([]);
 
@@ -166,6 +162,8 @@ function ClassesCross() {
                         id: el[0].viloyat_id,
                     }
                 }).filter((el) => el && el);
+                setexcelTitleValue(`Maktabdagi barcha ${clear ? '1' : classDataValue.value}-sinflar bo'yicha hisobotlar`)
+
                 setData(resData)
             })
             .catch(err => {
@@ -249,7 +247,7 @@ function ClassesCross() {
                 <ExportToExcelStudent
                     apiData={data}
                     headers={columns}
-                    titleValue={'Sinflar kesimida'}
+                    titleValue={excelTitleValue}
                 />
                 <DatePicker
                     value={currentDate}
