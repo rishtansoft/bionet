@@ -31,6 +31,14 @@ function Teachers() {
       Header: "Qabul qilingan sanasi",
       accessor: "start",
     },
+    {
+      Header: "Kategoriya",
+      accessor: "category",
+    },
+    {
+      Header: "Eslatma",
+      accessor: "primech",
+    },
   ]);
 
   const user = useSelector((state) => state.auth.user);
@@ -93,6 +101,8 @@ function Teachers() {
         start: e.datapriyoma,
         email: e.email,
         id: e.id,
+        category: e.category ? e.category : '',
+        primech: e.primech ? e.primech : ''
       }));
       setTeachersFilterData(data);
     }
@@ -114,9 +124,9 @@ function Teachers() {
   return (
     <div>
       <h2 className="mb-3">O'qituvchilar bo'yicha</h2>
-      <div className="flex justify-end mb-4">
+      <div className="flex justify-start mb-4 mt-5">
         <Button size="sm" onClick={addModalFun}>
-          Qo&apos;shish
+          O'qituvchi qo&apos;shish
         </Button>
         <Dialog isOpen={openAddModal} onClose={closeAddModal} width={700}>
           <AddTeacherModal updateFun={updateData} closeFun={closeAddModal} />

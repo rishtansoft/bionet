@@ -7,6 +7,7 @@ import AddStudentModal from "./AddStudentModal";
 import { ExportToExcelStudent } from "../excelConvert";
 import NavigateNextIcon from '@mui/icons-material/NavigateNext';
 import { Breadcrumbs } from "@mui/material";
+import noimg from '../../assets/noimg4.png'
 function Students() {
     const [currentDate, setCurrentDate] = useState(null);
     const [openAddModal, setOpenAddModal] = useState(false);
@@ -163,7 +164,7 @@ function Students() {
                         width: '60px',
                         height: '60px',
                         borderRadius: '50%'
-                    }} src={el[0].image ? process.env.REACT_APP_API_URL + 'media/' + el[0].image : ''} alt="O'quvchni rasmi" />,
+                    }} src={el[0].image ? process.env.REACT_APP_API_URL + 'media/' + el[0].image : noimg} alt="O'quvchni rasmi" />,
                     name: el[0].pupilname,
                     time: el[0].kelganvaqti ? el[0].kelganvaqti : '-',
                     id: el[0].pupil_id,
@@ -309,52 +310,64 @@ function Students() {
                 </Breadcrumbs>
             </div>
             <h2 className="mb-3">O'quvchilar bo'yicha</h2>
-            <div
-                className="date-filter text-right mb-4 flex justify-end"
-                style={{
-                    alignItems: "center",
-                }}
-            >
-                <ExportToExcelStudent
-                    titleValue={
-                        backLinksNew?.length > 1 ?
-                            `${backLinksNew[1]?.name ? backLinksNew[1]?.name : ''} ${backLinksNew[2]?.name ? backLinksNew[2]?.name : ''}  ${backLinksNew[3]?.name ? backLinksNew[3]?.name : ''} ${backLinksNew[4]?.name ? backLinksNew[4]?.name : ''} bo'yicha hisobotlar `
-                            : `O'quvchilar bo'yicha`}
-                    apiData={dataExcel}
+            <div className="mb-4" style={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                width: '100%'
+            }}>
+                {user.user_type == "MAKTAB" && (
+                    <div style={{
+                        width: '10%'
+                    }} className="flex justify-start">
+                        <Button size="sm" onClick={addModalFun}>
+                            O'quvchi qo&apos;shish
+                        </Button>
+                        <Dialog style={{
+                            padding: '0'
+                        }} isOpen={openAddModal} onClose={closeAddModal} width={850}>
+                            <AddStudentModal closeFun={closeAddModal} updateFun={updateData} />
+                        </Dialog>
+                    </div>
+                )}
+                <div
+                    className="date-filter text-right flex justify-end"
+                    style={{
+                        width: '90%',
+                        alignItems: "center",
+                    }}
+                >
+                    <ExportToExcelStudent
+                        titleValue={
+                            backLinksNew?.length > 1 ?
+                                `${backLinksNew[1]?.name ? backLinksNew[1]?.name : ''} ${backLinksNew[2]?.name ? backLinksNew[2]?.name : ''}  ${backLinksNew[3]?.name ? backLinksNew[3]?.name : ''} ${backLinksNew[4]?.name ? backLinksNew[4]?.name : ''} bo'yicha hisobotlar `
+                                : `O'quvchilar bo'yicha`}
+                        apiData={dataExcel}
 
-                    headers={[
-                        {
-                            Header: "N#",
-                            accessor: "number",
-                        },
-                        {
-                            Header: "O'quvchi",
-                            accessor: "name",
-                        },
-                        {
-                            Header: "Kelgan vaqti",
-                            accessor: "time",
-                        },
-                    ]} />
-                <DatePicker
-                    value={currentDate}
-                    onChange={handleChangeDate}
-                    placeholder={currentDate}
-                    className="w-1/4"
-                />
-            </div>
-            {user.user_type == "MAKTAB" && (
-                <div className="flex justify-end mb-4">
-                    <Button size="sm" onClick={addModalFun}>
-                        Qo&apos;shish
-                    </Button>
-                    <Dialog style={{
-                        padding: '0'
-                    }} isOpen={openAddModal} onClose={closeAddModal} width={850}>
-                        <AddStudentModal closeFun={closeAddModal} updateFun={updateData} />
-                    </Dialog>
+                        headers={[
+                            {
+                                Header: "N#",
+                                accessor: "number",
+                            },
+                            {
+                                Header: "O'quvchi",
+                                accessor: "name",
+                            },
+                            {
+                                Header: "Kelgan vaqti",
+                                accessor: "time",
+                            },
+                        ]} />
+                    <DatePicker
+                        value={currentDate}
+                        onChange={handleChangeDate}
+                        placeholder={currentDate}
+                        className="w-1/4"
+                    />
                 </div>
-            )}
+            </div>
+
+
             <TableData
                 columns={columns}
                 data={data}

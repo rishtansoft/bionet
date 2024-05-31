@@ -335,37 +335,49 @@ function Classes() {
                 </Breadcrumbs>
             </div>
             <h2 className="mb-3">Sinflar bo'yicha</h2>
-            {user.user_type == 'MAKTAB' && (
-                <div className="flex justify-end mb-4">
-                    <Button size="sm" onClick={addModalFun}>
-                        Qo&apos;shish
-                    </Button>
-                    <Dialog
-                        isOpen={openAddModal}
-                        onClose={() => setOpenAddModal(false)}
-                    >
-                        <AddClassModal updateFun={updateData} closeFun={closeAddModal} />
-                    </Dialog>
-                </div>
-            )}
-            <div className='date-filter text-right mb-4 flex justify-end' style={{
-                alignItems: 'center'
+            <div className="mb-3" style={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+
             }}>
-                <ExportToExcelStudent
-                    apiData={data}
-                    headers={columns}
-                    titleValue={
-                        backLinksNew?.length > 1 ?
-                            `${backLinksNew[1]?.name ? backLinksNew[1]?.name : ''} ${backLinksNew[2]?.name ? backLinksNew[2]?.name : ''}  ${backLinksNew[3]?.name ? backLinksNew[3]?.name : ''} bo'yicha hisobotlar `
-                            : `Sinflar bo'yicha hisobotlar`}
-                />
-                <DatePicker
-                    value={currentDate}
-                    onChange={handleChangeDate}
-                    placeholder={currentDate}
-                    className='w-1/4'
-                />
+                {user.user_type == 'MAKTAB' && (
+                    <div style={{
+                        width: '10%'
+                    }} className="flex justify-start mt-5">
+                        <Button size="sm" onClick={addModalFun}>
+                            Sinf qo&apos;shish
+                        </Button>
+                        <Dialog
+                            isOpen={openAddModal}
+                            onClose={() => setOpenAddModal(false)}
+                        >
+                            <AddClassModal updateFun={updateData} closeFun={closeAddModal} />
+                        </Dialog>
+                    </div>
+                )}
+
+                <div className='date-filter text-right  flex justify-end' style={{
+                    alignItems: 'center',
+                    width: '90%'
+                }}>
+                    <ExportToExcelStudent
+                        apiData={data}
+                        headers={columns}
+                        titleValue={
+                            backLinksNew?.length > 1 ?
+                                `${backLinksNew[1]?.name ? backLinksNew[1]?.name : ''} ${backLinksNew[2]?.name ? backLinksNew[2]?.name : ''}  ${backLinksNew[3]?.name ? backLinksNew[3]?.name : ''} bo'yicha hisobotlar `
+                                : `Sinflar bo'yicha hisobotlar`}
+                    />
+                    <DatePicker
+                        value={currentDate}
+                        onChange={handleChangeDate}
+                        placeholder={currentDate}
+                        className='w-1/4'
+                    />
+                </div>
             </div>
+
             <TableData
                 redirectTo={redirectTo}
                 is_location={9999}

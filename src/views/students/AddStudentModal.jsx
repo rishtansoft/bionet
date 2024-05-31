@@ -273,7 +273,10 @@ const AddStudentModal = ({ updateFun, closeFun }) => {
     }
 
     return (
-        <div className="flex flex-col gap-4" selectedImage>
+        <div className="flex flex-col gap-4" style={{
+            overflowY: 'auto',
+            height: selectedImage ? '70vh' : '50vh'
+        }}>
             <h3 className="text-center">O'quvchi qo'shish</h3>
             <FormContainer className="mt-4 grid grid-cols-3 gap-2" style={
                 {
@@ -361,7 +364,7 @@ const AddStudentModal = ({ updateFun, closeFun }) => {
                 </FormItem>
 
                 <FormItem
-                    label={"Rasim yuklash"}
+                    label={"Rasm yuklash"}
                     // invalid={errorRelativeNumber}
                     errorMessage={errorMessage}
                     style={
@@ -381,14 +384,14 @@ const AddStudentModal = ({ updateFun, closeFun }) => {
                         required
                         id="file-upload"
                         type={'file'}
-                        placeholder="Rasim yuklash"
+                        placeholder="Rasm yuklash"
                     // value={relativePhoneNumber}
                     // onChange={changeRelativeNumber}
                     // onPaste={handlePasteRelativePhone}
                     />
 
                     <label htmlFor="file-upload" style={{ cursor: 'pointer', padding: '11px 20px', backgroundColor: '#007bff', color: '#fff', borderRadius: '4px', display: 'block', }}>
-                        Rasim yuklash
+                        Rasm yuklash
                     </label>
 
                 </FormItem>
@@ -396,25 +399,25 @@ const AddStudentModal = ({ updateFun, closeFun }) => {
 
             <div style={{
                 width: '100%',
-                padding: '2rem',
                 display: selectedImage ? 'flex' : 'none',
                 flexDirection: 'row',
+                paddingBottom: '1rem',
                 alignItems: 'center',
                 justifyContent: 'center',
                 position: 'relative'
             }}>
                 <img src={selectedImage} style={{
-                    height: '320px',
-                    width: '320px',
-                    border:'1px solid #3a3a3a',
-                    padding:'1rem',
-                    borderRadius:'10px'
+                    height: '200px',
+                    width: '200px',
+                    border: '1px solid #3a3a3a',
+                    padding: '1rem',
+                    borderRadius: '10px'
                 }} alt="" srcset="" />
                 <button style={{
                     position: 'absolute',
-                    top: '1.1rem',
-                    right: '28%',
-                    padding: '0.2rem',
+                    top: '-0.4rem',
+                    right: '36%',
+                    padding: '0.1rem',
                     transition: 'all 0.3s',
                     borderRadius: '50%',
                     background: isHovered ? '#7c7c7c' : '#b1b1b1',

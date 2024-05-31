@@ -12,24 +12,26 @@ const Cover = ({ children, content, ...rest }) => {
                 }}
             >
                 <div style={{
-                    display:'flex',
-                    height:'100vh',
-                    flexDirection:'column',
-                    justifyContent:'center',
-                    alignItems:'center'
-                    
+                    display: 'flex',
+                    height: '100vh',
+                    flexDirection: 'column',
+                    justifyContent: 'center',
+                    alignItems: 'center'
+
                 }}>
-                <a
-                            style={{
-                                fontSize:'3.5rem',
-                                color:'#fff',
-                                fontWeight:'600',
-                                textAlign:'center',
-                                
-                            }}
+                    <a
+                        style={{
+                            fontSize: '3.5rem',
+                            color: '#fff',
+                            fontWeight: '600',
+                            textAlign: 'center',
+                            marginLeft: sideNavCollapse ? '0.5rem' : '0'
+                        }}
                         href='#'>
-                            Bionet 
-                        </a>
+                        {
+                            !sideNavCollapse ? 'Bionet' : 'B'
+                        }
+                    </a>
                 </div>
                 {/* <Logo mode="dark" /> */}
                 {/* <div>

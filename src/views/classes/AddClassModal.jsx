@@ -154,7 +154,7 @@ const AddClassModal = ({ closeFun, updateFun }) => {
             <Input placeholder="Sinf Nomi" value={name} onChange={changeName} />
           </FormItem>
           <FormItem
-            label="Boshlanish vaqti"
+            label="Darsning boshlanish vaqti"
             invalid={errorStartTime}
             errorMessage="Maydonni to'ldiring"
           >

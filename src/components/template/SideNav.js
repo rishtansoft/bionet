@@ -89,8 +89,8 @@ const SideNav = () => {
                     )}
                 >
                     <div className="side-nav-header" style={{
-                        marginLeft:'1.5rem',
-                        marginTop:'1rem'
+                        marginLeft: '1.5rem',
+                        marginTop: '1rem'
                     }}>
                         {/* <Logo
                             mode={logoMode()}
@@ -103,13 +103,16 @@ const SideNav = () => {
                         /> */}
                         <a
                             style={{
-                                fontSize:'1.5rem',
-                                color:'#000',
-                                fontWeight:'600',
-                                textAlign:'center'
+                                fontSize: '1.5rem',
+                                color: '#000',
+                                fontWeight: '600',
+                                textAlign: 'center',
+                                marginLeft: sideNavCollapse ? '0.5rem' : '0'
                             }}
-                        href='#'>
-                            Bionet 
+                            href='#'>
+                            {
+                                !sideNavCollapse ? 'Bionet' : 'B'
+                            }
                         </a>
                     </div>
                     {sideNavCollapse ? (

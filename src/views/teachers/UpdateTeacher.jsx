@@ -30,6 +30,12 @@ const UpdateTeacherModal = ({ updateFun, closeFun, item }) => {
     const [birthdayFilter, setBirthdayFilter] = useState("");
     const [errorBirthday, setErrorBirthday] = useState(false);
     const [disabledButton, setDisabledButton] = useState(false);
+    const [dateOfEmployment, setDateOfEmployment] = useState(null);
+    const [dateOfEmploymentError, setDateOfEmploymentError] = useState(false);
+    const [dateOfEmploymentFilter, setDateOfEmploymentFilter] = useState('');
+    const [description, setDescription] = useState('');
+    const [category, setCategory] = useState('');
+
     const handlePutPhoneNumber = (event) => {
         const formattedText = event
             .replace(/(\d{2})(\d{3})(\d{2})(\d{2})/, "+998 $1 $2 $3 $4")
@@ -37,7 +43,23 @@ const UpdateTeacherModal = ({ updateFun, closeFun, item }) => {
         return formattedText;
     };
 
+    const changedescription = (e) => {
+        setDescription(e.target.value);
+    };
+
+    const changeCategory = (e) => {
+        setCategory(e.target.value);
+    };
+
+
+    const changeDateOfEmployment = (e) => {
+        setDateOfEmployment(e);
+        setDateOfEmploymentFilter(dayjs(e).format('YYYY-MM-DD'))
+        setDateOfEmploymentError(false);
+    };
+
     useEffect(() => {
+        console.log(62, item);
         setFullName(item.name ? item.name : "");
         setGender(
             item.gender == "ERKAK"
@@ -55,6 +77,15 @@ const UpdateTeacherModal = ({ updateFun, closeFun, item }) => {
                 ? handlePutPhoneNumber(item?.phone?.slice(4))
                 : ""
         );
+
+        setCategory(item?.category ? item?.category : '');
+        setDescription(item?.primech ? item?.primech : '');
+        setDateOfEmploymentFilter(item?.start);
+
+        setDateOfEmployment(
+            item?.start ? dayjs(item?.start, "YYY-MM-DD").toDate() : null
+        );
+
     }, []);
 
     const inputPhoneRef = useMask({
@@ -137,9 +168,9 @@ const UpdateTeacherModal = ({ updateFun, closeFun, item }) => {
                 address: address ? address : null,
                 phone: phoneNumber ? phoneNumber : null,
                 email: email ? email : null,
-                category: "",
-                datapriyoma: getCurrentDate(),
-                primech: null,
+                category: category ? category : '',
+                datapriyoma: dateOfEmploymentFilter ? dateOfEmploymentFilter : null,
+                primech: description ? description : null,
                 school: user.school
             }
 
@@ -292,6 +323,28 @@ const UpdateTeacherModal = ({ updateFun, closeFun, item }) => {
 
                 >
                     <Input placeholder="Email" value={email} onChange={changeEmail} />
+                </FormItem>
+                <FormItem
+                    label={"Kategoriya"}
+                >
+                    <Input type='text' placeholder="Kategoriya" value={category} onChange={changeCategory} />
+                </FormItem>
+                <FormItem
+                    label={"Ishga qabul qilingan sana"}
+                    invalid={dateOfEmploymentError}
+                    errorMessage="Maydonni to'ldiring"
+                >
+                    <DatePicker
+                        placeholder="Ishga qabul qilingan sana"
+                        value={dateOfEmployment}
+                        name="date"
+                        onChange={changeDateOfEmployment}
+                    />
+                </FormItem>
+                <FormItem
+                    label={"Eslatma"}
+                >
+                    <Input type='text' placeholder="Eslatma" value={description} onChange={changedescription} />
                 </FormItem>
             </FormContainer>
             <Button
