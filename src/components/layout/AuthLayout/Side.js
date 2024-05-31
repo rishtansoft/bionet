@@ -14,27 +14,26 @@ const Side = ({ children, content, ...rest }) => {
             >
                 {/* <Logo mode="dark" /> */}
                 <div style={{
-                    display:'flex',
-                    height:'100vh',
-                    flexDirection:'column',
-                    justifyContent:'center',
-                    alignItems:'center'
-                    
-                }}>
-                <a
-                            style={{
-                                fontSize:'3.5rem',
-                                color:'#fff',
-                                fontWeight:'600',
-                                textAlign:'center',
-                                marginLeft: sideNavCollapse ? '0.5rem' : '0'
+                    display: 'flex',
+                    height: '100vh',
+                    flexDirection: 'column',
+                    justifyContent: 'center',
+                    alignItems: 'center'
 
-                            }}
-                        href='#'>
-                             {
-                                !sideNavCollapse ? 'Bionet' : 'B'
-                            } 
-                        </a>
+                }}>
+                    <a
+                        style={{
+                            fontSize: '3.5rem',
+                            color: '#fff',
+                            fontWeight: '600',
+                            textAlign: 'center',
+                            marginLeft: '0.5rem'
+                        }}
+
+                    
+                    >
+                        Bionet
+                    </a>
                 </div>
                 {/* <div>
                     <div className="mb-6 flex items-center gap-4">

@@ -107,7 +107,7 @@ const SideNav = () => {
                                 color: '#000',
                                 fontWeight: '600',
                                 textAlign: 'center',
-                                marginLeft: sideNavCollapse ? '0.5rem' : '0'
+                                marginLeft: '0.5rem'
                             }}
                             href='#'>
                             {

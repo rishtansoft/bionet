@@ -25,13 +25,11 @@ const Cover = ({ children, content, ...rest }) => {
                                 color:'#fff',
                                 fontWeight:'600',
                                 textAlign:'center',
-                                marginLeft: sideNavCollapse ? '0.5rem' : '0'
+                                marginLeft: '0.5rem'
 
                             }}
                         href='#'>
-                             {
-                                !sideNavCollapse ? 'Bionet' : 'B'
-                            } 
+                            Bionet
                         </a>
                 </div>
                 {/* <Logo mode="dark" />
